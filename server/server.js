@@ -1,6 +1,6 @@
 /*jslint node: true, maxerr: 50, indent: 2 */
 "use strict";
-var 
+var
   io = require('socket.io').listen(8080, "0.0.0.0"),
   hat = require('hat'),
   keys = hat.rack(),
@@ -91,6 +91,7 @@ io
 
     bouncer.on('start-sync', function (uid, holla) {
       var key = keys();
+      var key = "1111"
       channels_by_key[key] = uid;
       holla(key);
     });
