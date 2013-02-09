@@ -213,7 +213,7 @@ var MoteioReceiver = function() {
     self.sync(
       function(key) {
         $('#moteio-qrcode').find('canvas').remove();
-        $('#moteio-qrcode').qrcode({width: 575, height: 575,text: key});
+        $('#moteio-qrcode').qrcode({width: 200, height: 200, text: key});
         $('#moteio-sync').text('{"format": "QR_CODE", "text": "' + key + '"}');
       },
       function(device) {

@@ -4,7 +4,8 @@ var
   io = require('socket.io').listen(8080, "0.0.0.0"),
   hat = require('hat'),
   keys = hat.rack(),
-  uids = hat.rack();
+  uids = hat.rack(),
+  winston = require('winston');
 
 
 // channels by key is a pointer to some channel in the channels array
