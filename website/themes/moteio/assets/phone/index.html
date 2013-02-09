@@ -1,0 +1,89 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>My Page</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/themes/jquery.mobile.structure-1.1.0-rc.1.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.1.0-rc.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/socket.io.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="barcodescanner.js"></script>
+	<script type="text/javascript" charset="utf-8" src="moteio.js"></script>
+	<script src="http://debug.phonegap.com/target/target-script-min.js#moteio"></script>
+	<!-- http://debug.phonegap.com/client/#moteio -->
+	<link rel="stylesheet" href="css/moteio.css" />
+  <script>
+
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		function onDeviceReady() {
+
+			console.log('started');
+			var pandora = new App();
+			pandora.init();
+
+		}
+		
+	</script>
+</head> 
+<body> 
+
+<div data-role="page" id="pandora" data-theme="a">
+
+	<div data-role="content">
+
+		<div id="header">
+
+			<a id="scan"></a>
+
+		</div> 
+
+		<div id="buttons">
+		</div>
+
+	</div>
+
+</div>
+
+<div data-role="page" id="sync-dialog-help">
+
+	<div data-role="content">
+		<p>
+			Click the mote.io sync icon in your web browser.
+		</p>
+		<p><strong>Note:</strong> You first have to install <a href="#">the mote.io - sync chrome extension</a>. You can get it at <strong>http://mote.io</strong>.</p>
+		<a data-role="button" href="#sync-dialog-step-2">OK</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="sync-dialog-step-1">
+
+	<div data-role="content">
+		<p>
+			Now enter the 6 digit code that appears!
+		</p>
+		<input type="text" name="sync-code" id="sync-code" value=""/>
+		<a id="validate-sync" data-role="button">OK</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="sync-dialog-step-3">
+
+	<div data-role="content">
+		<p>
+			Approve this moble device in your web browser.
+		</p>
+		<a data-role="button" href="#sync">OK</a>
+	</div>
+
+</div>
+
+<div data-role="page" id="loading-connecting">
+	<div class="ring"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "name": "Mote.io",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Control websites with the mote.io mobile app! Use this to sync the mote.io app with your browser.",
+  "permissions": [
+    "tabs",
+    "<all_urls>"
+  ],
+  "icons": { 
+    "16": "lib/icons/16.png",
+    "48": "lib/icons/48.png",
+    "128": "lib/icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"],
+      "js": [
+        "lib/socket.io.js",
+        "lib/jquery.js",
+        "lib/jquery.qrcode.min.js"
+      ],
+      "css": [
+        "lib/moteio.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "http://*.grooveshark.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/grooveshark.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://*.hypem.com/*",
+        "http://hypem.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/hypem.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://*.rdio.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/rdio.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://vimeo.com/*",
+        "https://vimeo.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/vimeo.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://*.shelby.tv/*",
+        "http://shelby.tv/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/shelby.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://*.pandora.com/*",
+        "http://pandora.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "site-specific/pandora.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

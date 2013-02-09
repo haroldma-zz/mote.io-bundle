@@ -1,0 +1,142 @@
+
+  body {
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #111), color-stop(1, #333));
+    background-image: url('../images/back.png');
+  }
+  #buttons {
+    position: fixed;
+    width: 320px;
+    height: 405px;
+    left: 50%;
+    margin-left: -160px;
+    border: 1px;
+    top: 75px;
+  }
+  #scan {
+    position: fixed;
+    right: 20px;
+    top: 10px;
+    display: block;
+    width: 60px;
+    height: 60px;
+    background-image: url('../images/sync.png');
+  }
+  #header {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    border-bottom: 1px solid #3e3e40;
+    background-image: linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -o-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -moz-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -webkit-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -ms-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.34, rgb(55,55,56)),
+      color-stop(0.67, rgb(67,67,69))
+    );
+    -moz-box-shadow: 0px 0px 2px #000;
+    -webkit-box-shadow: 0px 0px 2px #000;
+    box-shadow: 0px 0px 2px #000;
+  }
+  .moteio-button {
+    background-image: url('../images/button.png');
+    width: 55px;
+    height: 55px;
+    display: block;
+    background-position: 0px;
+  }
+  .moteio-button.moteio-down {
+    background-position: 55px;
+  }
+  .moteio-button .icon {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  #loading-connecting {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('http://mote.io/assets/images/carbon_fibre_big.png');
+    z-index: 102;
+    display: none;
+  }
+  #now-playing {
+    position: absolute;
+    display: block;
+    height: 47px;
+    width: 280px;
+    background-image: url('../images/now_playing.png');
+    font-size: 12px;
+    color: #646468;
+    overflow: hidden;
+    left: 20px;
+    padding-top: 8px;
+  }
+  #now-playing.with-image img {
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    border: none
+  }
+  #now-playing p {
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 20px;
+    margin: 0px;
+  }
+  #now-playing.with-image p {
+    padding-left: 60px;
+    line-height: 20px;
+    margin: 0px;
+  }
+  @-webkit-keyframes 'pulse'
+    {       
+    0% { 
+      opacity: .6;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: .6;
+    }
+  }
+  .ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -80px;
+    margin-top: -80px;
+    padding: 0;
+    width: 160px;
+    height: 160px;
+    z-index: 103;
+    background-image: url('../images/huge_logo.png');
+    background-repeat: no-repeat;
+    background-position: left-top;
+
+    -webkit-animation-name: pulse;
+    -moz-animation-name: pulse;
+    -webkit-animation-duration: 3s;
+    -moz-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+    opacity: 0;
+
+    animation-delay: 3s;
+    -moz-animation-delay: 3s;
+    -webkit-animation-delay: 3s;
+  }

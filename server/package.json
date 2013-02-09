@@ -1,0 +1,20 @@
+{
+  "author": "Ian Jennings <ian@meetjennings.com> (http://ianjennin.gs)",
+  "name": "mote.io",
+  "description": "Mote.io control server",
+  "version": "0.0.0",
+  "homepage": "http://mote.io",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ianjennings/mote.io.git"
+  },
+  "engines": {
+    "node": "0.8.15"
+  },
+  "dependencies": {
+    "hat": "0.0.3",
+    "express": "2.5.8",
+    "underscore": "1.3.1"
+  },
+  "devDependencies": {}
+}

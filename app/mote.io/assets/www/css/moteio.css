@@ -1,0 +1,135 @@
+
+  body {
+    background-color: #111;
+  }
+  #buttons {
+    position: fixed;
+    width: 320px;
+    height: 405px;
+    left: 50%;
+    margin-left: -160px;
+    border: 1px;
+    top: 75px;
+  }
+  #scan {
+    position: fixed;
+    right: 20px;
+    top: 10px;
+    display: block;
+    width: 60px;
+    height: 60px;
+    background-image: url('../images/sync.png');
+  }
+  #header {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    border-bottom: 1px solid #3e3e40;
+    background-image: linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -o-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -moz-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -webkit-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+    background-image: -ms-linear-gradient(bottom, rgb(55,55,56) 34%, rgb(67,67,69) 67%);
+
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.34, rgb(55,55,56)),
+      color-stop(0.67, rgb(67,67,69))
+    );
+    -moz-box-shadow: 0px 0px 2px #000;
+    -webkit-box-shadow: 0px 0px 2px #000;
+    box-shadow: 0px 0px 2px #000;
+  }
+.moiteio-placement {
+    position: absolute;
+}
+ .moteio-button {
+     background-color: #d9d9d9;
+     color: #434345;
+     display: block;
+     position: absolute;
+     width: 50px;
+     height: 50px;
+     line-height: 50px;
+     text-align: center;
+     -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+     border-radius: 3px;
+     box-shadow: inset 0px -2px 1px #888, inset 0px 1px 1px #eee;
+     font-size: 18px;
+     text-shadow: 0px 1px 1px #ececec;
+ }
+ .moteio-button.moteio-down {
+     top: 2px;
+     height: 48px;
+     box-shadow: inset 0px -1px 1px #888, inset 0px 1px 1px #eee;
+     -webkit-user-select: none;
+ }
+
+  #loading-connecting {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('http://mote.io/assets/images/carbon_fibre_big.png');
+    z-index: 102;
+    display: none;
+  }
+
+.notify {
+  position: relative;
+  padding-left: 60px;
+  color: #d9d9d9;
+  text-shadow: 0px 1px 1px #000;
+  height: 50px;
+  width: 218px;
+  left: 20px;
+}
+.notify .thumb {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 50px;
+  height: 50px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.notify .line {
+  line-height: 25px;
+  margin: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 25px;
+}
+
+  @-webkit-keyframes 'pulse'
+    {       
+    0% { 
+      opacity: .6;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: .6;
+    }
+  }
+  .ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -80px;
+    margin-top: -80px;
+    padding: 0;
+    width: 160px;
+    height: 160px;
+    z-index: 103;
+    background-image: url('../images/huge_logo.png');
+    background-repeat: no-repeat;
+    background-position: left-top;
+  }

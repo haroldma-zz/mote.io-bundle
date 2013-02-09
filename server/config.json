@@ -1,0 +1,13 @@
+{
+  "development": true,
+  "theme": "moteio",
+  "name": "Mote.io",
+  "description": "Control websites with your smartphone.",
+  "blogroll": [
+    {
+      "title": "Get Mote.io For Android",
+      "url": "https://github.com/theycallmeswift/quill",
+      "description": "Get the quill server"
+    }
+  ]
+}
