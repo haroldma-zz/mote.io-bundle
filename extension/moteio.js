@@ -1,10 +1,10 @@
 var MoteioReceiver = function() {
 
   var self = this;
-  
+
   // Server to listen to.  Is this still up?
-  self.remote_location = 'http://mote.io:8080';
-  
+  self.remote_location = 'http://lvh.me:8080';
+
   self.channel = null;
 
   // Connect to socket.io
@@ -25,7 +25,7 @@ var MoteioReceiver = function() {
   self.get = function(property) {
     var item = JSON.parse(localStorage.getItem(property));
     if (typeof item !== undefined) {
-      return item; 
+      return item;
     } else {
       return false;
     }
@@ -37,7 +37,7 @@ var MoteioReceiver = function() {
   }
   // Delete everything in ls
   self.clear = function() {
-    localStorage.clear(); 
+    localStorage.clear();
   }
 
   // Press a button.
@@ -123,7 +123,7 @@ var MoteioReceiver = function() {
     self.channel.on('request-access', function(device) {
       show_request_access(device);
     });
-  
+
   };
 
   // Establish connection.
@@ -168,7 +168,7 @@ var MoteioReceiver = function() {
 
   // Notify the server of stuff.
   self.notify = function(line1, line2, image) {
-    
+
     self.clog('notify')
     data = {
       line1: line1,
@@ -217,7 +217,7 @@ var MoteioReceiver = function() {
         $('#moteio-sync').text('{"format": "QR_CODE", "text": "' + key + '"}');
       },
       function(device) {
-        
+
         console.log(device)
 
         // establish right away
@@ -251,7 +251,7 @@ var MoteioReceiver = function() {
       <div id="moteio-alert" class="moteio-page"></div> \
     </div> \
     <div id="moteio-blackout"> \
-    </div>'); 
+    </div>');
 
     $('.start-sync').click(function(){
       console.log('clicked');
@@ -321,16 +321,16 @@ var MoteioReceiver = function() {
       } else {
 
         self.clog('first run!');
-    
+
         self.bouncer.emit('generate-uid', null, function(err, uid){
           self.set('uid', uid);
           self.clog('uid set!')
           self.listen(self.get('uid'));
         });
-      
+
       }
 
-      self.drawOverlay(); 
+      self.drawOverlay();
 
     });
 

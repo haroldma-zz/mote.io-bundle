@@ -4,7 +4,7 @@
 
       var self = this;
 
-      self.remote_location = 'http://mote.io:8080';
+      self.remote_location = 'http://lvh.me:8080';
       self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
       self.channel = null;
 
@@ -34,13 +34,13 @@
           if(err){
             navigator.notify.alert(err);
           } else {
-            
+
             console.log('emptying remote')
             $('#buttons').html('');
 
             if(typeof res.notify !== "undefined") {
 
-              var notify = 
+              var notify =
                 $('<div></div>')
                 .attr('id', "now-playing");
 
@@ -55,13 +55,13 @@
               console.log('my id is ' + button_id);
               console.log('my position is ' + res.buttons[button_id].xpos);
 
-              var element = 
+              var element =
                 $('<a href="#" class="moteio-button"><div class="icon" style="background-image: url(\'images/icons/' + button_id + '.png\')" /></a>')
                 .attr('data-moteio', button_id)
                 .css({
-                  'left': res.buttons[button_id].xpos, 
-                  'top': String(res.buttons[button_id].ypos) + 'px', 
-                  'position': 'absolute', 
+                  'left': res.buttons[button_id].xpos,
+                  'top': String(res.buttons[button_id].ypos) + 'px',
+                  'position': 'absolute',
                   'display': 'block',
                 });
               element.bind('vmousedown', function(e) {
@@ -123,7 +123,7 @@
         $('#scan').bind('vclick', function(e) {
 
           $('#loading-connecting').show();
-      
+
           window.plugins.barcodeScanner.scan( function(result) {
 
               console.log('found a barcode, but were not doing anything');
@@ -137,20 +137,20 @@
                     key: result.text,
                     device: device
                   }
-                  
+
                   setTimeout(function(){
                     $('#loading-connecting').fadeOut();
                   }, 3000);
 
                   self.bouncer.emit('validate-key', data, function(err, uid){
-                    
+
                     console.log('validate')
 
                     if(err) {
                       $('#loading-connecting').fadeOut();
                       console.log(err);
                       navigator.notification.alert("There was a problem. Try again!");
-                    
+
                     } else {
 
                       navigator.notification.vibrate(500);
@@ -177,4 +177,4 @@
 
       }
 
-    }     
+    }
