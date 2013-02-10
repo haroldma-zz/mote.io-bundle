@@ -22,7 +22,19 @@ npm install
 
 sh start.sh
 
-## Load:
-http://lvh.me:8000
-http://lvh.me:8080
-http://hypem.com
+## Load Tabs
+
+* http://lvh.me:8000
+* http://lvh.me:8080
+* http://hypem.com
+
+## Ripple
+
+1. Navigate to http://lvh.me:8080
+2. Open up ripple, and select the Phonegap 2.0 library.
+3. Open http://hypem.com
+4. Click the mote.io icon on the top left. If it's not there you didn't install the chrome extension
+5. Copy the code from the black square
+6. Hit the mote.io icon on http://lvh.me:8080
+7. Enter the code from the black square
+8. Synced!
