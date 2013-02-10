@@ -32,7 +32,7 @@ sh start.sh
 
 ## #7 Ripple
 
-1. Navigate to http://lvh.me:8080
+1. Navigate to http://lvh.me:8000
 2. Open up ripple, and select the Phonegap 2.0 library.
 
 ## #8 Sync
@@ -40,6 +40,6 @@ sh start.sh
 1. Open http://hypem.com
 1. Click the mote.io icon on the top left. If it's not there you didn't install the chrome extension
 5. Copy the code from the black square
-6. Hit the mote.io icon on http://lvh.me:8080
+6. Hit the mote.io icon on http://lvh.me:8000
 7. Enter the code from the black square
 8. Synced!
