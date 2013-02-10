@@ -91,7 +91,6 @@ io
 
     bouncer.on('start-sync', function (uid, holla) {
       var key = keys();
-      var key = "1111"
       channels_by_key[key] = uid;
       holla(key);
     });

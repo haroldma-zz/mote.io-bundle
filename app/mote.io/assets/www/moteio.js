@@ -6,7 +6,6 @@ var io = io || null,
   navigator = navigator || null,
   $ = $ || null,
   device = device,
-  setTimeout = setTimeout || null,
   window = window || null;
 
 var App = function () {
@@ -15,7 +14,7 @@ var App = function () {
 
   var self = this;
 
-  self.remote_location = 'http://mote.io:8080';
+  self.remote_location = 'http://lvh.me:8080';
   self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
   self.channel = null;
 
@@ -92,16 +91,16 @@ var App = function () {
           console.log('rendering remote');
 
           console.log('my id is ' + button_id);
-          console.log('my position is ' + res.buttons[button_id].xpos);
+          console.log('my position is ' + res.buttons[button_id].x);
 
           wrapper = $('<div class="moteio-placement"></div>')
             .css({
-              'left': res.buttons[button_id].xpos,
-              'top': String(res.buttons[button_id].ypos) + 'px',
+              'left': res.buttons[button_id].x,
+              'top': String(res.buttons[button_id].y) + 'px',
               'position': 'absolute'
             });
 
-          element = $('<a href="#" class="moteio-button ' + button_id + '" /></a>')
+          element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
             .attr('data-moteio', button_id)
               .bind('vmousedown', function (e) {
               navigator.notification.vibrate(250);
@@ -169,9 +168,6 @@ var App = function () {
       $('#loading-connecting').show();
 
       window.plugins.barcodeScanner.scan(function (result) {
-
-        console.log('found a barcode, but were not doing anything');
-        console.log();
 
         if (result.format !== "QR_CODE") {
           navigator.notification.alert('Scan the QR code on the mote.io site!');
