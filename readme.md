@@ -1,5 +1,7 @@
 # mote.io
 
+This is a rough guide to getting the dev setup started. No phone required!
+
 ## #1 brew
 
 brew install nodejs
