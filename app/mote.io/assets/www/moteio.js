@@ -77,9 +77,12 @@ var App = function () {
         console.log('emptying remote');
         $('#buttons').html('');
 
-        if (typeof res.notify !== "undefined") {
+        if (res.notify) {
 
-          wrapper = $('<div class="moteio-placement"></div>')
+          wrapper = $('<div class="moteio-placement"></div>').css({
+              left: res.notify.x + 'px',
+              top: res.notify.y + 'px'
+            });
           var notify = $('<div class="notify"></div>');
 
           $('#buttons').append(wrapper.append(notify));
@@ -102,7 +105,7 @@ var App = function () {
 
           element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
             .attr('data-moteio', button_id)
-              .bind('vmousedown', function (e) {
+            .bind('vmousedown', function (e) {
               navigator.notification.vibrate(250);
               console.log('we have a click');
               e.stopPropagation();

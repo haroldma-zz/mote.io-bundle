@@ -1,13 +1,10 @@
-
-
 /*jslint node: true, maxerr: 50, indent: 2 */
 "use strict";
 var rec = new MoteioReceiver();
 // custom sync scripts injected into dom
 rec.debug = true;
 
-function extractUrl(input)
-{
+function extractUrl(input) {
  // remove quotes and wrapping url()
  if (typeof input !== "undefined") {
   return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
@@ -16,23 +13,20 @@ function extractUrl(input)
  }
 }
 
-var lastSong = null,
-thisSong = null;
-
 var $ = jQuery;
 
 setInterval(function(){
 
-  // watch for song updates
-  console.log('checking for updates')
-  console.log('this song is ' + thisSong);
-  var thisArtist = $($('#player-nowplaying a')[2]).text();;
-  var thisSong = $($('#player-nowplaying a')[3]).text();;
-  if (thisSong !== lastSong) {
-    console.log('!!!!!!!!!!!!!!!!!!! UPDATE')
-    rec.notify(thisArtist, thisSong, extractUrl($('.active-playing-green').find('.readpost > span').css('background-image')));
-    lastSong = thisSong;
+  var active = null;
+  if($('.active-playing-green').length > 0) {
+    active = $('.active-playing-green');
+  } else {
+    active = $($('.section-track')[0]);
   }
+
+  var thisArtist = $($('#player-nowplaying a')[3]).text();
+  var thisSong = $($('#player-nowplaying a')[4]).text();
+  rec.notify(thisArtist, thisSong, extractUrl(active.find('.readpost > span').css('background-image')));
 
   // transfer button states
   if($('#playerPlay').hasClass('play')) {
@@ -51,6 +45,10 @@ setInterval(function(){
 
 // actual client code
 rec.init({
+  notify: {
+    x: 0,
+    y: 0
+  },
   buttons: {
     'backward': {
       down: function () {
@@ -71,13 +69,6 @@ rec.init({
     'heart': {
       down: function () {
         rec.simulateClick('playerFav');
-        if($('#playerFav').hasClass('fav-on')){
-          rec.notify('Song Hearted!');
-        } else {
-          rec.notify('Song Unhearted! :(');
-        }
-        setTimeout(function(){
-        }, 2000);
       },
       x: 170,
       y: 75,
