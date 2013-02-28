@@ -93,7 +93,7 @@ var App = function () {
           console.log('my id is ' + button_id);
           console.log('my position is ' + res.buttons[button_id].x);
 
-          wrapper = $('<div class="moteio-placement"></div>')
+          wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
             .css({
               'left': res.buttons[button_id].x,
               'top': String(res.buttons[button_id].y) + 'px',
@@ -141,6 +141,8 @@ var App = function () {
       var now_playing = $('.notify');
       now_playing.empty();
 
+      console.log(data);
+
       if (typeof data.image !== "undefined") {
         now_playing.append('<img src="' + data.image + '" class="thumb" />');
       }
@@ -151,6 +153,12 @@ var App = function () {
         now_playing.append('<div class="line line-2">' + data.line2 + '</p>');
       }
 
+    });
+
+    self.channel.on('update-button', function(data){
+      $('#moteio-button-' + data.id + ' > a').removeClass().addClass('moteio-button icon-' + data.icon).css({
+        'color': data.color
+      });
     });
 
   };

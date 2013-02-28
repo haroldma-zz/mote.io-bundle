@@ -181,16 +181,16 @@ var MoteioReceiver = function() {
 
   };
 
-  self.changeButton = function(id, icon, color) {
+  self.updateButton = function(id, icon, color) {
 
-    self.clog('change button')
+    self.clog('update button')
     data = {
       id: id,
       icon: icon,
       color: color
     }
 
-    self.channel.emit('change-button', data, function(){
+    self.channel.emit('update-button', data, function(){
       self.clog('cbb');
     })
 
@@ -312,7 +312,8 @@ var MoteioReceiver = function() {
 
       self.clog(self.get('uid'));
 
-      self.clear();
+      // reset to test sync process
+      // self.clear();
 
       if (self.get('uid')) {
 

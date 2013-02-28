@@ -59,9 +59,9 @@ io
             channel.broadcast.emit('art', data);
             holla();
           });
-          channel.on('change-button', function (data, holla) {
-            winston.info('#extension has sent out #change-button');
-            channel.broadcast.emit('change-button', data);
+          channel.on('update-button', function (data, holla) {
+            winston.info('#extension has sent out #update-button');
+            channel.broadcast.emit('update-button', data);
             holla();
           });
           channel.on('set-config', function (data, holla) {

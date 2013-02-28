@@ -34,14 +34,11 @@ setInterval(function(){
 }, 1000);
 
 setInterval(function(){
-  rec.changeButton('play', 'pause', '#fff');
+  rec.updateButton('play', 'pause', '#fff');
 }, 1000);
 
 // actual client code
 rec.init({
-  notify: {
-    ypos: 0
-  },
   buttons: {
     'backward': {
       down: function () {
