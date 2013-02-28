@@ -22,24 +22,31 @@ thisSong = null;
 var $ = jQuery;
 
 setInterval(function(){
+
+  // watch for song updates
   console.log('checking for updates')
+  console.log('this song is ' + thisSong);
   var thisArtist = $($('#player-nowplaying a')[2]).text();;
   var thisSong = $($('#player-nowplaying a')[3]).text();;
-  console.log('this song is ' + thisSong);
   if (thisSong !== lastSong) {
     console.log('!!!!!!!!!!!!!!!!!!! UPDATE')
     rec.notify(thisArtist, thisSong, extractUrl($('.active-playing-green').find('.readpost > span').css('background-image')));
     lastSong = thisSong;
   }
-}, 1000);
 
-setInterval(function(){
+  // transfer button states
   if($('#playerPlay').hasClass('play')) {
     rec.updateButton('play', 'play', null);
   }
   if($('#playerPlay').hasClass('pause')) {
     rec.updateButton('play', 'pause', null);
   }
+  if($('#playerFav').hasClass('fav-on')) {
+    rec.updateButton('heart', null, '#ff0000');
+  } else {
+    rec.updateButton('heart', null, '#434345');
+  }
+
 }, 1000);
 
 // actual client code
