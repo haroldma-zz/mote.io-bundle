@@ -7,11 +7,15 @@
     "tabs",
     "<all_urls>"
   ],
-  "icons": { 
-    "16": "lib/icons/16.png",
-    "48": "lib/icons/48.png",
-    "128": "lib/icons/128.png"
+  "icons": {
+    "16": "images/icons/16.png",
+    "48": "images/icons/48.png",
+    "128": "images/icons/128.png"
   },
+  "web_accessible_resources": [
+    "images/icon.png",
+    "images/carbon_fibre_big.png"
+  ],
   "content_scripts": [
     {
       "matches": [

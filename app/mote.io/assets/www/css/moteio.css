@@ -70,14 +70,14 @@
      -webkit-user-select: none;
  }
 
-  #loading-connecting {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: url('http://mote.io/assets/images/carbon_fibre_big.png');
-    z-index: 102;
-    display: none;
-  }
+#loading-connecting {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('http://mote.io/assets/images/carbon_fibre_big.png');
+  z-index: 102;
+  display: none;
+}
 
 .notify {
   position: relative;
@@ -108,8 +108,8 @@
 }
 
   @-webkit-keyframes 'pulse'
-    {       
-    0% { 
+    {
+    0% {
       opacity: .6;
     }
     50% {

@@ -145,7 +145,7 @@ body #moteio {
 #moteio #moteio-icon {
   width: 80px;
   height: 80px;
-  background-image: url('http://mote.io/assets/icon.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/images/icon.png');
   padding: 0px;
   cursor: pointer;
   -webkit-border-top-right-radius: 6px;
@@ -212,7 +212,7 @@ body #moteio {
 }
 #moteio-blackout {
   background-color: #000;
-  background-image: url('http://mote.io/assets/images/carbon_fibre_big.png');
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/carbon_fibre_big.png');
   position: fixed;
   width: 100%;
   height: 100%;
