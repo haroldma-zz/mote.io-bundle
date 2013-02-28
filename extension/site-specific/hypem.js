@@ -34,7 +34,12 @@ setInterval(function(){
 }, 1000);
 
 setInterval(function(){
-  rec.updateButton('play', 'pause', '#fff');
+  if($('#playerPlay').hasClass('play')) {
+    rec.updateButton('play', 'play', null);
+  }
+  if($('#playerPlay').hasClass('pause')) {
+    rec.updateButton('play', 'pause', null);
+  }
 }, 1000);
 
 // actual client code

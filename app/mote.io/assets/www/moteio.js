@@ -141,8 +141,6 @@ var App = function () {
       var now_playing = $('.notify');
       now_playing.empty();
 
-      console.log(data);
-
       if (typeof data.image !== "undefined") {
         now_playing.append('<img src="' + data.image + '" class="thumb" />');
       }
@@ -156,9 +154,14 @@ var App = function () {
     });
 
     self.channel.on('update-button', function(data){
-      $('#moteio-button-' + data.id + ' > a').removeClass().addClass('moteio-button icon-' + data.icon).css({
-        'color': data.color
-      });
+      if(data.icon) {
+        $('#moteio-button-' + data.id + ' > a').removeClass().addClass('moteio-button icon-' + data.icon);
+      }
+      if(data.color) {
+        $('#moteio-button-' + data.id + ' > a').css({
+          'color': data.color
+        });
+      }
     });
 
   };

@@ -313,7 +313,7 @@ var MoteioReceiver = function() {
       self.clog(self.get('uid'));
 
       // reset to test sync process
-      // self.clear();
+      self.clear();
 
       if (self.get('uid')) {
 
