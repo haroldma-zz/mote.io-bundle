@@ -1,0 +1,37 @@
+.content {
+  width: 992px;
+  margin: 0px auto; }
+
+#homebase ul#apps {
+  list-style-type: none;
+  width: 992px;
+  margin-left: -20px;
+  margin-top: -20px; }
+  #homebase ul#apps li {
+    width: 470px;
+    height: 206px;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+    float: left;
+    display: block;
+    border: 3px solid white; }
+    #homebase ul#apps li.selected {
+      border: 3px solid #357b95;
+      box-shadow: 0px 0px 50px #357b95; }
+    #homebase ul#apps li a {
+      display: block;
+      width: 470px;
+      height: 206px; }
+    #homebase ul#apps li#hypem {
+      background-image: url(/images/sites/hypem.png); }
+    #homebase ul#apps li#grooveshark {
+      background-image: url(/images/sites/grooveshark.png); }
+    #homebase ul#apps li#pandora {
+      background-image: url(/images/sites/pandora.png); }
+    #homebase ul#apps li#rdio {
+      background-image: url(/images/sites/rdio.png); }
+    #homebase ul#apps li#vimeo {
+      background-image: url(/images/sites/vimeo.png); }
+    #homebase ul#apps li#shelby {
+      background-image: url(/images/sites/shelby.png); }
