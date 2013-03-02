@@ -13,6 +13,11 @@
     "128": "images/icons/128.png"
   },
   "web_accessible_resources": [
+    "moteio.js",
+    "lib/socket.io.js",
+    "lib/jquery.js",
+    "lib/jquery.qrcode.min.js",
+    "site-specific/homebase.js",
     "images/icon.png",
     "images/carbon_fibre_big.png"
   ],
@@ -20,11 +25,6 @@
     {
       "matches": [
         "<all_urls>"],
-      "js": [
-        "lib/socket.io.js",
-        "lib/jquery.js",
-        "lib/jquery.qrcode.min.js"
-      ],
       "css": [
         "lib/moteio.css"
       ],
@@ -36,8 +36,8 @@
         "http://*.grooveshark.com/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/grooveshark.js"
+        "site-specific/grooveshark.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     },
@@ -47,8 +47,8 @@
         "http://hypem.com/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/hypem.js"
+        "site-specific/hypem.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     },
@@ -57,8 +57,8 @@
         "http://*.rdio.com/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/rdio.js"
+        "site-specific/rdio.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     },
@@ -68,19 +68,19 @@
         "https://vimeo.com/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/vimeo.js"
+        "site-specific/vimeo.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     },
     {
       "matches": [
-        "http://*.shelby.tv/*",
-        "http://shelby.tv/*"
+        "http://shelby.tv/*",
+        "http://*.shelby.tv/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/shelby.js"
+        "site-specific/shelby.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     },
@@ -90,8 +90,18 @@
         "http://pandora.com/*"
       ],
       "js": [
-        "moteio.js",
-        "site-specific/pandora.js"
+        "site-specific/pandora.js",
+        "inject.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://lvh.me:5000/*"
+      ],
+      "js": [
+        "site-specific/homebase.js",
+        "inject.js"
       ],
       "run_at": "document_start"
     }

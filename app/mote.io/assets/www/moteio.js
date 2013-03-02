@@ -70,6 +70,9 @@ var App = function () {
 
       console.log('got remote');
 
+      console.log(err)
+      console.log(res)
+
       if (err) {
         navigator.notify.alert(err);
       } else {
@@ -77,7 +80,7 @@ var App = function () {
         console.log('emptying remote');
         $('#buttons').html('');
 
-        if (res.notify) {
+        if (res.notify && typeof res.notify !== "undefined") {
 
           wrapper = $('<div class="moteio-placement"></div>').css({
               left: res.notify.x + 'px',
