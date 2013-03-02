@@ -26,9 +26,9 @@ sh start.sh
 
 ## #6 Load Tabs
 
-* http://lvh.me:8000
 * http://lvh.me:8080
-* http://hypem.com
+* http://lvh.me:8000
+* http://lvh.me:5000
 
 ## #7 Ripple
 
