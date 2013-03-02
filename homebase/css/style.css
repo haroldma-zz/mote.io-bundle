@@ -15,10 +15,14 @@
     margin-top: 20px;
     float: left;
     display: block;
-    border: 3px solid white; }
+    border: 3px solid white;
+    opacity: 0.8; }
     #homebase ul#apps li.selected {
       border: 3px solid #357b95;
-      box-shadow: 0px 0px 50px #357b95; }
+      box-shadow: 0px 0px 50px #357b95;
+      opacity: 0.9; }
+    #homebase ul#apps li.active {
+      opacity: 1; }
     #homebase ul#apps li a {
       display: block;
       width: 470px;

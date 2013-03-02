@@ -21,9 +21,13 @@ $moteio-blue: #357b95
       float: left
       display: block
       border: 3px solid white
+      opacity: .8
       &.selected
         border: 3px solid $moteio-blue
         @include box-shadow(0px 0px 50px $moteio-blue)
+        opacity: .9
+      &.active
+        opacity: 1
       a
         display: block
         width: 470px
