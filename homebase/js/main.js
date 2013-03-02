@@ -11,6 +11,16 @@
       $($apps[currentApp]).addClass('selected');
     }
 
+    window.launchApp = function(i) {
+
+      window.location = $($apps[currentApp]).find('a').prop('href');
+
+    }
+
+    window.launchSelectedApp = function() {
+      window.launchApp(currentApp);
+    }
+
     window.move = function(spot) {
       console.log('spot should be ' + spot)
       if (spot < 0) {
@@ -34,6 +44,7 @@
     window.moveRight = function() {
       window.move(currentApp + 1);
     }
+
     window.init = function() {
       selectApp(currentApp);
     }

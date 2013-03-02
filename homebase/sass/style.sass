@@ -1,10 +1,42 @@
+// #
+
 @import bourbon/bourbon
+@import font-awesome/font-awesome
 
 $moteio-blue: #357b95
+
+body, html
+  width: 100%
 
 .content
   width: 992px
   margin: 0px auto
+
+#loading
+  position: absolute
+  top: 0px
+  left: 0px
+  .mask
+    position: fixed
+    z-index: 2
+    background-color: white
+    opacity: .8
+    width: 100%
+    height: 100%
+  .icon
+    font-size: 100px
+    position: fixed
+    left: 50%
+    top: 50%
+    display: block
+    z-index: 3
+    margin-left: -29px
+    margin-top: -40px
+    color: $moteio-blue
+    height: 1em
+    padding: 15px 20px
+    border-radius: 25px
+    background-color: #fff
 
 #homebase
   ul#apps
