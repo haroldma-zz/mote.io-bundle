@@ -25,20 +25,15 @@
     window.moveUp = function() {
       window.move(currentApp - appsPerRow);
     }
-
     window.moveLeft = function() {
       window.move(currentApp - 1);
     }
-
     window.moveDown = function() {
-      console.log(currentApp)
       window.move(currentApp + appsPerRow);
     }
-
     window.moveRight = function() {
       window.move(currentApp + 1);
     }
-
     window.init = function() {
       selectApp(currentApp);
     }
