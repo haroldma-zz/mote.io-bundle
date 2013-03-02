@@ -2,7 +2,16 @@
 
     var $apps = $('#apps li'),
       appsPerRow = 2,
-      currentApp = 0;
+      currentApp = 0,
+      loading = $('#loading');
+
+    window.showLoading = function() {
+      loading.show();
+    }
+
+    window.hideLoading = function() {
+      loading.hide();
+    }
 
     window.selectApp = function(i) {
       currentApp = i;
@@ -12,9 +21,8 @@
     }
 
     window.launchApp = function(i) {
-
+      window.showLoading();
       window.location = $($apps[currentApp]).find('a').prop('href');
-
     }
 
     window.launchSelectedApp = function() {

@@ -1010,7 +1010,8 @@ body, html {
 #loading {
   position: absolute;
   top: 0px;
-  left: 0px; }
+  left: 0px;
+  display: none; }
   #loading .mask {
     position: fixed;
     z-index: 2;
