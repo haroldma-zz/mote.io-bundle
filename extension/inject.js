@@ -1,17 +1,3 @@
-// Append a script from a file in your extension
-function appendScript(scriptFile) {
-   var script = document.createElement('script');
-   script.setAttribute("type", "application/javascript");
-   script.setAttribute("src", chrome.extension.getURL(scriptFile));
-   document.documentElement.appendChild(script); // run the script
-}
-
-appendScript('lib/jquery.js');
-appendScript('lib/socket.io.js');
-appendScript('lib/jquery.qrcode.min.js');
-appendScript('moteio.js');
-
-
 // Executing an anonymous script
 function exec(fn) {
    var script = document.createElement('script');
@@ -21,19 +7,22 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-script = function() {
-  setInterval(function(){
-    if($) {
-      var j$ = $.noConflict();
-      console.log('have jquery')
-    }
-    if(j$('body').qrcode('test')) {
-      console.log('have qrcode')
-    }
-    if(io){
-      console.log('have socket.io')
-    }
-  }, 2000)
-}
+var extension_url = chrome.extension.getURL('moteio.js');
 
-exec(script);
+exec((function() {
+
+    function async_load(){
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = extension_url;
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+    }
+    if (window.attachEvent) {
+        window.attachEvent('onload', async_load);
+    } else {
+        window.addEventListener('load', async_load, false);
+    }
+
+})());
