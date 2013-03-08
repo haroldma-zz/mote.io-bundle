@@ -9,9 +9,9 @@ function exec(fn) {
 
 var extension_url = chrome.extension.getURL('moteio.js');
 
-exec(function(){
+exec((function() {
 
-  window.res = {
+  window.moteio = {
     notify: {
       x: 0,
       y: 0
@@ -51,10 +51,6 @@ exec(function(){
       }
     }
   }
-
-})
-
-exec((function() {
 
   function async_load(){
       var s = document.createElement('script');
