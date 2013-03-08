@@ -80,6 +80,7 @@ var App = function () {
         console.log('emptying remote');
         $('#buttons').html('');
 
+        // render notify div
         if (res.notify && typeof res.notify !== "undefined") {
 
           wrapper = $('<div class="moteio-placement"></div>').css({
@@ -92,6 +93,7 @@ var App = function () {
 
         }
 
+        // render buttons
         for (button_id in res.buttons) {
 
           console.log('rendering remote');
@@ -131,6 +133,22 @@ var App = function () {
           $('#buttons').append(wrapper.append(element));
         }
 
+        // render selects
+        console.log(res.selects)
+        for (var i = 0; i < res.selects.length; i++) {
+
+          var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
+
+          for(var option in res.selects[i].options){
+            var option_html = $('<option value="' + option + '">' + res.selects[i].options[option].text + '</option>');
+            select_html.append(option_html);
+          }
+
+          $('#form').append(select_html);
+
+        }
+
+        // fade loading out
         $('#loading-connecting').fadeOut();
         buttons = $('.moteio-button');
         console.log('there are ' + buttons.length + 'buttons');
