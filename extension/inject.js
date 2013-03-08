@@ -12,10 +12,54 @@ var extension_url = chrome.extension.getURL('moteio.js');
 exec(function(){
 
   window.moteio_config = {
+    version: "0.1",
     notify: {
       x: 0,
       y: 0
     },
+    selects: [
+      {
+        x: 0,
+        y: 0,
+        options: {
+          'all': {
+            optgroup: 'latest',
+            text: 'Latest',
+            action: function() {
+
+            }
+          },
+          'fresh': {
+            optgroup: 'latest',
+            text: 'Freshest',
+            action: function() {
+
+            }
+          },
+          'remix': {
+            optgroup: 'latest',
+            text: 'Remixes Only',
+            action: function() {
+
+            }
+          },
+          'noremix': {
+            optgroup: 'latest',
+            text: 'No Remixes',
+            action: function() {
+
+            }
+          },
+          'blogs': {
+            optgroup: 'latest',
+            text: 'Blogs in USA',
+            action: function() {
+
+            }
+          }
+        }
+      }
+    ],
     buttons: {
       'up': {
         down: function () {
@@ -60,7 +104,7 @@ exec(function(){
     }
   }
 
-})
+});
 
 exec((function() {
 

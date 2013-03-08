@@ -180,7 +180,7 @@ var App = function () {
       self.listen(self.get('uid'));
     }
 
-    $('#scan').bind('vclick', function (e) {
+    $('#sync').bind('tap', function (e) {
 
       $('#loading-connecting').show();
 
