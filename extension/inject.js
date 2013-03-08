@@ -9,9 +9,9 @@ function exec(fn) {
 
 var extension_url = chrome.extension.getURL('moteio.js');
 
-exec((function() {
+exec(function(){
 
-  window.moteio = {
+  window.moteio_config = {
     notify: {
       x: 0,
       y: 0
@@ -30,7 +30,7 @@ exec((function() {
           window.moveDown();
         },
         x: 132,
-        y: 275,
+        y: 230,
         icon: 'chevron-down'
       },
       'left': {
@@ -38,7 +38,7 @@ exec((function() {
           window.moveLeft();
         },
         x: 55,
-        y: 75,
+        y: 150,
         icon: 'chevron-left'
       },
       'right': {
@@ -51,6 +51,10 @@ exec((function() {
       }
     }
   }
+
+})
+
+exec((function() {
 
   function async_load(){
       var s = document.createElement('script');

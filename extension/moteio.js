@@ -377,8 +377,8 @@ var MoteioReceiver = function() {
 };
 
 console.log('included')
-console.log(window.moteio)
+console.log(window.moteio_config)
 
 var rec = new MoteioReceiver();
-rec.init(window.moteio)
+rec.init(window.moteio_config)
 
