@@ -30,7 +30,7 @@ exec(function(){
           window.moveDown();
         },
         x: 132,
-        y: 230,
+        y: 225,
         icon: 'chevron-down'
       },
       'left': {
@@ -48,6 +48,14 @@ exec(function(){
         x: 210,
         y: 150,
         icon: 'chevron-right'
+      },
+      'select': {
+        down: function () {
+          window.launchSelectedApp();
+        },
+        x: 132,
+        y: 150,
+        icon: 'circle-blank'
       }
     }
   }
