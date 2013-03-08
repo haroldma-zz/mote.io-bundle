@@ -21,7 +21,7 @@ exec((function() {
         down: function () {
           window.moveUp();
         },
-        x: 20,
+        x: 132,
         y: 75,
         icon: 'chevron-up'
       },
@@ -29,15 +29,15 @@ exec((function() {
         down: function () {
           window.moveDown();
         },
-        x: 95,
-        y: 75,
+        x: 132,
+        y: 275,
         icon: 'chevron-down'
       },
       'left': {
         down: function () {
           window.moveLeft();
         },
-        x: 170,
+        x: 55,
         y: 75,
         icon: 'chevron-left'
       },
@@ -45,8 +45,8 @@ exec((function() {
         down: function () {
           window.moveRight();
         },
-        x: 245,
-        y: 75,
+        x: 210,
+        y: 150,
         icon: 'chevron-right'
       }
     }
