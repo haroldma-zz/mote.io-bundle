@@ -146,6 +146,8 @@ var App = function () {
 
           $('#form').append(select_html);
 
+          $("#form").trigger("create");
+
         }
 
         // fade loading out
