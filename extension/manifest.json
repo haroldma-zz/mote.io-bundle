@@ -93,6 +93,16 @@
         "inject.js"
       ],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://lvh.me:5000/"
+      ],
+      "js": [
+        "site-specific/pandora.js",
+        "inject.js"
+      ],
+      "run_at": "document_start"
     }
   ]
 }
