@@ -144,6 +144,11 @@ var App = function () {
             select_html.append(option_html);
           }
 
+          select_html.bind('change', function(e) {
+            var v = $(this);
+            alert($(this).val());
+          });
+
           $('#form').append(select_html);
 
           $("#form").trigger("create");
