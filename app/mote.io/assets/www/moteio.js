@@ -145,8 +145,25 @@ var App = function () {
           }
 
           select_html.bind('change', function(e) {
+
             var v = $(this);
             alert($(this).val());
+
+            self.bouncer.emit('select', {
+              uuid: device.uuid,
+              info: {
+                value: $(this).val()
+              }
+            }, function () {
+
+              alert('sent')
+              navigator.notification.vibrate(100);
+              setTimeout(function () {
+                navigator.notification.vibrate(100);
+              }, 150);
+
+            });
+
           });
 
           $('#form').append(select_html);

@@ -107,6 +107,18 @@ io
       }
     });
 
+    bouncer.on('select', function (data, holla) {
+      var channelUID = channels_by_uuid[data.uuid];
+      if (typeof channelUID !== 'undefined' && typeof channels[channelUID] !== 'undefined') {
+        winston.info('#client is emitting select!');
+        channels[channelUID].emit('select', data.info);
+        holla();
+      } else {
+        winston.error('#client is emitting input, but is not authorized to send it');
+        holla(null, 'unauthed');
+      }
+    });
+
     bouncer.on('validate-key', function (data, holla) {
       var channelUID = channels_by_key[data.key];
       if (typeof channelUID !== 'undefined' && typeof channels[channelUID] !== 'undefined') {
