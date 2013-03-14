@@ -202,6 +202,11 @@ var MoteioReceiver = function() {
       self.triggerInput(data.button, data.down);
     });
 
+    self.channel.on('select', function (data) {
+      console.log(data);
+      alert('select complete')
+    });
+
   };
 
   // Notify the server of stuff.

@@ -156,8 +156,8 @@ var App = function () {
               }
             }, function () {
 
-              alert('sent')
               navigator.notification.vibrate(100);
+
               setTimeout(function () {
                 navigator.notification.vibrate(100);
               }, 150);
@@ -167,7 +167,6 @@ var App = function () {
           });
 
           $('#form').append(select_html);
-
           $("#form").trigger("create");
 
         }
