@@ -54,130 +54,139 @@ var App = function () {
     }
   };
 
-  self.listen = function (uid) {
+  self.renderRemote = function(err, res) {
 
-    var button_size = 0,
+    console.log('got remote');
+
+    console.log(err)
+    console.log(res)
+
+    var
       button_id = 0,
+      wrapper = null,
+      button_size = 0,
       element = null,
-      buttons = null,
-      wrapper = null;
+      buttons = null;
+
+    if (err) {
+      navigator.notify.alert(err);
+    } else {
+
+      console.log('emptying remote');
+      $('#buttons').html('');
+
+      // render notify div
+      if (res.notify && typeof res.notify !== "undefined") {
+
+        wrapper = $('<div class="moteio-placement"></div>').css({
+            left: res.notify.x + 'px',
+            top: res.notify.y + 'px'
+          });
+        var notify = $('<div class="notify"></div>');
+
+        $('#buttons').append(wrapper.append(notify));
+
+      }
+
+      // render buttons
+      for (button_id in res.buttons) {
+
+        console.log('rendering remote');
+
+        console.log('my id is ' + button_id);
+        console.log('my position is ' + res.buttons[button_id].x);
+
+        wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
+          .css({
+            'left': res.buttons[button_id].x,
+            'top': String(res.buttons[button_id].y) + 'px',
+            'position': 'absolute'
+          });
+
+        element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
+          .attr('data-moteio', button_id)
+          .bind('vmousedown', function (e) {
+            navigator.notification.vibrate(250);
+            console.log('we have a click');
+            e.stopPropagation();
+            var elm = $(this);
+            $(this).parents('.moteio-button').addClass('moteio-down');
+            self.bouncer.emit('input', {
+              uuid: device.uuid,
+              keypress: {
+                button: elm.attr('data-moteio'),
+                down: true
+              }
+            }, function () {
+              navigator.notification.vibrate(100);
+              setTimeout(function () {
+                navigator.notification.vibrate(100);
+              }, 150);
+            });
+          });
+
+        $('#buttons').append(wrapper.append(element));
+      }
+
+      // render selects
+      console.log(res.selects)
+      for (var i = 0; i < res.selects.length; i++) {
+
+        var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
+
+        for(var option in res.selects[i].options){
+          var option_html = $('<option value="' + option + '">' + res.selects[i].options[option].text + '</option>');
+          select_html.append(option_html);
+        }
+
+        select_html.bind('change', function(e) {
+
+          var v = $(this);
+          alert($(this).val());
+
+          self.bouncer.emit('select', {
+            uuid: device.uuid,
+            info: {
+              value: $(this).val()
+            }
+          }, function () {
+
+            navigator.notification.vibrate(100);
+
+            setTimeout(function () {
+              navigator.notification.vibrate(100);
+            }, 150);
+
+          });
+
+        });
+
+        $('#form').append(select_html);
+        $("#form").trigger("create");
+
+      }
+
+      // fade loading out
+      $('#loading-connecting').fadeOut();
+      buttons = $('.moteio-button');
+      console.log('there are ' + buttons.length + 'buttons');
+
+    }
+
+  };
+
+  self.listen = function (uid) {
 
     console.log('trying to connect to channel');
 
     self.channel = io.connect(self.remote_location + '/' + uid);
 
     self.channel.emit('get-config', uid, function (err, res) {
+      self.renderRemote(err, res);
+    });
 
-      console.log('got remote');
-
-      console.log(err)
-      console.log(res)
-
-      if (err) {
-        navigator.notify.alert(err);
-      } else {
-
-        console.log('emptying remote');
-        $('#buttons').html('');
-
-        // render notify div
-        if (res.notify && typeof res.notify !== "undefined") {
-
-          wrapper = $('<div class="moteio-placement"></div>').css({
-              left: res.notify.x + 'px',
-              top: res.notify.y + 'px'
-            });
-          var notify = $('<div class="notify"></div>');
-
-          $('#buttons').append(wrapper.append(notify));
-
-        }
-
-        // render buttons
-        for (button_id in res.buttons) {
-
-          console.log('rendering remote');
-
-          console.log('my id is ' + button_id);
-          console.log('my position is ' + res.buttons[button_id].x);
-
-          wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
-            .css({
-              'left': res.buttons[button_id].x,
-              'top': String(res.buttons[button_id].y) + 'px',
-              'position': 'absolute'
-            });
-
-          element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
-            .attr('data-moteio', button_id)
-            .bind('vmousedown', function (e) {
-              navigator.notification.vibrate(250);
-              console.log('we have a click');
-              e.stopPropagation();
-              var elm = $(this);
-              $(this).parents('.moteio-button').addClass('moteio-down');
-              self.bouncer.emit('input', {
-                uuid: device.uuid,
-                keypress: {
-                  button: elm.attr('data-moteio'),
-                  down: true
-                }
-              }, function () {
-                navigator.notification.vibrate(100);
-                setTimeout(function () {
-                  navigator.notification.vibrate(100);
-                }, 150);
-              });
-            });
-
-          $('#buttons').append(wrapper.append(element));
-        }
-
-        // render selects
-        console.log(res.selects)
-        for (var i = 0; i < res.selects.length; i++) {
-
-          var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
-
-          for(var option in res.selects[i].options){
-            var option_html = $('<option value="' + option + '">' + res.selects[i].options[option].text + '</option>');
-            select_html.append(option_html);
-          }
-
-          select_html.bind('change', function(e) {
-
-            var v = $(this);
-            alert($(this).val());
-
-            self.bouncer.emit('select', {
-              uuid: device.uuid,
-              info: {
-                value: $(this).val()
-              }
-            }, function () {
-
-              navigator.notification.vibrate(100);
-
-              setTimeout(function () {
-                navigator.notification.vibrate(100);
-              }, 150);
-
-            });
-
-          });
-
-          $('#form').append(select_html);
-          $("#form").trigger("create");
-
-        }
-
-        // fade loading out
-        $('#loading-connecting').fadeOut();
-        buttons = $('.moteio-button');
-        console.log('there are ' + buttons.length + 'buttons');
-
-      }
-
+    self.channel.on('update-config', function (err, res) {
+      self.renderRemote(err, res);
     });
 
     self.channel.on('notify', function (data) {

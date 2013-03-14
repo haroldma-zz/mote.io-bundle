@@ -68,6 +68,7 @@ io
             if (!configs_by_uid[data.uid]) {
               configs_by_uid[data.uid] = data.params;
               winston.info('#extension has set its #config');
+              channel.broadcast.emit('update-config', true);
               holla(null, true);
             } else {
               winston.info('#extension was unable to set #config, probably because it already exists');
