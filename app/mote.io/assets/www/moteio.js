@@ -111,7 +111,7 @@ var App = function () {
             e.stopPropagation();
             var elm = $(this);
             $(this).parents('.moteio-button').addClass('moteio-down');
-            self.bouncer.emit('input', {
+            self.channel.emit('input', {
               uuid: device.uuid,
               keypress: {
                 button: elm.attr('data-moteio'),

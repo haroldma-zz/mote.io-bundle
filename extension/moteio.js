@@ -50,7 +50,7 @@ var MoteioReceiver = function() {
 
   self.params = {};
 
-  self.debug = false;
+  self.debug = true;
   self.devices = [];
 
   // Set specific property of MoteioReceiver object
@@ -181,6 +181,12 @@ var MoteioReceiver = function() {
     self.clog('listening to channel ' + uid);
     self.channel = io.connect(self.remote_location + '/' + uid);
 
+    self.channel.emit('set-config', {params: self.params, uid: self.get('uid')}, function(err, res){
+      self.clog('configuration set');
+      console.log(err);
+      console.log(res);
+    });
+
     self.channel.on('connect', function () {
 
       self.clog('connected');
@@ -189,12 +195,6 @@ var MoteioReceiver = function() {
         self.clog(key);
       });
 
-    });
-
-    self.channel.emit('set-config', {params: self.params, uid: self.get('uid')}, function(err, res){
-      self.clog('configuration set');
-      console.log(err);
-      console.log(res);
     });
 
     self.channel.on('input', function (data) {
@@ -275,7 +275,9 @@ var MoteioReceiver = function() {
   // Draw overlay on page for QR code
   self.drawOverlay = function() {
 
-    $('body').append(' \
+    self.clog('draw overlay');
+
+    $('#with-moteio-sync').append(' \
     <div id="moteio"> \
       <div id="moteio-new" class="moteio-page"> \
         <h1>Use your phone as a remote control!</h1> \
@@ -342,6 +344,12 @@ var MoteioReceiver = function() {
     })
   }
 
+  self.getURLParameter = function(name) {
+    return decodeURI(
+      (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+  }
+
   // Initialize new MoteioReceiver object with specified params object
   // Send message to server  and set listeners up if it's the first run.
   // If not first run, just listen.  Draw overlay regardless.
@@ -349,32 +357,44 @@ var MoteioReceiver = function() {
 
     $(document).ready(function() {
 
-      self.clog('uid is' + self.get('uid'));
+      self.clog('uid fron ls is ' + self.get('uid'));
+      self.clog('uid fron url is ' + self.getURLParameter('muid'));
 
       self.params = params;
 
-      self.clog(self.get('uid'));
 
-      // reset to test sync process
-      self.clear();
-
-      if (self.get('uid')) {
-
-        self.listen(self.get('uid'));
-
-      } else {
-
-        self.clog('first run!');
+      if (window.location.host == "lvh.me:5000" || window.location.host == "mote.io") {
 
         self.bouncer.emit('generate-uid', null, function(err, uid){
+
+          self.clog('getting uid from bouncer')
           self.set('uid', uid);
-          self.clog('uid set!')
           self.listen(self.get('uid'));
+
         });
 
-      }
+        self.drawOverlay();
 
-      self.drawOverlay();
+      } else if (self.getURLParameter('muid')) {
+
+        self.clog('using url param')
+
+        self.clog('setting ls')
+        self.set('uid', self.getURLParameter('muid'));
+
+        self.clog('listen on ls')
+        self.listen(self.get('uid'));
+
+
+      } else if(self.get('uid')) {
+
+        self.clog('setting ls')
+        self.set('uid', self.getURLParameter('muid'));
+
+        self.clog('listen on ls')
+        self.listen(self.get('uid'));
+
+      }
 
     });
 

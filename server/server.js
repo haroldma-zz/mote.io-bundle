@@ -19,7 +19,7 @@ var channels_by_key = [],
 
 io.configure(function () {
   // io.set('polling duration', 30);
-  // io.set('log level', 1);
+  io.set('log level', 1);
 });
 io
   .of('/moteio-bouncer')
@@ -42,7 +42,7 @@ io
 
           var address = channel.handshake.address;
 
-          winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
+          winston.info('#client has connected to #extension from ' + address.address + ':' + address.port + ' and UID ' + UID);
 
           channel.on('establish-sync', function (uuid, holla) {
             winston.info('#extension has established #sync');
@@ -71,15 +71,24 @@ io
               channel.broadcast.emit('update-config', true);
               holla(null, true);
             } else {
-              winston.info('#extension was unable to set #config, probably because it already exists');
-              holla('Unable to set remote configuration');
+              // config already set, send success anyway
+              holla(null, true);
             }
           });
           channel.on('get-config', function (uid, holla) {
             winston.info('#client is asking for #config');
-            console.log('config is')
-            console.log(configs_by_uid[uid])
             holla(null, configs_by_uid[uid]);
+          });
+          channel.on('input', function (data, holla) {
+            var channelUID = channels_by_uuid[data.uuid];
+            if (typeof channelUID !== 'undefined' && typeof channels[channelUID] !== 'undefined') {
+              winston.info('#client is emitting input');
+              channels[channelUID].emit('input', data.keypress);
+              holla();
+            } else {
+              winston.error('#client is emitting input, but is not authorized to send it');
+              holla(null, 'unauthed');
+            }
           });
           channel.on('disconnect', function () {
             winston.info('#client has left #extension');
@@ -94,18 +103,6 @@ io
       var key = keys();
       channels_by_key[key] = uid;
       holla(key);
-    });
-
-    bouncer.on('input', function (data, holla) {
-      var channelUID = channels_by_uuid[data.uuid];
-      if (typeof channelUID !== 'undefined' && typeof channels[channelUID] !== 'undefined') {
-        winston.info('#client is emitting input');
-        channels[channelUID].emit('input', data.keypress);
-        holla();
-      } else {
-        winston.error('#client is emitting input, but is not authorized to send it');
-        holla(null, 'unauthed');
-      }
     });
 
     bouncer.on('select', function (data, holla) {

@@ -35,7 +35,6 @@
         "http://*.grooveshark.com/*"
       ],
       "js": [
-        "site-specific/grooveshark.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -46,7 +45,6 @@
         "http://hypem.com/*"
       ],
       "js": [
-        "site-specific/hypem.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -56,7 +54,6 @@
         "http://*.rdio.com/*"
       ],
       "js": [
-        "site-specific/rdio.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -67,7 +64,6 @@
         "https://vimeo.com/*"
       ],
       "js": [
-        "site-specific/vimeo.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -78,7 +74,6 @@
         "http://*.shelby.tv/*"
       ],
       "js": [
-        "site-specific/shelby.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -89,7 +84,6 @@
         "http://pandora.com/*"
       ],
       "js": [
-        "site-specific/pandora.js",
         "inject.js"
       ],
       "run_at": "document_start"
@@ -99,7 +93,6 @@
         "http://lvh.me:5000/"
       ],
       "js": [
-        "site-specific/pandora.js",
         "inject.js"
       ],
       "run_at": "document_start"

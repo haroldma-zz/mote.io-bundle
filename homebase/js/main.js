@@ -5,6 +5,15 @@
       currentApp = 0,
       loading = $('#loading');
 
+    window.get_ls = function(property) {
+      var item = JSON.parse(localStorage.getItem(property));
+      if (typeof item !== undefined) {
+        return item;
+      } else {
+        return false;
+      }
+    }
+
     window.showLoading = function() {
       loading.show();
     }
@@ -22,7 +31,7 @@
 
     window.launchApp = function(i) {
       window.showLoading();
-      window.location = $($apps[currentApp]).find('a').prop('href');
+      window.location = $($apps[currentApp]).find('a').prop('href') + '?muid=' + window.get_ls('uid');
     }
 
     window.launchSelectedApp = function() {
@@ -58,5 +67,8 @@
     }
 
     window.init();
+
+    console.log('my uid is');
+    console.log(window.get_ls('uid'))
 
 })(jQuery);
