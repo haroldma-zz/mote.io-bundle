@@ -11,97 +11,182 @@ var extension_url = chrome.extension.getURL('moteio.js');
 
 exec(function(){
 
-  window.moteio_config = {
-    version: "0.1",
-    notify: {
-      x: 0,
-      y: 0
-    },
-    selects: [
-      {
+  if (window.location.host == "lvh.me:5000") {
+
+    window.moteio_config = {
+      version: "0.1",
+      notify: {
         x: 0,
-        y: 0,
-        options: {
-          'all': {
-            optgroup: 'latest',
-            text: 'Latest',
-            action: function() {
+        y: 0
+      },
+      selects: [
+        {
+          x: 0,
+          y: 0,
+          options: {
+            'all': {
+              optgroup: 'latest',
+              text: 'Latest',
+              action: function() {
 
-            }
-          },
-          'fresh': {
-            optgroup: 'latest',
-            text: 'Freshest',
-            action: function() {
+              }
+            },
+            'fresh': {
+              optgroup: 'latest',
+              text: 'Freshest',
+              action: function() {
 
-            }
-          },
-          'remix': {
-            optgroup: 'latest',
-            text: 'Remixes Only',
-            action: function() {
+              }
+            },
+            'remix': {
+              optgroup: 'latest',
+              text: 'Remixes Only',
+              action: function() {
 
-            }
-          },
-          'noremix': {
-            optgroup: 'latest',
-            text: 'No Remixes',
-            action: function() {
+              }
+            },
+            'noremix': {
+              optgroup: 'latest',
+              text: 'No Remixes',
+              action: function() {
 
-            }
-          },
-          'blogs': {
-            optgroup: 'latest',
-            text: 'Blogs in USA',
-            action: function() {
+              }
+            },
+            'blogs': {
+              optgroup: 'latest',
+              text: 'Blogs in USA',
+              action: function() {
 
+              }
             }
           }
         }
-      }
-    ],
-    buttons: {
-      'up': {
-        down: function () {
-          window.moveUp();
+      ],
+      buttons: {
+        'up': {
+          down: function () {
+            window.moveUp();
+          },
+          x: 132,
+          y: 75,
+          icon: 'chevron-up'
         },
-        x: 132,
-        y: 75,
-        icon: 'chevron-up'
-      },
-      'down': {
-        down: function () {
-          window.moveDown();
+        'down': {
+          down: function () {
+            window.moveDown();
+          },
+          x: 132,
+          y: 225,
+          icon: 'chevron-down'
         },
-        x: 132,
-        y: 225,
-        icon: 'chevron-down'
-      },
-      'left': {
-        down: function () {
-          window.moveLeft();
+        'left': {
+          down: function () {
+            window.moveLeft();
+          },
+          x: 55,
+          y: 150,
+          icon: 'chevron-left'
         },
-        x: 55,
-        y: 150,
-        icon: 'chevron-left'
-      },
-      'right': {
-        down: function () {
-          window.moveRight();
+        'right': {
+          down: function () {
+            window.moveRight();
+          },
+          x: 210,
+          y: 150,
+          icon: 'chevron-right'
         },
-        x: 210,
-        y: 150,
-        icon: 'chevron-right'
-      },
-      'select': {
-        down: function () {
-          window.launchSelectedApp();
-        },
-        x: 132,
-        y: 150,
-        icon: 'circle-blank'
+        'select': {
+          down: function () {
+            window.launchSelectedApp();
+          },
+          x: 132,
+          y: 150,
+          icon: 'circle-blank'
+        }
       }
     }
+
+  } else {
+
+    function extractUrl(input) {
+     // remove quotes and wrapping url()
+     if (typeof input !== "undefined") {
+      return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
+     } else {
+      return;
+     }
+    }
+
+    setInterval(function(){
+
+      var active = null;
+      if($('.active-playing-green').length > 0) {
+        active = $('.active-playing-green');
+      } else {
+        active = $($('.section-track')[0]);
+      }
+
+      var thisArtist = $($('#player-nowplaying a')[3]).text();
+      var thisSong = $($('#player-nowplaying a')[4]).text();
+      rec.notify(thisArtist, thisSong, extractUrl(active.find('.readpost > span').css('background-image')));
+
+      // transfer button states
+      if($('#playerPlay').hasClass('play')) {
+        rec.updateButton('play', 'play', null);
+      }
+      if($('#playerPlay').hasClass('pause')) {
+        rec.updateButton('play', 'pause', null);
+      }
+      if($('#playerFav').hasClass('fav-on')) {
+        rec.updateButton('heart', null, '#ff0000');
+      } else {
+        rec.updateButton('heart', null, '#434345');
+      }
+
+    }, 1000);
+
+    // actual client code
+    window.moteio_config = {
+      notify: {
+        x: 0,
+        y: 0
+      },
+      buttons: {
+        'backward': {
+          down: function () {
+            rec.simulateClick('playerPrev');
+          },
+          x: 20,
+          y: 75,
+          icon: 'backward'
+        },
+        'play': {
+          down: function () {
+            rec.simulateClick('playerPlay');
+          },
+          x: 95,
+          y: 75,
+          icon: 'play'
+        },
+        'heart': {
+          down: function () {
+            rec.simulateClick('playerFav');
+          },
+          x: 170,
+          y: 75,
+          icon: 'heart'
+        },
+        'forward': {
+          down: function () {
+            rec.simulateClick('playerNext');
+          },
+          x: 245,
+          y: 75,
+          icon: 'forward'
+        }
+      }
+    }
+
   }
 
 });

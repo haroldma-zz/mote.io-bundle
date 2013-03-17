@@ -186,7 +186,9 @@ var App = function () {
     });
 
     self.channel.on('update-config', function (err, res) {
-      self.renderRemote(err, res);
+      self.channel.emit('get-config', uid, function (err, res) {
+        self.renderRemote(err, res);
+      });
     });
 
     self.channel.on('notify', function (data) {

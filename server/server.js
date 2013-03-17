@@ -65,15 +65,11 @@ io
             holla();
           });
           channel.on('set-config', function (data, holla) {
-            if (!configs_by_uid[data.uid]) {
-              configs_by_uid[data.uid] = data.params;
-              winston.info('#extension has set its #config');
-              channel.broadcast.emit('update-config', true);
-              holla(null, true);
-            } else {
-              // config already set, send success anyway
-              holla(null, true);
-            }
+            configs_by_uid[data.uid] = data.params;
+            winston.info('#extension has set its #config');
+            console.log(data.params);
+            channel.broadcast.emit('update-config', true);
+            holla(null, true);
           });
           channel.on('get-config', function (uid, holla) {
             winston.info('#client is asking for #config');
