@@ -149,6 +149,10 @@ var MoteioReceiver = function() {
 
   };
 
+  self.goHome = function() {
+    window.location = "http://lvh.me:5000";
+  }
+
   // Sync to the server
   self.sync = function(show_key, show_request_access) {
 
@@ -363,7 +367,7 @@ var MoteioReceiver = function() {
       self.params = params;
 
 
-      if (window.location.host == "lvh.me:5000" || window.location.host == "mote.io") {
+      if (!self.get('uid') && window.location.host == "lvh.me:5000" || window.location.host == "mote.io") {
 
         self.bouncer.emit('generate-uid', null, function(err, uid){
 
@@ -377,6 +381,7 @@ var MoteioReceiver = function() {
 
       } else if (self.getURLParameter('muid')) {
 
+        self.clog('url param is ' + self.getURLParameter('muid'))
         self.clog('using url param')
 
         self.clog('setting ls')
@@ -386,7 +391,7 @@ var MoteioReceiver = function() {
         self.listen(self.get('uid'));
 
 
-      } else if(self.get('uid')) {
+      } else if(self.get('uid') && self.getURLParameter('muid')) {
 
         self.clog('setting ls')
         self.set('uid', self.getURLParameter('muid'));
