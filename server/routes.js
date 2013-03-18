@@ -7,6 +7,10 @@ module.exports = function (app) {
         res.render('index', { user : req.user });
     });
 
+    app.get('/homebase', function(req, res) {
+        res.render('homebase', { user : req.user });
+    });
+
     app.get('/register', function(req, res) {
         res.render('register', { });
     });
