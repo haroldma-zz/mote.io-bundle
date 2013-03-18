@@ -11,7 +11,9 @@ var extension_url = chrome.extension.getURL('moteio.js');
 
 exec(function(){
 
-  if (window.location.host == "lvh.me:5000") {
+  console.log(window.location.host)
+
+  if (window.location.host == "lvh.me:5000/homebase") {
 
     window.moteio_config = {
       version: "0.1",

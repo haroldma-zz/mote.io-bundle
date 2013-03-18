@@ -51,32 +51,6 @@ var MoteioReceiver = function() {
   self.params = {};
 
   self.debug = true;
-  self.devices = [];
-
-  // Set specific property of MoteioReceiver object
-  self.set = function(property, value) {
-    localStorage.setItem(property, JSON.stringify(value));
-  }
-
-  // Get specific property of MoteioReceiver object
-  // Returns false if property undefined
-  self.get = function(property) {
-    var item = JSON.parse(localStorage.getItem(property));
-    if (typeof item !== undefined) {
-      return item;
-    } else {
-      return false;
-    }
-  }
-
-  // Remove item from localstorage
-  self.remove = function(property) {
-    localStorage.removeItem(property);
-  }
-  // Delete everything in ls
-  self.clear = function() {
-    localStorage.clear();
-  }
 
   // Press a button.
   // var button = which button# was pressed
@@ -153,32 +127,6 @@ var MoteioReceiver = function() {
     window.location = "http://lvh.me:5000";
   }
 
-  // Sync to the server
-  self.sync = function(show_key, show_request_access) {
-
-    // first function gets a key
-    self.bouncer.emit('start-sync', self.get('uid'), function(err, key){
-      show_key(err, key);
-    });
-
-    // second function is what to do when phone approves
-    self.channel.on('request-access', function(device) {
-      show_request_access(device);
-    });
-
-  };
-
-  // Establish connection.
-  // Run callback holla() on response
-  self.establish = function(uuid, holla) {
-
-    console.log('establishing')
-    self.channel.emit('establish-sync', uuid, function(err, res){
-      holla();
-    });
-
-  };
-
   // Listen to channel uid
   self.listen = function(uid) {
 
@@ -243,39 +191,6 @@ var MoteioReceiver = function() {
 
   }
 
-  // Errr... Changes what page is displaying somewhere?
-  self.changePage = function(pageID) {
-    $('.moteio-page').hide();
-    if (pageID == "#moteio-sync") {
-      $('#moteio-blackout').fadeIn();
-    } else {
-      $('#moteio-blackout').fadeOut();
-    }
-    $(pageID).show();
-  }
-
-  // QR sync
-  self.startSync = function() {
-
-    self.sync(
-      function(key) {
-        $('#moteio-qrcode').find('canvas').remove();
-        // $('#moteio-qrcode').qrcode({width: 200, height: 200, text: key});
-        $('#moteio-sync').text('{"format": "QR_CODE", "text": "' + key + '"}');
-      },
-      function(device) {
-
-        console.log(device)
-
-        // establish right away
-        self.establish(device.uuid, function(err, res){
-          self.clog('connection established');
-          self.changePage('#moteio-icon');
-        });;
-
-      });
-  }
-
   // Draw overlay on page for QR code
   self.drawOverlay = function() {
 
@@ -302,57 +217,7 @@ var MoteioReceiver = function() {
     <div id="moteio-blackout"> \
     </div>');
 
-    $('.start-sync').click(function(){
-      console.log('clicked');
-    });
-    $('#moteio-devices').on('click', '.moteio-accept-request', function(){
-      console.log('clicked')
-      self.changePage('#moteio-icon');
-      self.establish($(this).attr('data-device-uuid'), function(err, res){
-        self.clog('connection established');
-      });
-    });
-    $('#moteio-devices').on('click', '.moteio-deny-request', function(){
-      self.changePage('#moteio-icon');
-        self.clog('connection denied');
-    });
-
-    self.bindTriggerSync($('#moteio-icon'));
-    self.bindTriggerSync($('#moteio-new'));
-
-    // Shows either way. If block seems unnecesary?
-    $('#moteio-icon').show();
-
-    $('.moteio-page').hover(function(){
-      $(this).addClass('over');
-    },function(){
-      $(this).removeClass('over');
-    });
-
-    $('#moteio-blackout').click(function(){
-      $(this).fadeOut();
-      self.changePage('#moteio-icon');
-    });
-
   };
-
-  // Add alert to the page
-  self.showAlert = function(type, message) {
-    $('#moteio-alert').addClass('moteio-alert-type-'+type).html(message).delay(50).fadeIn();
-  }
-
-  self.bindTriggerSync = function(e) {
-    e.click(function(){
-      self.startSync();
-      self.changePage('#moteio-sync');
-    })
-  }
-
-  self.getURLParameter = function(name) {
-    return decodeURI(
-      (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-    );
-  }
 
   // Initialize new MoteioReceiver object with specified params object
   // Send message to server  and set listeners up if it's the first run.
@@ -361,11 +226,7 @@ var MoteioReceiver = function() {
 
     $(document).ready(function() {
 
-      self.clog('uid fron ls is ' + self.get('uid'));
-      self.clog('uid fron url is ' + self.getURLParameter('muid'));
-
       self.params = params;
-
 
       if (!self.get('uid') && window.location.host == "lvh.me:5000" || window.location.host == "mote.io") {
 
@@ -406,9 +267,6 @@ var MoteioReceiver = function() {
   };
 
 };
-
-console.log('included')
-console.log(window.moteio_config)
 
 var rec = new MoteioReceiver();
 rec.init(window.moteio_config)
