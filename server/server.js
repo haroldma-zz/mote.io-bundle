@@ -1,12 +1,68 @@
 /*jslint node: true, maxerr: 50, indent: 2 */
 "use strict";
+
 var
+  path = require('path'),
+  http = require('http'),
+  mongoose = require('mongoose'),
   io = require('socket.io').listen(8080, "0.0.0.0"),
   hat = require('hat'),
   keys = hat.rack(),
   uids = hat.rack(),
-  winston = require('winston');
+  winston = require('winston'),
+  express = require('express'),
+  app = express(),
+  passport = require('passport'),
+  LocalStrategy = require('passport-local').Strategy,
+  mongoose = require('mongoose'),
+  Schema = mongoose.Schema,
+  jade = require('jade'),
+  passportLocalMongoose = require('passport-local-mongoose');
 
+app.configure(function() {
+
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.set('view options', { layout: false });
+
+  app.use(express.logger());
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+
+  app.use(express.cookieParser('your secret here'));
+  app.use(express.session());
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(app.router);
+  app.use(express.static(path.join(__dirname, 'public')));
+
+});
+
+app.configure('development', function(){
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+    app.use(express.errorHandler());
+});
+
+var Account = require('./models/account');
+
+// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
+passport.use(Account.createStrategy());
+
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+mongoose.connect('mongodb://localhost/test');
+
+require('./routes')(app);
+
+// Connect mongoose
+app.listen(3000);
+console.log('Listening on port 3000');
 
 // channels by key is a pointer to some channel in the channels array
 var channels_by_key = [],
