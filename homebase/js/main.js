@@ -68,7 +68,4 @@
 
     window.init();
 
-    console.log('my uid is');
-    console.log(window.get_ls('uid'))
-
 })(jQuery);

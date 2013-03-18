@@ -24,8 +24,9 @@
 
     window.selectApp = function(i) {
       currentApp = i;
-      console.log($apps);
       $apps.removeClass('selected');
+      console.log(currentApp)
+      console.log($apps)
       $($apps[currentApp]).addClass('selected');
     }
 
@@ -66,9 +67,7 @@
       selectApp(currentApp);
     }
 
+    console.log($apps)
     window.init();
-
-    console.log('my uid is');
-    console.log(window.get_ls('uid'))
 
 })(jQuery);
