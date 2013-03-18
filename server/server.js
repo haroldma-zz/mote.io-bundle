@@ -50,7 +50,6 @@ app.configure('production', function(){
 
 var Account = require('./models/account');
 
-// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(Account.createStrategy());
 
 passport.serializeUser(Account.serializeUser());
@@ -72,7 +71,6 @@ var channels_by_key = [],
 
 // uuid - phones
 // uid - session
-
 io.configure(function () {
   // io.set('polling duration', 30);
   io.set('log level', 1);
