@@ -23,7 +23,9 @@
     "mongodb": "1.2.14",
     "mongoose": "3.5.9",
     "passport-local-mongoose": "0.2.1",
-    "jade": "0.28.2"
+    "jade": "0.28.2",
+    "passport.socketi": "1.0.1",
+    "connect-mongo": "0.3.2"
   },
   "devDependencies": {}
 }

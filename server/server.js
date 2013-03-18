@@ -14,7 +14,13 @@ var
   mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   jade = require('jade'),
-  passportLocalMongoose = require('passport-local-mongoose');
+  passportSocketIo = require("passport.socketio"),
+  passportLocalMongoose = require('passport-local-mongoose'),
+  MongoStore = require('connect-mongo')(express);
+
+var sessionStore = new MongoStore({
+  db: 'test'
+});
 
 app.configure(function() {
 
@@ -27,7 +33,7 @@ app.configure(function() {
   app.use(express.methodOverride());
 
   app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
+  app.use(express.session({ secret: 'keyboard cat', store: sessionStore}));
 
   app.use(passport.initialize());
   app.use(passport.session());
@@ -68,7 +74,21 @@ var configs_by_uid = [];
 io.configure(function () {
   // io.set('polling duration', 30);
   io.set('log level', 1);
+
+  io.set("authorization", passportSocketIo.authorize({
+    key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
+    secret: 'keyboard cat', //the session secret to parse the cookie
+    store:   sessionStore,     //the session store that express uses
+    fail: function(data, accept) {     // *optional* callbacks on success or fail
+      accept(null, false);             // second param takes boolean on whether or not to allow handshake
+    },
+    success: function(data, accept) {
+      accept(null, true);
+    }
+  }));
+
 });
+
 
 io
   .of('/')
