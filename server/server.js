@@ -4,7 +4,6 @@
 var
   path = require('path'),
   http = require('http'),
-  mongoose = require('mongoose'),
   io = require('socket.io').listen(8080, "0.0.0.0"),
   winston = require('winston'),
   express = require('express'),
@@ -58,11 +57,11 @@ passport.use(Account.createStrategy());
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+// Connect mongoose
 mongoose.connect('mongodb://localhost/test');
 
 require('./routes')(app);
 
-// Connect mongoose
 app.listen(3000);
 console.log('Listening on port 3000');
 
