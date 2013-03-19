@@ -13,7 +13,7 @@ exec(function(){
 
   console.log(window.location.host)
 
-  if (window.location.host == "lvh.me:5000/homebase") {
+  if (window.location.host == "hypem.com") {
 
     window.moteio_config = {
       version: "0.1",

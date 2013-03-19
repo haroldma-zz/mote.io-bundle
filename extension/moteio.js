@@ -38,15 +38,16 @@ d+"px").css("background-color",a.isDark(e,i)?h.foreground:h.background).appendTo
 
 var MoteioReceiver = function() {
 
+  alert('updated')
+
   var self = this;
 
-  // Server to listen to.  Is this still up?
   self.remote_location = 'http://lvh.me:8080';
 
   self.channel = null;
 
   // Connect to socket.io
-  self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
+  self.bouncer = io.connect(self.remote_location);
 
   self.params = {};
 
@@ -140,13 +141,11 @@ var MoteioReceiver = function() {
     });
 
     self.channel.on('connect', function () {
-
       self.clog('connected');
       self.channel.emit('start', null, function (key) {
         self.clog('started');
         self.clog(key);
       });
-
     });
 
     self.channel.on('input', function (data) {
@@ -228,39 +227,7 @@ var MoteioReceiver = function() {
 
       self.params = params;
 
-      if (!self.get('uid') && window.location.host == "lvh.me:5000" || window.location.host == "mote.io") {
-
-        self.bouncer.emit('generate-uid', null, function(err, uid){
-
-          self.clog('getting uid from bouncer')
-          self.set('uid', uid);
-          self.listen(self.get('uid'));
-
-        });
-
-        self.drawOverlay();
-
-      } else if (self.getURLParameter('muid')) {
-
-        self.clog('url param is ' + self.getURLParameter('muid'))
-        self.clog('using url param')
-
-        self.clog('setting ls')
-        self.set('uid', self.getURLParameter('muid'));
-
-        self.clog('listen on ls')
-        self.listen(self.get('uid'));
-
-
-      } else if(self.get('uid') && self.getURLParameter('muid')) {
-
-        self.clog('setting ls')
-        self.set('uid', self.getURLParameter('muid'));
-
-        self.clog('listen on ls')
-        self.listen(self.get('uid'));
-
-      }
+      self.listen(null);
 
     });
 

@@ -63,8 +63,8 @@ mongoose.connect('mongodb://localhost/test');
 require('./routes')(app);
 
 // Connect mongoose
-app.listen(5000);
-console.log('Listening on port 5000');
+app.listen(3000);
+console.log('Listening on port 3000');
 
 // channels by key is a pointer to some channel in the channels array
 var configs_by_uid = [];
@@ -92,44 +92,56 @@ io.configure(function () {
 
 io
   .of('/')
-  .on('connection', function (channel) {
+  .on('connection', function (socket) {
 
-    var address = channel.handshake.address;
+    console.log("user connected: ", socket.handshake.user.name);
+
+    //filter sockets by user...
+    var userGender = socket.handshake.user.gender,
+        opposite = userGender === "male" ? "female" : "male";
+
+    passportSocketIo.filterSocketsByUser(sio, function (user) {
+      return user.gender === opposite;
+    }).forEach(function(s){
+      s.send("a " + userGender + " has arrived!");
+    });
+
+    var address = socket.handshake.address;
 
     winston.info('#client has connected to #extension from ' + address.address + ':' + address.port + ' and UID ' + UID);
 
-    channel.on('notify', function (data, holla) {
+    socket.on('notify', function (data, holla) {
       winston.info('#extension has sent out a #notification');
-      channel.broadcast.emit('notify', data);
+      socket.broadcast.emit('notify', data);
       holla();
     });
-    channel.on('art', function (data, holla) {
+    socket.on('art', function (data, holla) {
       winston.info('#extension has sent out #art');
-      channel.broadcast.emit('art', data);
+      socket.broadcast.emit('art', data);
       holla();
     });
-    channel.on('update-button', function (data, holla) {
+    socket.on('update-button', function (data, holla) {
       winston.info('#extension has sent out #update-button');
-      channel.broadcast.emit('update-button', data);
+      socket.broadcast.emit('update-button', data);
       holla();
     });
-    channel.on('set-config', function (data, holla) {
+    socket.on('set-config', function (data, holla) {
       configs_by_uid[data.uid] = data.params;
       winston.info('#extension has set its #config');
       console.log(data.params);
-      channel.broadcast.emit('update-config', true);
+      socket.broadcast.emit('update-config', true);
       holla(null, true);
     });
-    channel.on('get-config', function (uid, holla) {
+    socket.on('get-config', function (uid, holla) {
       winston.info('#client is asking for #config');
       holla(null, configs_by_uid[uid]);
     });
-    channel.on('input', function (data, holla) {
+    socket.on('input', function (data, holla) {
       winston.info('#client is emitting input');
       channels[channelUID].emit('input', data.keypress);
       holla();
     });
-    channel.on('disconnect', function () {
+    socket.on('disconnect', function () {
       winston.info('#client has left #extension');
     });
   });

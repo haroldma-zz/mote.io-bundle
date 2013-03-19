@@ -90,7 +90,7 @@
     },
     {
       "matches": [
-        "http://lvh.me:5000/"
+        "http://lvh.me:3000/homebase"
       ],
       "js": [
         "inject.js"
