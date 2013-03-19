@@ -55,12 +55,17 @@
 
 		<input type="search" name="search" id="search-basic" value="" />
 
-		<select name="select-choice-0" id="select-choice-0">
-		   <option value="standard">Standard: 7 day</option>
-		   <option value="rush">Rush: 3 days</option>
-		   <option value="express">Express: next day</option>
-		   <option value="overnight">Overnight</option>
-		</select>
+		<form action="http://lvh.me:3000/login" method="post">
+
+			<label for="text-basic">Username:</label>
+			<input type="text" name="username" id="username" value="">
+
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" value="" autocomplete="off">
+
+			<input type="submit" value="Login" data-icon="delete" data-theme="b">
+
+		</form>
 
 	</div>
 
