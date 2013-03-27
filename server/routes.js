@@ -24,7 +24,18 @@ module.exports = function (app) {
     });
 
     app.get('/login', function(req, res) {
-        res.render('login', { user : req.user });
+        if(req.user) {
+            res.json({
+                valid: true,
+                user: {
+                    username: req.user.username
+                }
+            });
+        } else {
+            res.json({
+                valid: false
+            });
+        }
     });
 
     app.post('/login', passport.authenticate('local'), function(req, res) {

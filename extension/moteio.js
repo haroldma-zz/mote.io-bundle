@@ -38,8 +38,6 @@ d+"px").css("background-color",a.isDark(e,i)?h.foreground:h.background).appendTo
 
 var MoteioReceiver = function() {
 
-  alert('updated')
-
   var self = this;
 
   self.remote_location = 'http://lvh.me:8080';
@@ -134,7 +132,7 @@ var MoteioReceiver = function() {
     self.clog('listening to channel ' + uid);
     self.channel = io.connect(self.remote_location + '/' + uid);
 
-    self.channel.emit('set-config', {params: self.params, uid: self.get('uid')}, function(err, res){
+    self.channel.emit('set-config', {params: self.params}, function(err, res){
       self.clog('configuration set');
       console.log(err);
       console.log(res);
@@ -227,7 +225,19 @@ var MoteioReceiver = function() {
 
       self.params = params;
 
-      self.listen(null);
+      $.ajax({
+        type: 'get',
+        url: 'http://lvh.me:3000/login',
+        data: $(this).serialize(),
+        success: function(data) {
+          console.log(data)
+          if(data.valid) {
+            self.listen(null);
+          } else {
+            alert('Incorrect')
+          }
+        }
+      });
 
     });
 

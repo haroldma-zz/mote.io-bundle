@@ -150,18 +150,18 @@ var App = function () {
 
   };
 
-  self.listen = function (uid) {
+  self.listen = function (username) {
 
     console.log('trying to connect to channel');
 
-    self.channel = io.connect(self.remote_location + '/' + uid);
+    self.channel = io.connect(self.remote_location + '/' + username);
 
-    self.channel.emit('get-config', uid, function (err, res) {
+    self.channel.emit('get-config', username, function (err, res) {
       self.renderRemote(err, res);
     });
 
     self.channel.on('update-config', function (err, res) {
-      self.channel.emit('get-config', uid, function (err, res) {
+      self.channel.emit('get-config', username, function (err, res) {
         self.renderRemote(err, res);
       });
     });
@@ -211,60 +211,16 @@ var App = function () {
         data: $(this).serialize(),
         success: function(data) {
           console.log(data)
+          if(data.valid) {
+            $.mobile.changePage($('#remote'));
+            console.log(data.user.username)
+            self.listen(data.user.username);
+          } else {
+            alert('Incorrect')
+          }
         }
       });
       return false;
-    });
-
-    $('#sync').bind('tap', function (e) {
-
-      $('#loading-connecting').show();
-
-      window.plugins.barcodeScanner.scan(function (result) {
-
-        if (result.format !== "QR_CODE") {
-          navigator.notification.alert('Scan the QR code on the mote.io site!');
-        } else if (!result.cancelled) {
-
-          data = {
-            key: result.text,
-            device: device
-          };
-
-          setTimeout(function () {
-            $('#loading-connecting').fadeOut();
-          }, 3000);
-
-          self.bouncer.emit('validate-key', data, function (err, uid) {
-
-            console.log('validate');
-
-            if (err) {
-              $('#loading-connecting').fadeOut();
-              console.log(err);
-              navigator.notification.alert("There was a problem. Try again!");
-
-            } else {
-
-              navigator.notification.vibrate(500);
-
-              self.shush(function () {
-                console.log('callback made');
-                console.log('listening !!!!!!!!!!!!!!!!');
-                self.listen(uid);
-              });
-
-            }
-
-          });
-        } else {
-          console.log('something totally different happened');
-        }
-
-      }, function (error) {
-        navigator.notify.alert("Scanning failed: " + error);
-      });
-
     });
 
   };
