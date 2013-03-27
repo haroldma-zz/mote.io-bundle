@@ -20,8 +20,6 @@ module.exports = function (app) {
             if (err) {
                 return res.render('register', { account : account });
             }
-
-            res.redirect('/');
         });
     });
 
@@ -30,11 +28,23 @@ module.exports = function (app) {
     });
 
     app.post('/login', passport.authenticate('local'), function(req, res) {
-        res.redirect('/');
+        if(req.user) {
+            res.json({
+                valid: true,
+                user: {
+                    username: req.user.username
+                }
+            });
+        } else {
+            res.json({
+                valid: false
+            });
+        }
     });
 
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
+
 };

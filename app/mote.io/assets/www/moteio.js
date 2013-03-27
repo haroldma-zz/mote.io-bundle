@@ -18,31 +18,6 @@ var App = function () {
   self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
   self.channel = null;
 
-  // Set specific property of MoteioReceiver object
-  self.set = function (property, value) {
-    localStorage.setItem(property, JSON.stringify(value));
-  };
-
-  // Get specific property of MoteioReceiver object
-  // Returns false if property undefined
-  self.get = function (property) {
-    var item = JSON.parse(localStorage.getItem(property));
-    if (typeof item !== undefined) {
-      return item;
-    } else {
-      return false;
-    }
-  };
-
-  // Remove item from localstorage
-  self.remove = function (property) {
-    localStorage.removeItem(property);
-  };
-  // Delete everything in ls
-  self.clear = function () {
-    localStorage.clear();
-  };
-
   self.shush = function (holla) {
     if (self.channel) {
       console.log('already connected to a channel');
@@ -228,9 +203,18 @@ var App = function () {
 
     var data = null;
 
-    if (self.get('uid')) {
-      self.listen(self.get('uid'));
-    }
+    $("#login-form").submit( function () {
+      console.log($("#login-form").serialize())
+      $.ajax({
+        type: 'post',
+        url: 'http://lvh.me:3000/login',
+        data: $(this).serialize(),
+        success: function(data) {
+          console.log(data)
+        }
+      });
+      return false;
+    });
 
     $('#sync').bind('tap', function (e) {
 
@@ -268,7 +252,6 @@ var App = function () {
                 console.log('callback made');
                 console.log('listening !!!!!!!!!!!!!!!!');
                 self.listen(uid);
-                self.set('uid', uid);
               });
 
             }

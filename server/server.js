@@ -95,16 +95,6 @@ io
 
     console.log("user connected: ", socket.handshake.user.name);
 
-    //filter sockets by user...
-    var userGender = socket.handshake.user.gender,
-        opposite = userGender === "male" ? "female" : "male";
-
-    passportSocketIo.filterSocketsByUser(sio, function (user) {
-      return user.gender === opposite;
-    }).forEach(function(s){
-      s.send("a " + userGender + " has arrived!");
-    });
-
     var address = socket.handshake.address;
 
     winston.info('#client has connected to #extension from ' + address.address + ':' + address.port + ' and UID ' + UID);

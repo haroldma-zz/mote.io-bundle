@@ -35,79 +35,55 @@
 </head>
 <body>
 
-<div data-role="page" data-theme="c">
+	<div id="login" data-role="page" data-theme="a">
 
-	<div data-role="header">
+		<div data-role="header">
 
-		<a data-icon="grid">Home</a>
-		<h1>Homebase</h1>
-		<a data-icon="gear" id="sync">Sync</a>
+			<h1>Mote.io</h1>
 
-	</div>
-
-	<div data-role="content">
-
-		<div id="buttons">
 		</div>
 
-		<div id="form">
+		<div data-role="content">
+
+			<form id="login-form" action="http://lvh.me:3000/login" method="post">
+
+				<label for="text-basic">Username:</label>
+				<input type="text" name="username" id="username" value="">
+
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password" value="" autocomplete="off">
+
+				<input type="submit" value="Login" data-theme="b">
+
+			</form>
+
 		</div>
 
-		<input type="search" name="search" id="search-basic" value="" />
+	</div>
 
-		<form action="http://lvh.me:3000/login" method="post">
+	<div id="remote" data-role="page" data-theme="c">
 
-			<label for="text-basic">Username:</label>
-			<input type="text" name="username" id="username" value="">
+		<div data-role="header">
 
-			<label for="password">Password:</label>
-			<input type="password" name="password" id="password" value="" autocomplete="off">
+			<a data-icon="grid">Home</a>
+			<h1>Homebase</h1>
+			<a data-icon="gear" id="sync">Sync</a>
 
-			<input type="submit" value="Login" data-icon="delete" data-theme="b">
+		</div>
 
-		</form>
+		<div data-role="content">
+
+			<div id="buttons">
+			</div>
+
+			<div id="form">
+			</div>
+
+			<input type="search" name="search" id="search-basic" value="" />
+
+		</div>
 
 	</div>
 
-</div>
-
-<div data-role="page" id="sync-dialog-help">
-
-	<div data-role="content">
-		<p>
-			Click the mote.io sync icon in your web browser.
-		</p>
-		<p><strong>Note:</strong> You first have to install <a href="#">the mote.io - sync chrome extension</a>. You can get it at <strong>http://mote.io</strong>.</p>
-		<a data-role="button" href="#sync-dialog-step-2">OK</a>
-	</div>
-
-</div>
-
-<div data-role="page" id="sync-dialog-step-1">
-
-	<div data-role="content">
-		<p>
-			Now enter the 6 digit code that appears!
-		</p>
-		<input type="text" name="sync-code" id="sync-code" value=""/>
-		<a id="validate-sync" data-role="button">OK</a>
-	</div>
-
-</div>
-
-<div data-role="page" id="sync-dialog-step-3">
-
-	<div data-role="content">
-		<p>
-			Approve this moble device in your web browser.
-		</p>
-		<a data-role="button" href="#sync">OK</a>
-	</div>
-
-</div>
-
-<div data-role="page" id="loading-connecting">
-	<div class="ring"></div>
-</div>
 </body>
 </html>
