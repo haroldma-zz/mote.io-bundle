@@ -119,35 +119,35 @@ exec(function(){
               optgroup: 'latest',
               text: 'Latest',
               action: function() {
-
+                window.location = "/latest";
               }
             },
             'fresh': {
               optgroup: 'latest',
               text: 'Freshest',
               action: function() {
-
+                window.location = "/latest/fresh";
               }
             },
             'remix': {
               optgroup: 'latest',
               text: 'Remixes Only',
               action: function() {
-
+                window.location = "/latest/remix";
               }
             },
             'noremix': {
               optgroup: 'latest',
               text: 'No Remixes',
               action: function() {
-
+                window.location = "/latest/noremix";
               }
             },
             'blogs': {
               optgroup: 'latest',
               text: 'Blogs in USA',
               action: function() {
-
+                window.location = "/latest/us";
               }
             }
           }

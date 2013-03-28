@@ -116,10 +116,6 @@ var createRoom = function(username) {
         console.log('got this')
         socket.broadcast.emit('get-config');
       });
-      socket.on('go-home', function(data, holla){
-        console.log('go-home')
-        socket.broadcast.emit('go-home');
-      });
       socket.on('update-config', function(data) {
         console.log('update-config')
         socket.broadcast.emit('update-config', data);
@@ -139,9 +135,18 @@ var createRoom = function(username) {
         socket.broadcast.emit('update-button', data);
         holla();
       });
+      socket.on('go-home', function(data, holla){
+        console.log('go-home')
+        socket.broadcast.emit('go-home');
+      });
       socket.on('input', function (data, holla) {
         winston.info('#client is emitting input');
         socket.broadcast.emit('input', data.keypress);
+        holla();
+      });
+      socket.on('select', function (data, holla) {
+        winston.info('#client is emitting select');
+        socket.broadcast.emit('select', data);
         holla();
       });
       socket.on('disconnect', function () {

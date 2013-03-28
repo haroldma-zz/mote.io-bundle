@@ -45,6 +45,7 @@ var App = function () {
 
     console.log('emptying remote');
     $('#buttons').html('');
+    $('#form').html('');
 
     // render notify div
     if (res.notify && typeof res.notify !== "undefined") {
@@ -115,13 +116,10 @@ var App = function () {
         select_html.bind('change', function(e) {
 
           var v = $(this);
-          alert($(this).val());
 
-          self.bouncer.emit('select', {
-            uuid: device.uuid,
-            info: {
-              value: $(this).val()
-            }
+          self.channel.emit('select', {
+            id: 0,
+            value: $(this).val()
           }, function () {
 
             navigator.notification.vibrate(100);

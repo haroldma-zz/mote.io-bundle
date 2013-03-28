@@ -157,7 +157,8 @@ var MoteioReceiver = function() {
 
     self.channel.on('select', function (data) {
       console.log(data);
-      alert('select complete')
+      console.log(self.params.selects[data.id])
+      self.params.selects[data.id].options[data.value].action();
     });
 
   };
