@@ -155,9 +155,9 @@ var App = function () {
 
     self.channel = io.connect(self.remote_location + '/' + username);
 
-    self.channel.emit('phone-wants-config');
+    self.channel.emit('get-config');
 
-    self.channel.on('phone-update-config', function (data) {
+    self.channel.on('update-config', function (data) {
       self.renderRemote(data);
     });
 

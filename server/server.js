@@ -112,13 +112,13 @@ var createRoom = function(username) {
       winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
 
       // socket refers to client
-      socket.on('phone-wants-config', function(data, holla){
+      socket.on('get-config', function(data, holla){
         console.log('got this')
-        socket.broadcast.emit('ask-extension-for-config');
+        socket.broadcast.emit('get-config');
       })
-      socket.on('extension-supply-config', function(data) {
+      socket.on('update-config', function(data) {
         console.log('update-config')
-        socket.broadcast.emit('phone-update-config', data);
+        socket.broadcast.emit('update-config', data);
       })
       socket.on('notify', function (data, holla) {
         winston.info('#extension has sent out a #notification');

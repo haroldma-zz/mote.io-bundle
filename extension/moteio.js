@@ -132,9 +132,10 @@ var MoteioReceiver = function() {
     self.clog('listening to channel ' + uid);
     self.channel = io.connect(self.remote_location + '/' + uid);
 
-    self.channel.on('ask-extension-for-config', function(data, holla){
-      alert('get')
-      self.channel.emit('extension-supply-config', self.params);
+    self.channel.emit('update-config', self.params);
+
+    self.channel.on('get-config', function(data, holla){
+      self.channel.emit('update-config', self.params);
     });
 
     self.channel.on('connect', function () {
