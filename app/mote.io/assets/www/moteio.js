@@ -29,11 +29,10 @@ var App = function () {
     }
   };
 
-  self.renderRemote = function(err, res) {
+  self.renderRemote = function(res) {
 
     console.log('got remote');
 
-    console.log(err)
     console.log(res)
 
     var
@@ -43,68 +42,67 @@ var App = function () {
       element = null,
       buttons = null;
 
-    if (err) {
-      navigator.notify.alert(err);
-    } else {
 
-      console.log('emptying remote');
-      $('#buttons').html('');
+    console.log('emptying remote');
+    $('#buttons').html('');
 
-      // render notify div
-      if (res.notify && typeof res.notify !== "undefined") {
+    // render notify div
+    if (res.notify && typeof res.notify !== "undefined") {
 
-        wrapper = $('<div class="moteio-placement"></div>').css({
-            left: res.notify.x + 'px',
-            top: res.notify.y + 'px'
-          });
-        var notify = $('<div class="notify"></div>');
+      wrapper = $('<div class="moteio-placement"></div>').css({
+          left: res.notify.x + 'px',
+          top: res.notify.y + 'px'
+        });
+      var notify = $('<div class="notify"></div>');
 
-        $('#buttons').append(wrapper.append(notify));
+      $('#buttons').append(wrapper.append(notify));
 
-      }
+    }
 
-      // render buttons
-      for (button_id in res.buttons) {
+    // render buttons
+    for (button_id in res.buttons) {
 
-        console.log('rendering remote');
+      console.log('rendering remote');
 
-        console.log('my id is ' + button_id);
-        console.log('my position is ' + res.buttons[button_id].x);
+      console.log('my id is ' + button_id);
+      console.log('my position is ' + res.buttons[button_id].x);
 
-        wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
-          .css({
-            'left': res.buttons[button_id].x,
-            'top': String(res.buttons[button_id].y) + 'px',
-            'position': 'absolute'
-          });
+      wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
+        .css({
+          'left': res.buttons[button_id].x,
+          'top': String(res.buttons[button_id].y) + 'px',
+          'position': 'absolute'
+        });
 
-        element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
-          .attr('data-moteio', button_id)
-          .bind('vmousedown', function (e) {
-            navigator.notification.vibrate(250);
-            console.log('we have a click');
-            e.stopPropagation();
-            var elm = $(this);
-            $(this).parents('.moteio-button').addClass('moteio-down');
-            self.channel.emit('input', {
-              uuid: device.uuid,
-              keypress: {
-                button: elm.attr('data-moteio'),
-                down: true
-              }
-            }, function () {
+      element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
+        .attr('data-moteio', button_id)
+        .bind('vmousedown', function (e) {
+          navigator.notification.vibrate(250);
+          console.log('we have a click');
+          e.stopPropagation();
+          var elm = $(this);
+          $(this).parents('.moteio-button').addClass('moteio-down');
+          self.channel.emit('input', {
+            uuid: device.uuid,
+            keypress: {
+              button: elm.attr('data-moteio'),
+              down: true
+            }
+          }, function () {
+            navigator.notification.vibrate(100);
+            setTimeout(function () {
               navigator.notification.vibrate(100);
-              setTimeout(function () {
-                navigator.notification.vibrate(100);
-              }, 150);
-            });
+            }, 150);
           });
+        });
 
-        $('#buttons').append(wrapper.append(element));
-      }
+      $('#buttons').append(wrapper.append(element));
+    }
 
-      // render selects
-      console.log(res.selects)
+    // render selects
+    console.log(res.selects)
+    if(typeof res.selects !== "undefined" && res.selects && res.selects.length > 0) {
+
       for (var i = 0; i < res.selects.length; i++) {
 
         var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
@@ -141,12 +139,13 @@ var App = function () {
 
       }
 
-      // fade loading out
-      $('#loading-connecting').fadeOut();
-      buttons = $('.moteio-button');
-      console.log('there are ' + buttons.length + 'buttons');
-
     }
+
+    // fade loading out
+    $('#loading-connecting').fadeOut();
+    buttons = $('.moteio-button');
+    console.log('there are ' + buttons.length + 'buttons');
+
 
   };
 
@@ -156,14 +155,10 @@ var App = function () {
 
     self.channel = io.connect(self.remote_location + '/' + username);
 
-    self.channel.emit('get-config', username, function (err, res) {
-      self.renderRemote(err, res);
-    });
+    self.channel.emit('phone-wants-config');
 
-    self.channel.on('update-config', function (err, res) {
-      self.channel.emit('get-config', username, function (err, res) {
-        self.renderRemote(err, res);
-      });
+    self.channel.on('phone-update-config', function (data) {
+      self.renderRemote(data);
     });
 
     self.channel.on('notify', function (data) {

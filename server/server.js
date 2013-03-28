@@ -65,9 +65,6 @@ require('./routes')(app);
 app.listen(3000);
 console.log('Listening on port 3000');
 
-// channels by key is a pointer to some channel in the channels array
-var configs_by_uid = [];
-
 // uuid - phones
 // uid - session
 io.configure(function () {
@@ -89,14 +86,19 @@ io.configure(function () {
 
 });
 
-io.sockets.on('connection', function (socket) {
+var createRoom = function(username) {
+
+  console.log('creating room')
 
   io
-    .of('/' + socket.handshake.user.username)
+    .of('/' + username)
     .authorization(function (handshakeData, callback) {
-      console.dir(handshakeData);
+
+      console.log('username is')
+      console.log(username)
+
       // addittional auth to make sure we are correct user
-      if(socket.handshake.user.username == handshakeData.user.username) {
+      if(username == handshakeData.user.username) {
         callback(null, true);
       } else {
         callback(null, false);
@@ -109,39 +111,53 @@ io.sockets.on('connection', function (socket) {
 
       winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
 
-    })
-    .on('notify', function (data, holla) {
-      winston.info('#extension has sent out a #notification');
-      socket.broadcast.emit('notify', data);
-      holla();
-    })
-    .on('art', function (data, holla) {
-      winston.info('#extension has sent out #art');
-      socket.broadcast.emit('art', data);
-      holla();
-    })
-    .on('update-button', function (data, holla) {
-      winston.info('#extension has sent out #update-button');
-      socket.broadcast.emit('update-button', data);
-      holla();
-    })
-    .on('set-config', function (data, holla) {
-      configs_by_uid[data.uid] = data.params;
-      winston.info('#extension has set its #config');
-      console.log(data.params);
-      socket.broadcast.emit('update-config', true);
-      holla(null, true);
-    })
-    .on('get-config', function (uid, holla) {
-      winston.info('#client is asking for #config');
-      holla(null, configs_by_uid[uid]);
-    })
-    .on('input', function (data, holla) {
-      winston.info('#client is emitting input');
-      channels[channelUID].emit('input', data.keypress);
-      holla();
-    })
-    .on('disconnect', function () {
-      winston.info('#client has left #extension');
-    })
+      // socket refers to client
+      socket.on('phone-wants-config', function(data, holla){
+        console.log('got this')
+        socket.broadcast.emit('ask-extension-for-config');
+      })
+      socket.on('extension-supply-config', function(data) {
+        console.log('update-config')
+        socket.broadcast.emit('phone-update-config', data);
+      })
+      socket.on('notify', function (data, holla) {
+        winston.info('#extension has sent out a #notification');
+        socket.broadcast.emit('notify', data);
+        holla();
+      })
+      socket.on('art', function (data, holla) {
+        winston.info('#extension has sent out #art');
+        socket.broadcast.emit('art', data);
+        holla();
+      })
+      socket.on('update-button', function (data, holla) {
+        winston.info('#extension has sent out #update-button');
+        socket.broadcast.emit('update-button', data);
+        holla();
+      })
+      socket.on('input', function (data, holla) {
+        winston.info('#client is emitting input');
+        socket.broadcast.emit('input', data.keypress);
+        holla();
+      })
+      socket.on('disconnect', function () {
+        winston.info('#client has left #extension');
+      })
+
+    });
+
+}
+
+io.sockets.on('connection', function (socket) {
+
+  console.log(socket.handshake.user)
+
+  var username = socket.handshake.user.username;
+
+  console.log('socket manager')
+  console.log(io.sockets.manager.namespaces['/' + username])
+  if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
+      createRoom(username);
+  }
+
 });

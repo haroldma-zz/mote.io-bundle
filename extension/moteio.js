@@ -132,10 +132,9 @@ var MoteioReceiver = function() {
     self.clog('listening to channel ' + uid);
     self.channel = io.connect(self.remote_location + '/' + uid);
 
-    self.channel.emit('set-config', {params: self.params}, function(err, res){
-      self.clog('configuration set');
-      console.log(err);
-      console.log(res);
+    self.channel.on('ask-extension-for-config', function(data, holla){
+      alert('get')
+      self.channel.emit('extension-supply-config', self.params);
     });
 
     self.channel.on('connect', function () {
@@ -232,7 +231,7 @@ var MoteioReceiver = function() {
         success: function(data) {
           console.log(data)
           if(data.valid) {
-            self.listen(null);
+            self.listen(data.user.username);
           } else {
             alert('Incorrect')
           }
