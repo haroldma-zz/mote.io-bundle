@@ -79,11 +79,13 @@ exec(function(){
     setInterval(function(){
 
       var active = null;
-      if($('.active-playing-green').length > 0) {
-        active = $('.active-playing-green');
-      } else {
-        active = $($('.section-track')[0]);
-      }
+      $(document).ready(function() {
+        if($('.active-playing-green').length > 0) {
+          active = $('.active-playing-green');
+        } else {
+          active = $($('.section-track')[0]);
+        }
+      });
 
       var thisArtist = $($('#player-nowplaying a')[3]).text();
       var thisSong = $($('#player-nowplaying a')[4]).text();
