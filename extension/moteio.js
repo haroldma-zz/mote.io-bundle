@@ -123,7 +123,7 @@ var MoteioReceiver = function() {
   };
 
   self.goHome = function() {
-    window.location = "http://lvh.me:5000";
+    window.location = "http://lvh.me:3000/homebase";
   }
 
   // Listen to channel uid
@@ -136,6 +136,10 @@ var MoteioReceiver = function() {
 
     self.channel.on('get-config', function(data, holla){
       self.channel.emit('update-config', self.params);
+    });
+
+    self.channel.on('go-home', function(){
+      self.goHome();
     });
 
     self.channel.on('connect', function () {

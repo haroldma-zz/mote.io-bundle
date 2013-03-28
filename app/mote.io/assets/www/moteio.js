@@ -192,6 +192,11 @@ var App = function () {
       }
     });
 
+    $('#go-home').click(function(){
+      console.log('go home')
+      self.channel.emit('go-home');
+    });
+
   };
 
   self.init = function () {

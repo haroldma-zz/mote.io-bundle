@@ -115,34 +115,38 @@ var createRoom = function(username) {
       socket.on('get-config', function(data, holla){
         console.log('got this')
         socket.broadcast.emit('get-config');
-      })
+      });
+      socket.on('go-home', function(data, holla){
+        console.log('go-home')
+        socket.broadcast.emit('go-home');
+      });
       socket.on('update-config', function(data) {
         console.log('update-config')
         socket.broadcast.emit('update-config', data);
-      })
+      });
       socket.on('notify', function (data, holla) {
         winston.info('#extension has sent out a #notification');
         socket.broadcast.emit('notify', data);
         holla();
-      })
+      });
       socket.on('art', function (data, holla) {
         winston.info('#extension has sent out #art');
         socket.broadcast.emit('art', data);
         holla();
-      })
+      });
       socket.on('update-button', function (data, holla) {
         winston.info('#extension has sent out #update-button');
         socket.broadcast.emit('update-button', data);
         holla();
-      })
+      });
       socket.on('input', function (data, holla) {
         winston.info('#client is emitting input');
         socket.broadcast.emit('input', data.keypress);
         holla();
-      })
+      });
       socket.on('disconnect', function () {
         winston.info('#client has left #extension');
-      })
+      });
 
     });
 
