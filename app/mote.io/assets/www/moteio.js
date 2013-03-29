@@ -245,7 +245,6 @@ var App = function () {
       self.set('login', data);
     }
 
-    $.mobile.changePage($('#remote'));
     self.listen(data[0].value);
 
   }
@@ -255,6 +254,8 @@ var App = function () {
     var data = null;
 
     $("#login-form").submit(function () {
+
+      $.mobile.changePage($('#loading'));
 
       var data = $(this).serializeArray();
 
@@ -266,7 +267,9 @@ var App = function () {
 
           if(response.valid) {
             self.login(data);
+            $.mobile.changePage($('#remote'));
           } else {
+            $.mobile.changePage($('#login'));
             alert('Incorrect')
           }
 
