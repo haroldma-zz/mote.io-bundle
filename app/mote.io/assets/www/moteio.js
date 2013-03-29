@@ -18,6 +18,21 @@ var App = function () {
   self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
   self.channel = null;
 
+  self.set = function(key, data) {
+    // Put the object into storage
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  }
+  self.get = function(key) {
+    // Retrieve the object from storage
+    var retrievedObject = localStorage.getItem(key);
+    if(typeof retrievedObject !== "undefined") {
+      return JSON.parse(retrievedObject);
+    } else {
+      return false;
+    }
+  }
+
   self.shush = function (holla) {
     if (self.channel) {
       console.log('already connected to a channel');
@@ -223,29 +238,54 @@ var App = function () {
 
   };
 
+  self.login = function (data) {
+
+    console.log(data)
+    if(data[2].value == "1") {
+      self.set('login', data);
+    }
+
+    $.mobile.changePage($('#remote'));
+    self.listen(data[0].value);
+
+  }
+
   self.init = function () {
 
     var data = null;
 
-    $("#login-form").submit( function () {
-      console.log($("#login-form").serialize())
+    $("#login-form").submit(function () {
+
+      var data = $(this).serializeArray();
+
       $.ajax({
         type: 'post',
         url: 'http://lvh.me:3000/login',
         data: $(this).serialize(),
-        success: function(data) {
-          console.log(data)
-          if(data.valid) {
-            $.mobile.changePage($('#remote'));
-            console.log(data.user.username)
-            self.listen(data.user.username);
+        success: function(response) {
+
+          if(response.valid) {
+            self.login(data);
           } else {
             alert('Incorrect')
           }
+
         }
       });
+
       return false;
+
     });
+
+    if(self.get('login')) {
+
+      var data = self.get('login')
+
+      $('#username').val(data[0].value)
+      $('#password').val(data[1].value)
+      $("#login-form").submit();
+
+    }
 
   };
 
