@@ -112,6 +112,13 @@ exec(function(){
         x: 0,
         y: 0
       },
+      search: {
+        true: true,
+        action: function(value) {
+          $('#q').val(value);
+          $('#g').click();
+        }
+      },
       selects: [
         {
           x: 0,

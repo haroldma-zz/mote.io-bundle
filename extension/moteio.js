@@ -161,6 +161,13 @@ var MoteioReceiver = function() {
       self.params.selects[data.id].options[data.value].action();
     });
 
+    self.channel.on('search', function (data) {
+      console.log('made it')
+      console.log('data')
+      console.log(self.params.search)
+      self.params.search.action(data.value);
+    });
+
   };
 
   // Notify the server of stuff.

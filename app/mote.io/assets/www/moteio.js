@@ -115,8 +115,6 @@ var App = function () {
 
         select_html.bind('change', function(e) {
 
-          var v = $(this);
-
           self.channel.emit('select', {
             id: 0,
             value: $(this).val()
@@ -137,6 +135,34 @@ var App = function () {
 
       }
 
+      // render selects
+      console.log(res.search)
+      if(typeof res.search !== "undefined" && res.search) {
+
+        var search_html = $('<form name="search-form" id="search-form"><input type="search" name="search" id="search" value="" /></form>');
+
+        search_html.bind('submit', function(e) {
+
+          self.channel.emit('search', {
+            id: 0,
+            value: $("#search").val()
+          }, function () {
+
+            navigator.notification.vibrate(100);
+
+            setTimeout(function () {
+              navigator.notification.vibrate(100);
+            }, 150);
+
+          });
+
+          return false;
+
+        });
+
+        $('#form').append(search_html);
+        $("#form").trigger("create");
+      }
     }
 
     // fade loading out

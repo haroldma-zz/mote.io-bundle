@@ -149,6 +149,11 @@ var createRoom = function(username) {
         socket.broadcast.emit('select', data);
         holla();
       });
+      socket.on('search', function (data, holla) {
+        winston.info('#client is searching for' + data.value);
+        socket.broadcast.emit('search', data);
+        holla();
+      });
       socket.on('disconnect', function () {
         winston.info('#client has left #extension');
       });
