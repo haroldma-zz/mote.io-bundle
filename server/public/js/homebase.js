@@ -32,7 +32,7 @@
 
     window.launchApp = function(i) {
       window.showLoading();
-      window.location = $($apps[currentApp]).find('a').prop('href') + '?muid=' + window.get_ls('uid');
+      window.location = $($apps[currentApp]).find('a').prop('href');
     }
 
     window.launchSelectedApp = function() {
