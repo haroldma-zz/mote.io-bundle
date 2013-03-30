@@ -31,8 +31,12 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
 
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session({ secret: 'keyboard cat', store: sessionStore}));
+  app.use(express.cookieParser());
+  app.use(express.session({
+    store: sessionStore,
+    secret: 'keyboard cat',
+    cookie: { maxAge: 60000 * 60 * 24 * 365 * 4}
+  }));
 
   app.use(passport.initialize());
   app.use(passport.session());
