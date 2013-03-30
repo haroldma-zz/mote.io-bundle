@@ -2,44 +2,42 @@
 
 This is a rough guide to getting the dev setup started. No phone required!
 
-## #1 brew
+## Install Brew
 
 brew install nodejs
 
-## #2 ripple chrome extension
+## Install Ripple chrome extension
 
 https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc?hl=en
 
-## #3 install hypem chrome extension
+## Install hypem chrome extension
 
 /extension/
 
-## #4 install dependencies
+## Install dependencies
 
 cd /server/
 npm install
 
-## #5 Start the server
+## Start the server
 
 cd ../
 sh start.sh
 
-## #6 Load Tabs
+## Start Chrome With Flag
+
+    open /Applications/Google\ Chrome.app/ --args --disable-web-security
+
+## Load Tabs
 
 * http://lvh.me:8080
 * http://lvh.me:8000
 * http://lvh.me:5000
 
-## #7 Ripple
+## Ripple
 
 1. Navigate to http://lvh.me:8000
 2. Open up ripple, and select the Phonegap 2.0 library.
 
-## #8 Sync
+## Sync
 
-1. Open http://hypem.com
-1. Click the mote.io icon on the top left. If it's not there you didn't install the chrome extension
-5. Copy the code from the black square
-6. Hit the mote.io icon on http://lvh.me:8000
-7. Enter the code from the black square
-8. Synced!

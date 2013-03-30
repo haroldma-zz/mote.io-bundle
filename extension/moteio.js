@@ -239,7 +239,7 @@ var MoteioReceiver = function() {
 
       $.ajax({
         type: 'get',
-        url: 'http://lvh.me:3000/login',
+        url: 'http://lvh.me:3000/login/json',
         data: $(this).serialize(),
         success: function(data) {
           console.log(data)

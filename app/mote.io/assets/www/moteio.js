@@ -33,14 +33,12 @@ var App = function () {
     }
   }
 
-  self.shush = function (holla) {
+  self.shush = function () {
     if (self.channel) {
       console.log('already connected to a channel');
       self.channel.disconnect();
-      holla();
     } else {
       console.log('not connected to any channels yet');
-      holla();
     }
   };
 
@@ -249,6 +247,11 @@ var App = function () {
 
   }
 
+  self.logout = function () {
+    self.set('login', null);
+    self.shush();
+  }
+
   self.init = function () {
 
     var data = null;
@@ -261,7 +264,7 @@ var App = function () {
 
       $.ajax({
         type: 'post',
-        url: 'http://lvh.me:3000/login',
+        url: 'http://lvh.me:3000/login/json',
         data: $(this).serialize(),
         success: function(response) {
 
@@ -279,6 +282,11 @@ var App = function () {
       return false;
 
     });
+
+    $('#logout').click(function(){
+      self.logout();
+      $.mobile.changePage($('#login'));
+    })
 
     if(self.get('login')) {
 
