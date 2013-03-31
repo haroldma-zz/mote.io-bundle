@@ -51,6 +51,25 @@ var MoteioReceiver = function() {
 
   self.debug = true;
 
+  self.inputDisplay = function(icon, color) {
+
+
+
+    var
+      color = color || null,
+      popup = $('<span class="icon-' + icon + '"></span>')
+
+    if(color) {
+      popup.css('color', color);
+     }
+
+    container = $('<div class="input-display"></div>');
+
+    container.append(popup);
+    $('body').append(container)
+
+  }
+
   // Press a button.
   // var button = which button# was pressed
   // var down = event phase? down/up?
@@ -67,6 +86,7 @@ var MoteioReceiver = function() {
     } else {
 
       if (down) {
+        self.inputDisplay(self.params.buttons[button].icon);
         toCall = buttonFunct.down;
         $('#moteio-icon').removeClass('gotData');
       } else {

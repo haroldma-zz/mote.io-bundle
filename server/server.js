@@ -149,6 +149,7 @@ var createRoom = function(roomName) {
       } else {
         callback(null, false);
       }
+
     })
     .on('connection', function (socket) {
 
