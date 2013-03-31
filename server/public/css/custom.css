@@ -1,6 +1,4 @@
-body {
-    padding-top: 50px;
-}
+
 .display-data {
     display: block;
     width: 100%;
@@ -15,4 +13,16 @@ body {
 }
 .controls .error {
     color: #B94A48;
+}
+.navbar {
+    margin: 40px 0px;
+}
+.phone {
+    float: right;
+    position: relative;
+    top: 244px;
+}
+.jumbotron {
+    padding: 80px;
+    text-align: center;
 }
