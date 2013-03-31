@@ -3,9 +3,12 @@ extends layout
 block content
   h2 Register
 
+  if (err)
+    .alert.alert-error #{err}
+
   form(action="/register",method="post")
     div
-      label Username
+      label Email
       input(type="text",name="username")
 
     div

@@ -28,7 +28,8 @@
     "passport-local-mongoose": "0.2.1",
     "jade": "0.28.2",
     "passport.socketio": "1.0.1",
-    "connect-mongo": "0.3.2"
+    "connect-mongo": "0.3.2",
+    "validator": "0.4.28"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",

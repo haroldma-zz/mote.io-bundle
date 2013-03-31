@@ -1,5 +1,7 @@
 var passport = require('passport'),
-    Account = require('./models/account');
+    Account = require('./models/account'),
+    check = require('validator').check,
+    sanitize = require('validator').sanitize;
 
 module.exports = function (app) {
 
@@ -12,14 +14,19 @@ module.exports = function (app) {
     });
 
     app.get('/register', function(req, res) {
-        res.render('register', { });
+        res.render('register', {err: null, user: req.user });
     });
 
     app.post('/register', function(req, res) {
+        try {
+            check(req.body.username, 'Please enter a valid email address.').len(6, 64).isEmail();
+            check(req.body.password, 'Please enter a password between 3 and 64 characters.').len(3, 64);
+        } catch (err) {
+            return res.render('register', { user : null, err: err });
+        }
+
         Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-            if (err) {
-                return res.render('register', { account : account });
-            }
+            return res.render('register', { user : account, err: err });
         });
     });
 
