@@ -47,11 +47,15 @@ app.configure(function() {
 });
 
 app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  mongoose.connect('mongodb://localhost/moteio');
+
 });
 
 app.configure('production', function(){
-    app.use(express.errorHandler());
+  app.use(express.errorHandler());
+  mongoose.connect('mongodb://moteio:7YX1V3uE886hldMLD59B37k7Gi43Pq7HCYik95lf@ds035897.mongolab.com:35897/moteio');
+
 });
 
 var Account = require('./models/account');
@@ -60,9 +64,6 @@ passport.use(Account.createStrategy());
 
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-
-// Connect mongoose
-mongoose.connect('mongodb://localhost/test');
 
 require('./routes')(app);
 
