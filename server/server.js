@@ -15,11 +15,59 @@ var
   jade = require('jade'),
   passportSocketIo = require("passport.socketio"),
   passportLocalMongoose = require('passport-local-mongoose'),
-  MongoStore = require('connect-mongo')(express);
+  MongoStore = require('connect-mongo')(express),
+  config = {};
 
-var sessionStore = new MongoStore({
-  db: 'test'
+var constructDBURL = function(db) {
+  var dbUrl = 'mongodb://';
+  if(db.username) {
+    dbUrl += db.username+':'+ db.password+'@';
+  }
+  dbUrl += db.host+':'+ db.port;
+  dbUrl += '/' + db.db;
+  console.log(dbUrl)
+  return dbUrl;
+}
+
+app.configure('development', function(){
+
+  config = {
+    db: {
+      db: 'test',
+      port: '27017',
+      host: 'localhost'
+    },
+    secret: '076ee61d63aa10a125ea872411e433b9',
+    port: 9000
+  };
+
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  mongoose.connect(constructDBURL(config.db));
+
 });
+
+app.configure('production', function(){
+
+  config = {
+    db: {
+      db: 'nodejitsu_sw1tch_nodejitsudb2423373404',
+      host: 'ds051947.mongolab.com',
+      port: 51947,
+      username: 'nodejitsu_sw1tch',
+      password: 'devo6no14em8qckhucr6fndapm',
+      collection: 'sessions'
+    },
+    secret: '076ee61d63aa10a125ea872411e433b9',
+    port: 80
+  };
+  // app.use(express.errorHandler());
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+
+  console.log('running in prod')
+  mongoose.connect(constructDBURL(config.db));
+});
+
+var sessionStore = new MongoStore(config.db);
 
 app.configure(function() {
 
@@ -46,18 +94,6 @@ app.configure(function() {
 
 });
 
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  mongoose.connect('mongodb://localhost/moteio');
-
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler());
-  mongoose.connect('mongodb://moteio:7YX1V3uE886hldMLD59B37k7Gi43Pq7HCYik95lf@ds035897.mongolab.com:35897/moteio');
-
-});
-
 var Account = require('./models/account');
 
 passport.use(Account.createStrategy());
@@ -67,8 +103,8 @@ passport.deserializeUser(Account.deserializeUser());
 
 require('./routes')(app);
 
-app.listen(3000);
-console.log('Listening on port 3000');
+app.listen(config.port);
+console.log('Listening on port ' + config.port);
 
 // uuid - phones
 // uid - session
