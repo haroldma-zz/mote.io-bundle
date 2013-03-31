@@ -43,7 +43,8 @@ module.exports = function (app) {
             res.json({
                 valid: true,
                 user: {
-                    username: req.user.username
+                    username: req.user.username,
+                    _id: req.user._id
                 }
             });
         } else {
@@ -58,7 +59,8 @@ module.exports = function (app) {
             res.json({
                 valid: true,
                 user: {
-                    username: req.user.username
+                    username: req.user.username,
+                    _id: req.user._id
                 }
             });
         } else {

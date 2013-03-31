@@ -38,7 +38,7 @@ app.configure('development', function(){
       host: 'localhost'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: 9000
+    port: 3000
   };
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -68,6 +68,7 @@ app.configure('production', function(){
 });
 
 var sessionStore = new MongoStore(config.db);
+console.log(sessionStore)
 
 app.configure(function() {
 
@@ -127,19 +128,23 @@ io.configure(function () {
 
 });
 
-var createRoom = function(username) {
+var createRoom = function(roomName) {
 
   console.log('creating room')
 
   io
-    .of('/' + username)
+    .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      console.log('username is')
-      console.log(username)
+      console.log('room name is')
+
+      console.log(roomName)
+      console.log(handshakeData.user._id)
+
+      console.log(roomName == handshakeData.user._id)
 
       // addittional auth to make sure we are correct user
-      if(username == handshakeData.user.username) {
+      if(String(roomName) === String(handshakeData.user._id)) {
         callback(null, true);
       } else {
         callback(null, false);
@@ -207,12 +212,12 @@ io.sockets.on('connection', function (socket) {
 
   console.log(socket.handshake.user)
 
-  var username = socket.handshake.user.username;
+  var roomName = socket.handshake.user._id;
 
   console.log('socket manager')
-  console.log(io.sockets.manager.namespaces['/' + username])
-  if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
-      createRoom(username);
+  console.log(io.sockets.manager.namespaces['/' + roomName])
+  if(typeof io.sockets.manager.namespaces['/' + roomName] == "undefined") {
+      createRoom(roomName);
   }
 
 });

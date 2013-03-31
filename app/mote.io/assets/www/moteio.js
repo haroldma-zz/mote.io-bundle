@@ -186,11 +186,11 @@ var App = function () {
 
   };
 
-  self.listen = function (username) {
+  self.listen = function (roomName) {
 
-    console.log('trying to connect to channel');
+    console.log('trying to connect to channel ' + roomName);
 
-    self.channel = io.connect(self.remote_location + '/' + username);
+    self.channel = io.connect(self.remote_location + '/' + roomName);
 
     self.channel.emit('get-config');
 
@@ -236,17 +236,6 @@ var App = function () {
 
   };
 
-  self.login = function (data) {
-
-    console.log(data)
-    if(data[2].value == "1") {
-      self.set('login', data);
-    }
-
-    self.listen(data[0].value);
-
-  }
-
   self.logout = function () {
     self.set('login', null);
     self.shush();
@@ -269,8 +258,16 @@ var App = function () {
         success: function(response) {
 
           if(response.valid) {
-            self.login(data);
+
+
+            console.log(response)
+            if(data[2].value == "1") {
+              self.set('login', data);
+            }
+
+            self.listen(response.user._id);
             $.mobile.changePage($('#remote'));
+
           } else {
             $.mobile.changePage($('#login'));
             alert('Incorrect')

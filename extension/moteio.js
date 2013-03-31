@@ -127,10 +127,10 @@ var MoteioReceiver = function() {
   }
 
   // Listen to channel uid
-  self.listen = function(uid) {
+  self.listen = function(roomName) {
 
-    self.clog('listening to channel ' + uid);
-    self.channel = io.connect(self.remote_location + '/' + uid);
+    self.clog('listening to channel ' + roomName);
+    self.channel = io.connect(self.remote_location + '/' + roomName);
 
     self.channel.emit('update-config', self.params);
 
@@ -244,7 +244,7 @@ var MoteioReceiver = function() {
         success: function(data) {
           console.log(data)
           if(data.valid) {
-            self.listen(data.user.username);
+            self.listen(data.user._id);
           } else {
             alert('Incorrect')
           }
