@@ -2,7 +2,7 @@
   "author": "Ian Jennings <ian@meetjennings.com> (http://ianjennin.gs)",
   "name": "mote.io",
   "description": "Mote.io control server",
-  "version": "0.0.0-9",
+  "version": "0.0.0-10",
   "homepage": "http://mote.io",
   "repository": {
     "type": "git",

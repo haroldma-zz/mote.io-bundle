@@ -259,7 +259,6 @@ var App = function () {
 
           if(response.valid) {
 
-
             console.log(response)
             if(data[2].value == "1") {
               self.set('login', data);

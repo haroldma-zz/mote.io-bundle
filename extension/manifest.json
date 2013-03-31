@@ -32,64 +32,17 @@
     },
     {
       "matches": [
-        "http://*.grooveshark.com/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "http://*.mote.io/*",
+        "http://*.grooveshark.com/*",
         "http://*.hypem.com/*",
-        "http://hypem.com/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
-        "http://*.rdio.com/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "http://hypem.com/*",
+        "http://*.rdio.com/*",
         "http://vimeo.com/*",
-        "https://vimeo.com/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "https://vimeo.com/*",
         "http://shelby.tv/*",
-        "http://*.shelby.tv/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "http://*.shelby.tv/*",
         "http://*.pandora.com/*",
-        "http://pandora.com/*"
-      ],
-      "js": [
-        "inject.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "http://pandora.com/*",
         "http://lvh.me:3000/homebase"
       ],
       "js": [

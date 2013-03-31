@@ -7,13 +7,13 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var extension_url = chrome.extension.getURL('moteio.js');
+var extension_url = "http://mote.io/js/moteio.js";
 
 exec(function(){
 
   console.log(window.location.host)
 
-  if (window.location.host == "lvh.me:3000") {
+  if (window.location.host == "mote.io" || window.location.host == "lvh.me:3000") {
 
     // actual client code
     window.moteio_config = {
