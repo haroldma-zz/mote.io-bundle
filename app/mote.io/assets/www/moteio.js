@@ -14,8 +14,7 @@ var App = function () {
 
   var self = this;
 
-  self.remote_location = 'http://lvh.me:8080';
-  self.bouncer = io.connect(self.remote_location + '/moteio-bouncer');
+  self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -247,13 +246,13 @@ var App = function () {
 
     $("#login-form").submit(function () {
 
-      $.mobile.changePage($('#loading'));
+//      $.mobile.changePage($('#loading'));
 
       var data = $(this).serializeArray();
 
       $.ajax({
         type: 'post',
-        url: 'http://lvh.me:3000/login/json',
+        url: 'http://mote.io/login/json',
         data: $(this).serialize(),
         success: function(response) {
 
@@ -272,6 +271,11 @@ var App = function () {
             alert('Incorrect')
           }
 
+        },
+        error: function(xhr, status, err) {
+          if (xhr.status == 401) {
+            $.mobile.changePage($('#login'));
+          }
         }
       });
 

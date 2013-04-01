@@ -7,7 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var extension_url = "http://mote.io/js/moteio.js";
+var extension_url = "http://mote.io/js/plugin.js",
+  css_url = "http://mote.io/css/plugin.css"
 
 exec(function(){
 
@@ -205,6 +206,13 @@ exec(function(){
 exec((function() {
 
   function async_load(){
+
+      var link = document.createElement("link");
+      link.href = css_url;
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      document.getElementsByTagName("head")[0].appendChild(link);
+
       var s = document.createElement('script');
       s.type = 'text/javascript';
       s.async = true;

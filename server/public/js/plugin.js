@@ -40,7 +40,8 @@ var MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'http://lvh.me:8080';
+  self.server = "http://mote.io";
+  self.remote_location = self.server;
 
   self.channel = null;
 
@@ -143,7 +144,7 @@ var MoteioReceiver = function() {
   };
 
   self.goHome = function() {
-    window.location = "http://lvh.me:3000/homebase";
+    window.location = self.server + "/homebase";
   }
 
   // Listen to channel uid
@@ -259,7 +260,7 @@ var MoteioReceiver = function() {
 
       $.ajax({
         type: 'get',
-        url: 'http://lvh.me:3000/login/json',
+        url: self.server + '/login/json',
         data: $(this).serialize(),
         success: function(data) {
           console.log(data)

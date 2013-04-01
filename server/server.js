@@ -4,7 +4,6 @@
 var
   path = require('path'),
   http = require('http'),
-  io = require('socket.io').listen(8080, "0.0.0.0"),
   winston = require('winston'),
   express = require('express'),
   app = express(),
@@ -104,7 +103,9 @@ passport.deserializeUser(Account.deserializeUser());
 
 require('./routes')(app);
 
-app.listen(config.port);
+var app = app.listen(config.port);
+var io = require('socket.io').listen(app);
+
 console.log('Listening on port ' + config.port);
 
 // uuid - phones
