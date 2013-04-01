@@ -57,7 +57,7 @@ app.configure('production', function(){
       collection: 'sessions'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: 80
+    port: 1337
   };
   // app.use(express.errorHandler());
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

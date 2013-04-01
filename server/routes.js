@@ -38,9 +38,9 @@ module.exports = function (app) {
         }
     });
 
-    app.get('/login/json', function(req, res) {
+    app.get('/get/login', function(req, res) {
         if(req.user) {
-            res.json({
+            res.jsonp({
                 valid: true,
                 user: {
                     username: req.user.username,
@@ -48,15 +48,15 @@ module.exports = function (app) {
                 }
             });
         } else {
-            res.json({
+            res.jsonp({
                 valid: false
             });
         }
     });
 
-    app.post('/login/json', passport.authenticate('local'), function(req, res) {
+    app.get('/post/login', passport.authenticate('local'), function(req, res) {
         if(req.user) {
-            res.json({
+            res.jsonp({
                 valid: true,
                 user: {
                     username: req.user.username,
@@ -64,7 +64,7 @@ module.exports = function (app) {
                 }
             });
         } else {
-            res.json({
+            res.jsonp({
                 valid: false
             });
         }

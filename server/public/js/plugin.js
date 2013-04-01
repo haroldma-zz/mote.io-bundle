@@ -41,7 +41,7 @@ var MoteioReceiver = function() {
   var self = this;
 
   self.server = "http://mote.io";
-  self.remote_location = self.server;
+  self.remote_location = self.server + ':80';
 
   self.channel = null;
 
@@ -260,14 +260,15 @@ var MoteioReceiver = function() {
 
       $.ajax({
         type: 'get',
-        url: self.server + '/login/json',
+        url: self.server + '/get/login/',
         data: $(this).serialize(),
+        dataType: 'jsonp',
         success: function(data) {
           console.log(data)
           if(data.valid) {
             self.listen(data.user._id);
           } else {
-            alert('Incorrect')
+            console.log('Incorrect')
           }
         }
       });
