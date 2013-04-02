@@ -40,20 +40,15 @@ var MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'http://mote.io:80';
+  self.remote_location = 'http://lvh.me:3000';
+  // prod self.remote_location = 'http://mote.io:80';
 
   self.channel = null;
 
-  // Connect to socket.io
-  self.bouncer = io.connect(self.remote_location);
-
   self.params = {};
-
   self.debug = true;
 
   self.inputDisplay = function(icon, color) {
-
-
 
     var
       color = color || null,
@@ -143,16 +138,33 @@ var MoteioReceiver = function() {
   };
 
   self.goHome = function() {
-    window.location = self.server + "/homebase";
+    window.location = self.remote_location + "/homebase";
   }
 
   // Listen to channel uid
   self.listen = function(roomName) {
 
-    self.clog('listening to channel ' + roomName);
-    self.channel = io.connect(self.remote_location + '/' + roomName);
+    console.log('trying to listen')
+    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection':true});
+    // https://github.com/LearnBoost/socket.io-client/issues/251
 
-    self.channel.emit('update-config', self.params);
+    self.channel.on('connect', function () {
+
+      self.clog('connected');
+      self.clog('listening to channel ' + roomName);
+
+      console.log('!!! EMIT ACTIVATE');
+      self.channel.emit('activate', function(){
+        console.log('got response')
+      });
+      self.channel.emit('update-config', self.params);
+
+      self.channel.emit('start', null, function (key) {
+        self.clog('started');
+        self.clog(key);
+      });
+
+    });
 
     self.channel.on('get-config', function(data, holla){
       self.channel.emit('update-config', self.params);
@@ -160,14 +172,6 @@ var MoteioReceiver = function() {
 
     self.channel.on('go-home', function(){
       self.goHome();
-    });
-
-    self.channel.on('connect', function () {
-      self.clog('connected');
-      self.channel.emit('start', null, function (key) {
-        self.clog('started');
-        self.clog(key);
-      });
     });
 
     self.channel.on('input', function (data) {
@@ -188,26 +192,31 @@ var MoteioReceiver = function() {
       self.params.search.action(data.value);
     });
 
+    self.channel.on('deactivate', function () {
+        self.clog('got deactivate')
+        self.stop();
+    });
+
   };
 
   // Notify the server of stuff.
   self.notify = function(line1, line2, image) {
 
-    self.clog('notify')
+    // self.clog('notify')
     data = {
       line1: line1,
       line2: line2,
       image: image
     }
     self.channel.emit('notify', data, function(){
-      self.clog('cb');
+      // self.clog('cb');
     });
 
   };
 
   self.updateButton = function(id, icon, color) {
 
-    self.clog('update button')
+    // self.clog('update button')
     data = {
       id: id,
       icon: icon,
@@ -215,7 +224,7 @@ var MoteioReceiver = function() {
     }
 
     self.channel.emit('update-button', data, function(){
-      self.clog('cbb');
+      // self.clog('cbb');
     })
 
   }
@@ -248,36 +257,61 @@ var MoteioReceiver = function() {
 
   };
 
-  // Initialize new MoteioReceiver object with specified params object
-  // Send message to server  and set listeners up if it's the first run.
-  // If not first run, just listen.  Draw overlay regardless.
+  self.stop = function () {
+    if (self.channel) {
+      console.log('connected to a channel, disconnecting, ');
+      self.channel.disconnect();
+      self.channel = null;
+    } else {
+      console.log('not connected to any channels yet');
+    }
+  };
+
+  self.start = function () {
+    console.log('!!! STARTING UP');
+    $.ajax({
+      type: 'get',
+      url: self.remote_location + '/get/login/',
+      dataType: 'jsonp',
+      success: function(data) {
+        console.log('got login response')
+        if(data.valid) {
+          self.listen(data.user._id);
+        } else {
+          alert('Mote.io is not logged in to any account. Please log in at http://mote.io/login.');
+        }
+      }
+    });
+  }
+
   self.init = function(params) {
 
     $(document).ready(function() {
 
-      self.params = params;
+      self.start();
 
-      $.ajax({
-        type: 'get',
-        url: self.remote_location + '/get/login/',
-        data: $(this).serialize(),
-        dataType: 'jsonp',
-        success: function(data) {
-          console.log(data)
-          if(data.valid) {
-            self.listen(data.user._id);
-          } else {
-            console.log('Incorrect')
-          }
+      $(window).on("focus", function() {
+
+        console.log('!!!!!!! FOCUS')
+
+        // activate this channel if it's not already active
+        if (!self.channel) {
+          console.log('STARTING')
+          self.start();
+          // this will set is_active
+        } else {
+          //console.log('CHANNEL EXISTS, DONT START')
         }
+
       });
+
+      self.params = params;
 
     });
 
   };
 
 };
-
 var rec = new MoteioReceiver();
 rec.init(window.moteio_config)
 

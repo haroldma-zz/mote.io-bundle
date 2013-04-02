@@ -7,8 +7,10 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var extension_url = "http://mote.io/js/plugin.js",
-  css_url = "http://mote.io/css/plugin.css"
+var remote_location = "http://lvh.me:3000";
+
+var extension_url = remote_location + "/js/plugin.js",
+  css_url = remote_location + "/css/plugin.css"
 
 exec(function(){
 

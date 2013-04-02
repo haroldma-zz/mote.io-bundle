@@ -169,7 +169,7 @@ var createRoom = function(roomName) {
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
-        winston.info('#extension has sent out a #notification');
+        // winston.info('#extension has sent out a #notification');
         socket.broadcast.emit('notify', data);
         holla();
       });
@@ -179,7 +179,7 @@ var createRoom = function(roomName) {
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        winston.info('#extension has sent out #update-button');
+        // winston.info('#extension has sent out #update-button');
         socket.broadcast.emit('update-button', data);
         holla();
       });
@@ -201,6 +201,10 @@ var createRoom = function(roomName) {
         winston.info('#client is searching for' + data.value);
         socket.broadcast.emit('search', data);
         holla();
+      });
+      socket.on('activate', function (data, holla) {
+        winston.info('#client emits "activate"!');
+        socket.broadcast.emit('deactivate');
       });
       socket.on('disconnect', function () {
         winston.info('#client has left #extension');
