@@ -134,8 +134,8 @@ var App = function () {
 
         var select_html = $('<select></select>');
 
-        for(var option in params[i].options){
-          var option_html = $('<option value="' + option + '">' + params[i].options[option].text + '</option>');
+        for(var option in params.data){
+          var option_html = $('<option value="' + option + '">' + params.data[option].text + '</option>');
           select_html.append(option_html);
         }
 
@@ -160,8 +160,8 @@ var App = function () {
 
         });
 
-        $('#form').append(select_html);
-        $("#form").trigger("create");
+        $('#remote-render').append(select_html);
+        $("#remote-render").trigger("create");
 
       }
 

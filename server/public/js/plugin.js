@@ -185,8 +185,7 @@ var MoteioReceiver = function() {
 
     self.channel.on('select', function (data) {
       console.log(data);
-      console.log(self.params.selects[data.id])
-      self.params.selects[data.id].options[data.value].action();
+      self.params.blocks[data.block_id].data[data._id].action();
     });
 
     self.channel.on('search', function (data) {
