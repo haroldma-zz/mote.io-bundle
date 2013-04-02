@@ -68,27 +68,25 @@ var MoteioReceiver = function() {
   // Press a button.
   // var button = which button# was pressed
   // var down = event phase? down/up?
-  self.triggerInput = function(button, down) {
+  self.triggerInput = function(data) {
 
-    var toCall = null;
-    console.log(button);
-    buttonFunct = self.params.buttons[button] || null;
+    console.log(data)
+
+    var toCall = null,
+    buttonFunct = self.params.blocks[data.block_id].data[data._id] || null;
 
     console.log(self.params)
 
     if(!buttonFunct){
-      if(down){
-        self.clog('button #' + button + ' has no methods set for onInput().', 3);
+      if(buttonFunct.press){
+        self.clog('button #' + button + ' has no methods set for button.data().', 3);
       }
     } else {
 
-      if (down) {
-        self.inputDisplay(self.params.buttons[button].icon);
-        toCall = buttonFunct.down;
-        $('#moteio-icon').removeClass('gotData');
+      if (data.press) {
+        toCall = buttonFunct.press;
       } else {
-        toCall = buttonFunct.up;
-        $('#moteio-icon').addClass('gotData');
+        toCall = buttonFunct.release;
       }
 
       toCall = toCall || null;
@@ -96,10 +94,10 @@ var MoteioReceiver = function() {
       if(toCall){
         toCall();
       } else {
-        if (down){
-          self.clog('No method set for down input on button ' + button, 2);
+        if (data.press){
+          self.clog('No method set for press() input on button', 2);
         } else {
-          self.clog('No method set for up input on button ' + button, 2);
+          self.clog('No method set for release() input on button', 2);
         }
       }
 
@@ -182,7 +180,7 @@ var MoteioReceiver = function() {
 
     self.channel.on('input', function (data) {
       console.log(data);
-      self.triggerInput(data.button, data.down);
+      self.triggerInput(data);
     });
 
     self.channel.on('select', function (data) {

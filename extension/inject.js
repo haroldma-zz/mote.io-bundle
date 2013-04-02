@@ -29,48 +29,48 @@ exec(function(){
           },
           {
             type: 'buttons',
-            data: {
-              'up': {
-                down: function () {
+            data: [
+              {
+                press: function () {
                   window.moveUp();
                 },
                 icon: 'chevron-up'
               }
-            }
+            ]
           },
           {
             type: 'buttons',
-            data: {
-              'left': {
-                down: function () {
+            data: [
+              {
+                press: function () {
                   window.moveLeft();
                 },
                 icon: 'chevron-left'
               },
-              'select': {
-                down: function () {
+              {
+                press: function () {
                   window.launchSelectedApp();
                 },
                 icon: 'circle-blank'
               },
-              'right': {
-                down: function () {
+              {
+                press: function () {
                   window.moveRight();
                 },
                 icon: 'chevron-right'
               }
-            }
+            ]
           },
           {
             type: 'buttons',
-            data: {
-              'down': {
-                down: function () {
+            data: [
+              {
+                press: function () {
                   window.moveDown();
                 },
                 icon: 'chevron-down'
               }
-            }
+            ]
           }
         ]
       }

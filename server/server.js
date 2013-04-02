@@ -189,7 +189,7 @@ var createRoom = function(roomName) {
       });
       socket.on('input', function (data, holla) {
         winston.info('#client is emitting input');
-        socket.broadcast.emit('input', data.keypress);
+        socket.broadcast.emit('input', data);
         holla();
       });
       socket.on('select', function (data, holla) {

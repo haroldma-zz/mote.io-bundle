@@ -92,35 +92,39 @@ var App = function () {
 
         var container = $("<div class='buttons'></div>");
 
+        var i = 0;
         $.each(params.data, function(index, button){
 
           console.log(index)
           console.log(button)
 
+          var button = button;
+
+          var data = {
+            block_id: params._id,
+            _id: i,
+            hash: params._id + ':' + i,
+          }
+
           element = $('<a href="#" id="moteio-button-' + index + '" class="moteio-button icon-' + button.icon + '" /></a>')
-            .attr('data-moteio', button_id)
+            .data('data', button)
             .bind('tap', function (e) {
               navigator.notification.vibrate(250);
-              console.log('we have a click');
               e.stopPropagation();
-              var elm = $(this);
-              $(this).parents('.moteio-button').addClass('moteio-down');
-              self.channel.emit('input', {
-                uuid: device.uuid,
-                keypress: {
-                  button: elm.attr('data-moteio'),
-                  down: true
-                }
-              }, function () {
+
+              data.press = true;
+
+              self.channel.emit('input', data, function () {
                 navigator.notification.vibrate(100);
                 setTimeout(function () {
                   navigator.notification.vibrate(100);
                 }, 150);
               });
+
             });
 
             container.append(element);
-
+            i++;
         });
 
         $('#remote-render').append(container);
