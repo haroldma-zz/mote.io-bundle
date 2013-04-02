@@ -191,8 +191,9 @@ var MoteioReceiver = function() {
     self.channel.on('search', function (data) {
       console.log('made it')
       console.log('data')
+      console.log(data)
       console.log(self.params.search)
-      self.params.search.action(data.value);
+      self.params.blocks[data.block_id].action(data.query);
     });
 
     self.channel.on('deactivate', function () {

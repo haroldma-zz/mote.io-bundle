@@ -74,13 +74,14 @@ var App = function () {
 
       if(type == "notify") {
 
-        wrapper = $('<div class="moteio-placement"></div>').css({
-            left: params.x + 'px',
-            top: params.y + 'px'
-          });
+        console.log('have a notify')
+
+        wrapper = $('<div class="moteio-placement"></div>');
         var notify = $('<div class="notify"></div>');
 
-        $('#remote-wrapper').append(wrapper.append(notify));
+        $('#remote-render').append(wrapper.append(notify));
+
+        console.log($('#remote-wrapper').html())
 
       }
 
@@ -169,12 +170,18 @@ var App = function () {
 
         var search_html = $('<form name="search-form" id="search-form"><input type="search" name="search" id="search" value="" /></form>');
 
+        var data = {
+          block_id: params._id,
+          hash: params._id,
+          uuid: device.uuid
+        }
+
         search_html.bind('submit', function(e) {
 
-          self.channel.emit('search', {
-            id: 0,
-            value: $("#search").val()
-          }, function () {
+
+          data.query =  $("#search").val()
+
+          self.channel.emit('search', data, function () {
 
             navigator.notification.vibrate(100);
 
@@ -188,8 +195,8 @@ var App = function () {
 
         });
 
-        $('#form').append(search_html);
-        $("#form").trigger("create");
+        $('#remote-render').append(search_html);
+        $("#remote-render").trigger("create");
 
       }
 
