@@ -1,3 +1,6 @@
+html, body {
+  height: 100%;
+}
 #loading-image {
   position: absolute;
   top: 50%;
@@ -16,28 +19,24 @@
 #login-button .ui-btn-inner  {
   padding: 20px;
 }
-#buttons {
-  width: 320px;
-  height: 405px;
+.buttons {
   margin: 0px auto;
-  border: 1px solid black;
-  position: relative;
-}
-.moiteio-placement {
-    position: absolute;
+  text-align: center;
 }
 .moteio-button {
+  display: inline-block;
    background-color: #d9d9d9;
    color: #434345;
-   display: block;
-   position: absolute;
-   width: 50px;
-   height: 50px;
-   line-height: 50px;
+   width: 75px;
+   height: 75px;
+   line-height: 75px;
+   margin-right: 10px;
+   margin-left: 10px;
+   margin-bottom: 20px;
    text-align: center;
-   -webkit-border-radius: 3px;
-   -moz-border-radius: 3px;
-   border-radius: 3px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
    box-shadow: inset 0px -2px 1px #888, inset 0px 1px 1px #eee;
    font-size: 18px;
    text-shadow: 0px 1px 1px #ececec;

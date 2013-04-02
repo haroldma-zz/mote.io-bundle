@@ -57,72 +57,81 @@ var App = function () {
 
 
     console.log('emptying remote');
-    $('#buttons').html('');
-    $('#form').html('');
+    $('#remote-render').html('');
 
-    // render notify div
-    if (res.notify && typeof res.notify !== "undefined") {
+    console.log(res)
 
-      wrapper = $('<div class="moteio-placement"></div>').css({
-          left: res.notify.x + 'px',
-          top: res.notify.y + 'px'
-        });
-      var notify = $('<div class="notify"></div>');
+    var id = 0;
+    $.each(res.blocks, function(type, params) {
 
-      $('#buttons').append(wrapper.append(notify));
+      params._id = id;
+      id++;
 
-    }
+      console.log(type)
+      console.log(params)
 
-    // render buttons
-    for (button_id in res.buttons) {
+      type = params.type;
 
-      console.log('rendering remote');
+      if(type == "notify") {
 
-      console.log('my id is ' + button_id);
-      console.log('my position is ' + res.buttons[button_id].x);
-
-      wrapper = $('<div class="moteio-placement" id="moteio-button-' + button_id + '"></div>')
-        .css({
-          'left': res.buttons[button_id].x,
-          'top': String(res.buttons[button_id].y) + 'px',
-          'position': 'absolute'
-        });
-
-      element = $('<a href="#" class="moteio-button icon-' + res.buttons[button_id].icon + '" /></a>')
-        .attr('data-moteio', button_id)
-        .bind('vmousedown', function (e) {
-          navigator.notification.vibrate(250);
-          console.log('we have a click');
-          e.stopPropagation();
-          var elm = $(this);
-          $(this).parents('.moteio-button').addClass('moteio-down');
-          self.channel.emit('input', {
-            uuid: device.uuid,
-            keypress: {
-              button: elm.attr('data-moteio'),
-              down: true
-            }
-          }, function () {
-            navigator.notification.vibrate(100);
-            setTimeout(function () {
-              navigator.notification.vibrate(100);
-            }, 150);
+        wrapper = $('<div class="moteio-placement"></div>').css({
+            left: params.x + 'px',
+            top: params.y + 'px'
           });
+        var notify = $('<div class="notify"></div>');
+
+        $('#remote-wrapper').append(wrapper.append(notify));
+
+      }
+
+      if(type == "buttons") {
+
+        console.log('rendering remote');
+
+        console.log(params)
+
+        var container = $("<div class='buttons'></div>");
+
+        $.each(params.data, function(index, button){
+
+          console.log(index)
+          console.log(button)
+
+          element = $('<a href="#" id="moteio-button-' + index + '" class="moteio-button icon-' + button.icon + '" /></a>')
+            .attr('data-moteio', button_id)
+            .bind('tap', function (e) {
+              navigator.notification.vibrate(250);
+              console.log('we have a click');
+              e.stopPropagation();
+              var elm = $(this);
+              $(this).parents('.moteio-button').addClass('moteio-down');
+              self.channel.emit('input', {
+                uuid: device.uuid,
+                keypress: {
+                  button: elm.attr('data-moteio'),
+                  down: true
+                }
+              }, function () {
+                navigator.notification.vibrate(100);
+                setTimeout(function () {
+                  navigator.notification.vibrate(100);
+                }, 150);
+              });
+            });
+
+            container.append(element);
+
         });
 
-      $('#buttons').append(wrapper.append(element));
-    }
+        $('#remote-render').append(container);
+      }
 
-    // render selects
-    console.log(res.selects)
-    if(typeof res.selects !== "undefined" && res.selects && res.selects.length > 0) {
-
-      for (var i = 0; i < res.selects.length; i++) {
+      if(type == "select") {
 
         var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
 
-        for(var option in res.selects[i].options){
-          var option_html = $('<option value="' + option + '">' + res.selects[i].options[option].text + '</option>');
+        for(var option in params[i].options){
+          var option_html = $('<option value="' + option + '">' + params[i].options[option].text + '</option>');
           select_html.append(option_html);
         }
 
@@ -148,9 +157,7 @@ var App = function () {
 
       }
 
-      // render selects
-      console.log(res.search)
-      if(typeof res.search !== "undefined" && res.search) {
+      if(type == "search") {
 
         var search_html = $('<form name="search-form" id="search-form"><input type="search" name="search" id="search" value="" /></form>');
 
@@ -175,8 +182,10 @@ var App = function () {
 
         $('#form').append(search_html);
         $("#form").trigger("create");
+
       }
-    }
+
+    });
 
     // fade loading out
     $('#loading-connecting').fadeOut();

@@ -19,54 +19,61 @@ exec(function(){
   if (window.location.host == "mote.io" || window.location.host == "lvh.me:3000") {
 
     // actual client code
-    window.moteio_config = {
-      notify: {
-        x: 0,
-        y: 0
-      },
-      buttons: {
-        'up': {
-          down: function () {
-            window.moveUp();
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Hype Machine',
+        blocks: [
+          {
+            type: 'notify'
           },
-          x: 132,
-          y: 75,
-          icon: 'chevron-up'
-        },
-        'down': {
-          down: function () {
-            window.moveDown();
+          {
+            type: 'buttons',
+            data: {
+              'up': {
+                down: function () {
+                  window.moveUp();
+                },
+                icon: 'chevron-up'
+              }
+            }
           },
-          x: 132,
-          y: 225,
-          icon: 'chevron-down'
-        },
-        'left': {
-          down: function () {
-            window.moveLeft();
+          {
+            type: 'buttons',
+            data: {
+              'left': {
+                down: function () {
+                  window.moveLeft();
+                },
+                icon: 'chevron-left'
+              },
+              'select': {
+                down: function () {
+                  window.launchSelectedApp();
+                },
+                icon: 'circle-blank'
+              },
+              'right': {
+                down: function () {
+                  window.moveRight();
+                },
+                icon: 'chevron-right'
+              }
+            }
           },
-          x: 55,
-          y: 150,
-          icon: 'chevron-left'
-        },
-        'right': {
-          down: function () {
-            window.moveRight();
-          },
-          x: 210,
-          y: 150,
-          icon: 'chevron-right'
-        },
-        'select': {
-          down: function () {
-            window.launchSelectedApp();
-          },
-          x: 132,
-          y: 150,
-          icon: 'circle-blank'
-        }
+          {
+            type: 'buttons',
+            data: {
+              'down': {
+                down: function () {
+                  window.moveDown();
+                },
+                icon: 'chevron-down'
+              }
+            }
+          }
+        ]
       }
-    }
 
   } else {
 
@@ -171,7 +178,6 @@ exec(function(){
             rec.simulateClick('playerPrev');
           },
           x: 20,
-          y: 75,
           icon: 'backward'
         },
         'play': {
@@ -179,7 +185,6 @@ exec(function(){
             rec.simulateClick('playerPlay');
           },
           x: 95,
-          y: 75,
           icon: 'play'
         },
         'heart': {
@@ -187,7 +192,6 @@ exec(function(){
             rec.simulateClick('playerFav');
           },
           x: 170,
-          y: 75,
           icon: 'heart'
         },
         'forward': {
@@ -195,7 +199,6 @@ exec(function(){
             rec.simulateClick('playerNext');
           },
           x: 245,
-          y: 75,
           icon: 'forward'
         }
       }

@@ -74,6 +74,8 @@ var MoteioReceiver = function() {
     console.log(button);
     buttonFunct = self.params.buttons[button] || null;
 
+    console.log(self.params)
+
     if(!buttonFunct){
       if(down){
         self.clog('button #' + button + ' has no methods set for onInput().', 3);
@@ -123,16 +125,20 @@ var MoteioReceiver = function() {
       switch (level){
       case 3:
         message.push('Error:');
+        message.push(description);
+        console.error(message.join(' '));
         break;
       case 2:
         message.push('Warning: ');
+        message.push(description);
+        console.warn(message.join(' '));
         break;
       default:
         message.push('Notice: ');
+        message.push(description);
+        console.log(message.join(' '));
         break;
       }
-      message.push(description);
-      console.log(message.join(' '));
     }
 
   };
@@ -228,34 +234,6 @@ var MoteioReceiver = function() {
     })
 
   }
-
-  // Draw overlay on page for QR code
-  self.drawOverlay = function() {
-
-    self.clog('draw overlay');
-
-    $('#with-moteio-sync').append(' \
-    <div id="moteio"> \
-      <div id="moteio-new" class="moteio-page"> \
-        <h1>Use your phone as a remote control!</h1> \
-        <h2>Click here to get started now.</h2> \
-      </div> \
-      <div id="moteio-icon" class="moteio-page"></div> \
-      <div id="moteio-sync" class="moteio-page"> \
-        <p>Scan this code with the mote.io mobile app! Get it now for <a href="#">Android</a>.</p> \
-        <div id="moteio-qrcode"></div> \
-      </div> \
-      <div id="moteio-devices" class="moteio-page"> \
-          <h2>A new device wants to sync!</h2> \
-          <div id="moteio-devices-list"></div> \
-        </div> \
-      </div> \
-      <div id="moteio-alert" class="moteio-page"></div> \
-    </div> \
-    <div id="moteio-blackout"> \
-    </div>');
-
-  };
 
   self.stop = function () {
     if (self.channel) {
