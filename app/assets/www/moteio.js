@@ -252,7 +252,7 @@ var App = function () {
 
       $.ajax({
         type: 'get',
-        url: 'http://mote.io/post/login',
+        url: self.remote_location + '/post/login',
         data: $(this).serialize(),
         dataType: 'jsonp',
         success: function(response) {
