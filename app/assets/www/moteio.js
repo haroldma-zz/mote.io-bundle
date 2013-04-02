@@ -95,15 +95,13 @@ var App = function () {
         var i = 0;
         $.each(params.data, function(index, button){
 
-          console.log(index)
-          console.log(button)
-
           var button = button;
 
           var data = {
             block_id: params._id,
             _id: i,
             hash: params._id + ':' + i,
+            uuid: device.uuid
           }
 
           element = $('<a href="#" id="moteio-button-' + index + '" class="moteio-button icon-' + button.icon + '" /></a>')
@@ -132,7 +130,9 @@ var App = function () {
 
       if(type == "select") {
 
-        var select_html = $('<select name="select-' + i + '" id="select-' + i + '"></select>');
+        console.log(params)
+
+        var select_html = $('<select></select>');
 
         for(var option in params[i].options){
           var option_html = $('<option value="' + option + '">' + params[i].options[option].text + '</option>');
@@ -141,10 +141,14 @@ var App = function () {
 
         select_html.bind('change', function(e) {
 
-          self.channel.emit('select', {
-            id: 0,
-            value: $(this).val()
-          }, function () {
+          var data = {
+            block_id: params._id,
+            _id: $(this).val(),
+            hash: params._id + ':' + $(this).val(),
+            uuid: device.uuid
+          }
+
+          self.channel.emit('select', data, function () {
 
             navigator.notification.vibrate(100);
 

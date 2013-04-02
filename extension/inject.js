@@ -22,7 +22,7 @@ exec(function(){
     window.moteio_config =
       {
         api_version: '0.1',
-        app_name: 'Hype Machine',
+        app_name: 'Homebase',
         blocks: [
           {
             type: 'notify'
@@ -97,9 +97,10 @@ exec(function(){
         }
       });
 
-      var thisArtist = $($('#player-nowplaying a')[3]).text();
-      var thisSong = $($('#player-nowplaying a')[4]).text();
-      rec.notify(thisArtist, thisSong, extractUrl(active.find('.readpost > span').css('background-image')));
+      var thisArtist = $($('#player-nowplaying a')[3]).text(),
+        thisSong = $($('#player-nowplaying a')[4]).text(),
+        thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
+      rec.notify(thisArtist, thisSong, thisImage);
 
       // transfer button states
       if($('#playerPlay').hasClass('play')) {
@@ -117,91 +118,89 @@ exec(function(){
     }, 1000);
 
     window.moteio_config = {
-      version: "0.1",
-      notify: {
-        x: 0,
-        y: 0
-      },
-      search: {
-        true: true,
-        action: function(value) {
-          $('#q').val(value);
-          $('#g').click();
-        }
-      },
-      selects: [
+      api_version: '0.1',
+      app_name: 'Hype Machine',
+      blocks: [
         {
-          x: 0,
-          y: 0,
-          options: {
-            'all': {
+          type: 'notify'
+        },
+        {
+          type: 'search',
+          action: function(query) {
+            $('#q').val(query);
+            $('#g').click();
+          }
+        },
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                rec.simulateClick('playerPrev');
+              },
+              icon: 'backward'
+            },
+            {
+              press: function () {
+                rec.simulateClick('playerPlay');
+              },
+              icon: 'play'
+            },
+            {
+              press: function () {
+                rec.simulateClick('playerFav');
+              },
+              icon: 'heart'
+            },
+            {
+              press: function () {
+                rec.simulateClick('playerNext');
+              },
+              icon: 'forward'
+            }
+          ]
+        },
+        {
+          type: 'select',
+          data: [
+            {
               optgroup: 'latest',
               text: 'Latest',
               action: function() {
                 window.location = "/latest";
               }
             },
-            'fresh': {
+            {
               optgroup: 'latest',
               text: 'Freshest',
               action: function() {
                 window.location = "/latest/fresh";
               }
             },
-            'remix': {
+            {
               optgroup: 'latest',
               text: 'Remixes Only',
               action: function() {
                 window.location = "/latest/remix";
               }
             },
-            'noremix': {
+            {
               optgroup: 'latest',
               text: 'No Remixes',
               action: function() {
                 window.location = "/latest/noremix";
               }
             },
-            'blogs': {
+            {
               optgroup: 'latest',
               text: 'Blogs in USA',
               action: function() {
                 window.location = "/latest/us";
               }
             }
-          }
+          ]
         }
-      ],
-      buttons: {
-        'backward': {
-          down: function () {
-            rec.simulateClick('playerPrev');
-          },
-          x: 20,
-          icon: 'backward'
-        },
-        'play': {
-          down: function () {
-            rec.simulateClick('playerPlay');
-          },
-          x: 95,
-          icon: 'play'
-        },
-        'heart': {
-          down: function () {
-            rec.simulateClick('playerFav');
-          },
-          x: 170,
-          icon: 'heart'
-        },
-        'forward': {
-          down: function () {
-            rec.simulateClick('playerNext');
-          },
-          x: 245,
-          icon: 'forward'
-        }
-      }
+      ]
     }
 
   }
