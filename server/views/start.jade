@@ -10,6 +10,7 @@ block content
     else
       .well.well-large
         h2 Sign in.
+        hr
         p
           | You are logged out. &nbsp;
           a(href='/register') Create an account
@@ -22,16 +23,19 @@ block content
     .moteio-state-not-installed
       .well.well-large
         h2 Install the Chrome Extension
+        hr
+        p Install the chrome extension then &nbsp;
+          a(href='/start') refresh this page
+          | .
         p
           a.btn(href='#') Get Mote.io Chrome Extension
     .moteio-state-signed-in
       .alert.alert-success App found.
     .moteio-state-not-signed-in
       .well.well-large
-        h2 Get the app
+        h2 Sign into the mobile app.
+        hr
         p
           a.btn(href='#') Get Mote.io for Android
         p Mote.io for iPhone coming soon
-      .well.well-large
-        h2 Sign in on mobile.
-        p Sign into the same account on the mobile app. If you don't have the app, get it in the previous step.
+

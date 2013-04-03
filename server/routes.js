@@ -6,19 +6,23 @@ var passport = require('passport'),
 module.exports = function (app) {
 
     app.get('/', function (req, res) {
-        res.render('index', { user : req.user });
+        res.render('index', { user : req.user, page: 'home' });
     });
 
     app.get('/homebase', function(req, res) {
-        res.render('homebase', { user : req.user });
+        res.render('homebase', { user : req.user, page: 'home' });
     });
 
     app.get('/register', function(req, res) {
-        res.render('register', {err: null, user: req.user });
+        res.render('register', {err: null, user: req.user, page: 'home' });
     });
 
     app.get('/start', function(req, res) {
-        res.render('start', {err: null, user: req.user});
+        res.render('start', {err: null, user: req.user, page: 'start'});
+    });
+
+    app.get('/developers', function(req, res){
+        res.render('developers', {err: null, user: req.user, page: 'developers'});
     });
 
     app.post('/register', function(req, res) {
@@ -26,19 +30,19 @@ module.exports = function (app) {
             check(req.body.username, 'Please enter a valid email address.').len(6, 64).isEmail();
             check(req.body.password, 'Please enter a password between 3 and 64 characters.').len(3, 64);
         } catch (err) {
-            return res.render('register', { user : null, err: err });
+            return res.render('register', { user : null, err: err, page: 'home' });
         }
 
         Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-            return res.render('register', { user : account, err: err });
+            return res.render('register', { user : account, err: err, page: 'home' });
         });
     });
 
     app.get('/login', function(req, res) {
         if(req.user) {
-            res.render('index', { user : req.user });
+            res.render('index', { user : req.user, page: 'home' });
         } else {
-            res.render('login');
+            res.render('login', { page: 'home' });
         }
     });
 
@@ -55,6 +59,14 @@ module.exports = function (app) {
             res.jsonp({
                 valid: false
             });
+        }
+    });
+
+    app.post('/post/login', passport.authenticate('local'), function(req, res) {
+        if(req.user) {
+            res.redirect('/start');
+        } else {
+            res.render('login', {page: 'home'});
         }
     });
 

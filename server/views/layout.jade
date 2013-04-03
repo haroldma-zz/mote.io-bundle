@@ -30,12 +30,12 @@ html.not-ie(lang='en')
               | .io
             .nav-collapse
               ul.nav
-                li.active
+                li(class=(page=='home') && "active")
                   a(href='/') Home
-                li
+                li(class=(page=='start') && "active")
                   a(href='/start') Get Started
-                li
-                  a(href='/') Developers
+                li(class=(page=='developers') && "active")
+                  a(href='/developers') Developers
       block content
       footer
         .container

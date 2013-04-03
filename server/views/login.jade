@@ -1,16 +1,24 @@
 extends layout
 
 block content
-  h2 Log In
+  #content.container.text-page
+    .row
+      .span4
+      .span4
+        h2 Log In
+        hr
+        form(action="/post/login",method="post")
+          div
+            label Email
+            input(type="text",name="username")
 
-  form(action="/post/login",method="get")
-    div
-      label Email
-      input(type="text",name="username")
+          div
+            label Password
+            input(type="password",name="password")
 
-    div
-      label Password
-      input(type="password",name="password")
+          div
+            input.btn(type="submit",value="Log In")
 
-    div
-      input(type="submit",value="Log In")
+          div
+            hr
+            a(href='/register') Create an account.

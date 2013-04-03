@@ -1,19 +1,32 @@
 extends layout
 
 block content
-  h2 Register
 
-  if (err)
-    .alert.alert-error #{err}
+  #content.container.text-page
+    .row
+      .span4
+      .span4
 
-  form(action="/register",method="post")
-    div
-      label Email
-      input(type="text",name="username")
+        h2 Register
+        hr
 
-    div
-      label Password
-      input(type="password",name="password")
+        if (err)
+          .alert.alert-error #{err}
 
-    div
-      input(type="submit",value="Register")
+        form(action="/register",method="post")
+          div
+            label Email
+            input(type="text",name="username")
+
+          div
+            label Password
+            input(type="password",name="password")
+
+          div
+            input.btn(type="submit",value="Register")
+
+          div
+            hr
+            p Did you really mean to &nbsp;
+              a(href='/login') login
+              | ?
