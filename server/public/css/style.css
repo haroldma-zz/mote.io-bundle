@@ -105,9 +105,7 @@ footer ul {
 }
 footer ul li {
 	padding:4px 0;
-	width:50%;
-	float:left;
-	display:inline-block;
+	display: block;
 }
 footer ul li a {
 	color:#999
@@ -1328,4 +1326,22 @@ ul.the-icons li {
 }
 ul.the-icons li:hover {
 	background:#eee;
+}
+
+/*
+Ian Custom
+ */
+
+.text-page {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+.text-page .heading {
+	margin-bottom: 50px;
+}
+.moteio-state-signed-in {
+	display: none;
+}
+.moteio-state-installed {
+	display: none;
 }

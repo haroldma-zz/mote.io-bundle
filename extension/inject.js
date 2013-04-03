@@ -16,7 +16,7 @@ exec(function(){
 
   console.log(window.location.host)
 
-  if (window.location.host == "mote.io" || window.location.host == "lvh.me:3000") {
+  if((window.location.host == "lvh.me:3000" || window.location.host == "mote.io") && window.location.pathname == "/homebase") {
 
     // actual client code
     window.moteio_config =
@@ -75,6 +75,28 @@ exec(function(){
         ]
       }
 
+  } else if((window.location.host == "lvh.me:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
+
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Press Button to Sync',
+        blocks: [
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'refresh'
+              }
+            ]
+          }
+        ]
+      }
+
   } else if(window.location.host == "hypem.com") {
 
     setInterval(function(){
@@ -91,6 +113,7 @@ exec(function(){
       var thisArtist = $($('#player-nowplaying a')[3]).text(),
         thisSong = $($('#player-nowplaying a')[4]).text(),
         thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
+
       rec.notify(thisArtist, thisSong, thisImage);
 
       // transfer button states

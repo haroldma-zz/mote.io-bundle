@@ -141,6 +141,10 @@ var MoteioReceiver = function() {
     });
 
     self.channel.on('get-config', function(data, holla){
+
+      $('.moteio-state-not-signed-in').hide();
+      $('.moteio-state-signed-in').show();
+
       self.channel.emit('update-config', self.params);
     });
 
@@ -149,6 +153,12 @@ var MoteioReceiver = function() {
     });
 
     self.channel.on('input', function (data) {
+
+      if((window.location.host == "lvh.me:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
+        console.log('go home')
+        self.goHome();
+      }
+
       self.clog('Got Button Input')
       console.log(data);
       self.triggerInput(data);
@@ -223,8 +233,14 @@ var MoteioReceiver = function() {
       success: function(data) {
         console.log('got login response')
         if(data.valid) {
+
           self.listen(data.user._id);
+
         } else {
+
+          $('.moteio-state-signed-in').show();
+          $('.moteio-state-not-signed-in').hide();
+
           alert('Mote.io is not logged in to any account. Please log in at http://mote.io/login.');
         }
       }
@@ -236,6 +252,9 @@ var MoteioReceiver = function() {
     $(document).ready(function() {
 
       self.start();
+      console.log($('.moteio-state-not-installed'))
+      $('.moteio-state-not-installed').hide();
+      $('.moteio-state-installed').show();
 
       $(window).on("focus", function() {
 

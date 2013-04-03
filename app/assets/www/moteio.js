@@ -306,7 +306,9 @@ var App = function () {
 
     var data = null;
 
-    $("#login-form").submit(function () {
+    $("#login-form").submit(function (e) {
+
+      e.preventDefault();
 
       $.mobile.changePage($('#loading'));
 
@@ -318,6 +320,8 @@ var App = function () {
         data: $(this).serialize(),
         dataType: 'jsonp',
         success: function(response) {
+
+          console.log(response)
 
           if(response.valid) {
 

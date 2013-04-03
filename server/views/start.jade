@@ -1,13 +1,38 @@
 extends layout
 
 block content
+  #content.container.text-page
+    .heading
+      h1 Getting Started
+      p It only takes a second to get started with Mote.io.
+    if (user)
+      .alert.alert-success You are currently logged in as #{user.username}
+    else
+      .well.well-large
+        h2 Sign in.
+        p
+          | You are logged out. &nbsp;
+          a(href='/register') Create an account
+          | &nbsp;or&nbsp;
+          a(href='/login') login
+            | .
 
-  h1 Getting Started
-  p It only takes a second to get started with Mote.io.
-  ol
-    li
-      a(href='/register') Create an account
-      | &nbsp;or&nbsp;
-      a(href='/login') Login
-    li Install the Chrome Extension
-    li Download the Mote.io app
+    .moteio-state-installed
+      .alert.alert-success Mote.io Chrome Extension found.
+    .moteio-state-not-installed
+      .well.well-large
+        h2 Install the Chrome Extension
+        p
+          a.btn(href='#') Get Mote.io Chrome Extension
+    .moteio-state-signed-in
+      .alert.alert-success App found.
+      .alert.alert-success Launching Homebase
+    .moteio-state-not-signed-in
+      .well.well-large
+        h2 Get the app
+        p
+          a.btn(href='#') Get Mote.io for Android
+        p Mote.io for iPhone coming soon
+      .well.well-large
+        h2 Sign in on mobile.
+        p Sign into the same account on the mobile app. If you don't have the app, get it in the previous step.

@@ -44,7 +44,8 @@
         "http://*.shelby.tv/*",
         "http://*.pandora.com/*",
         "http://pandora.com/*",
-        "http://lvh.me:3000/homebase"
+        "http://lvh.me:3000/homebase",
+        "http://lvh.me:3000/start"
       ],
       "js": [
         "inject.js"
