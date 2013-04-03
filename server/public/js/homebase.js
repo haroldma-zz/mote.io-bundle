@@ -67,6 +67,63 @@
       selectApp(currentApp);
     }
 
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Homebase',
+        blocks: [
+          {
+            type: 'notify'
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  window.moveUp();
+                },
+                icon: 'chevron-up'
+              }
+            ]
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  window.moveLeft();
+                },
+                icon: 'chevron-left'
+              },
+              {
+                press: function () {
+                  window.launchSelectedApp();
+                },
+                icon: 'circle-blank'
+              },
+              {
+                press: function () {
+                  window.moveRight();
+                },
+                icon: 'chevron-right'
+              }
+            ]
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  window.moveDown();
+                },
+                icon: 'chevron-down'
+              }
+            ]
+          }
+        ]
+      }
+
     console.log($apps)
     window.init();
 
