@@ -75,6 +75,56 @@ exec(function(){
         ]
       }
 
+  } else if(window.location.host == "www.htmltetris.com") {
+
+    // actual client code
+    window.moteio_config = {
+      api_version: '0.1',
+      app_name: 'Tetris',
+      blocks: [
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                moves[4]();
+              },
+              icon: 'undo',
+            },
+            {
+              press: function () {
+                moves[5]();
+              },
+              icon: 'repeat',
+            }
+          ]
+        },
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                moves[0]();
+              },
+              icon: 'chevron-left'
+            },
+            {
+              press: function () {
+                moves[6]();
+              },
+              icon: 'circle-blank'
+            },
+            {
+              press: function () {
+                moves[2]();
+              },
+              icon: 'chevron-right'
+            }
+          ]
+        }
+      ]
+    }
+
   } else {
 
     function extractUrl(input) {
@@ -138,25 +188,29 @@ exec(function(){
               press: function () {
                 rec.simulateClick('playerPrev');
               },
-              icon: 'backward'
+              icon: 'backward',
+              hash: 'back'
             },
             {
               press: function () {
                 rec.simulateClick('playerPlay');
               },
-              icon: 'play'
+              icon: 'play',
+              hash: 'play'
             },
             {
               press: function () {
                 rec.simulateClick('playerFav');
               },
-              icon: 'heart'
+              icon: 'heart',
+              hash: 'heart'
             },
             {
               press: function () {
                 rec.simulateClick('playerNext');
               },
-              icon: 'forward'
+              icon: 'forward',
+              hash: 'next'
             }
           ]
         },
@@ -202,7 +256,6 @@ exec(function(){
         }
       ]
     }
-
   }
 
 });

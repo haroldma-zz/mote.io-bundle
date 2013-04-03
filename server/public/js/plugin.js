@@ -179,6 +179,7 @@ var MoteioReceiver = function() {
     });
 
     self.channel.on('input', function (data) {
+      self.clog('Got Button Input')
       console.log(data);
       self.triggerInput(data);
     });
@@ -218,11 +219,11 @@ var MoteioReceiver = function() {
 
   };
 
-  self.updateButton = function(id, icon, color) {
+  self.updateButton = function(hash, icon, color) {
 
     // self.clog('update button')
     data = {
-      id: id,
+      hash: hash,
       icon: icon,
       color: color
     }

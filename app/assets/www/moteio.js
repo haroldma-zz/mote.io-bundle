@@ -42,6 +42,13 @@ var App = function () {
     }
   };
 
+  self.populateHash = function (given, fallback) {
+    if(typeof given !== "undefined" && given) {
+      return given;
+    }
+    return fallback;
+  }
+
   self.renderRemote = function(res) {
 
     console.log('got remote');
@@ -76,7 +83,7 @@ var App = function () {
 
         console.log('have a notify')
 
-        wrapper = $('<div class="moteio-placement"></div>');
+        wrapper = $('<div class="block"></div>');
         var notify = $('<div class="notify"></div>');
 
         $('#remote-render').append(wrapper.append(notify));
@@ -96,22 +103,36 @@ var App = function () {
         var i = 0;
         $.each(params.data, function(index, button){
 
-          var button = button;
-
           var data = {
             block_id: params._id,
             _id: i,
-            hash: params._id + ':' + i,
+            hash: self.populateHash(button.hash, params._id + '_' + i),
             uuid: device.uuid
           }
 
-          element = $('<a href="#" id="moteio-button-' + index + '" class="moteio-button icon-' + button.icon + '" /></a>')
-            .data('data', button)
-            .bind('tap', function (e) {
+          var data = self.populateHash(params.hash, data);
+
+          element = $('<a id="moteio-button-' + data.hash + '" class="moteio-button icon-' + button.icon + '" /></a>')
+            .bind('vmousedown', function (e) {
+
               navigator.notification.vibrate(250);
               e.stopPropagation();
 
               data.press = true;
+
+              self.channel.emit('input', data, function () {
+                navigator.notification.vibrate(100);
+                setTimeout(function () {
+                  navigator.notification.vibrate(100);
+                }, 150);
+              });
+
+            }).bind('vmouseup', function (e) {
+
+              navigator.notification.vibrate(250);
+              e.stopPropagation();
+
+              data.press = false;
 
               self.channel.emit('input', data, function () {
                 navigator.notification.vibrate(100);
@@ -126,7 +147,7 @@ var App = function () {
             i++;
         });
 
-        $('#remote-render').append(container);
+        $('#remote-render').append($('<div class="block"></div>').append(container));
       }
 
       if(type == "select") {
@@ -145,7 +166,7 @@ var App = function () {
           var data = {
             block_id: params._id,
             _id: $(this).val(),
-            hash: params._id + ':' + $(this).val(),
+            hash: params._id + '_' + $(this).val(),
             uuid: device.uuid
           }
 
@@ -161,14 +182,15 @@ var App = function () {
 
         });
 
-        $('#remote-render').append(select_html);
+        $('#remote-render').append($('<div class="block"></div>').append(select_html));
         $("#remote-render").trigger("create");
 
       }
 
       if(type == "search") {
 
-        var search_html = $('<form name="search-form" id="search-form"><input type="search" name="search" id="search" value="" /></form>');
+        var search_html = $('<form class="block" name="search-form" id="search-form"><input type="search" name="search" id="search" value="" /></form>');
+
 
         var data = {
           block_id: params._id,
@@ -243,11 +265,13 @@ var App = function () {
     });
 
     self.channel.on('update-button', function(data){
+      console.log('got update button')
+      console.log(data)
       if(data.icon) {
-        $('#moteio-button-' + data.id + ' > a').removeClass().addClass('moteio-button icon-' + data.icon);
+        $('#moteio-button-' + data.hash).removeClass().addClass('moteio-button icon-' + data.icon);
       }
       if(data.color) {
-        $('#moteio-button-' + data.id + ' > a').css({
+        $('#moteio-button-' + data.hash).css({
           'color': data.color
         });
       }

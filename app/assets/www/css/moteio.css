@@ -19,9 +19,13 @@ html, body {
 #login-button .ui-btn-inner  {
   padding: 20px;
 }
+.block {
+  width: 363px;
+}
 .buttons {
   margin: 0px auto;
   text-align: center;
+  margin-left: -20px;
 }
 .moteio-button {
   display: inline-block;
@@ -30,16 +34,23 @@ html, body {
    width: 75px;
    height: 75px;
    line-height: 75px;
-   margin-right: 10px;
-   margin-left: 10px;
-   margin-bottom: 20px;
+   margin-left: 20px;
    text-align: center;
    -webkit-border-radius: 6px;
    -moz-border-radius: 6px;
    border-radius: 6px;
    box-shadow: inset 0px -2px 1px #888, inset 0px 1px 1px #eee;
-   font-size: 18px;
+   font-size: 24px;
    text-shadow: 0px 1px 1px #ececec;
+}
+.ui-body-c .ui-link {
+  color: #434345;
+}
+.ui-input-search {
+  margin: none;
+}
+.block {
+  margin: 30px auto;
 }
 .moteio-button.moteio-down {
    top: 2px;
