@@ -241,7 +241,6 @@ var MoteioReceiver = function() {
           $('.moteio-state-signed-in').show();
           $('.moteio-state-not-signed-in').hide();
 
-          alert('Mote.io is not logged in to any account. Please log in at http://mote.io/login.');
         }
       }
     });
