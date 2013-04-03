@@ -17,6 +17,10 @@ module.exports = function (app) {
         res.render('register', {err: null, user: req.user });
     });
 
+    app.get('/start', function(req, res) {
+        res.render('start', {err: null, user: req.user});
+    });
+
     app.post('/register', function(req, res) {
         try {
             check(req.body.username, 'Please enter a valid email address.').len(6, 64).isEmail();

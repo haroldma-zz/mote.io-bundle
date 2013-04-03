@@ -1,4 +1,4 @@
-var 
+var
   rec = new MoteioReceiver();
   // custom sync scripts injected into dom
   rec.debug = true;
@@ -19,14 +19,12 @@ var
       },
       'play': {
         down: function() {
-          $('#player_play_pause').click();
         },
         xpos: 120,
         ypos: 20,
       },
       'next': {
         down: function() {
-          $('#player_next').click();
         },
         xpos: 220,
         ypos: 20,

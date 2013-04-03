@@ -75,66 +75,7 @@ exec(function(){
         ]
       }
 
-  } else if(window.location.host == "www.htmltetris.com") {
-
-    // actual client code
-    window.moteio_config = {
-      api_version: '0.1',
-      app_name: 'Tetris',
-      blocks: [
-        {
-          type: 'buttons',
-          data: [
-            {
-              press: function () {
-                moves[4]();
-              },
-              icon: 'undo',
-            },
-            {
-              press: function () {
-                moves[5]();
-              },
-              icon: 'repeat',
-            }
-          ]
-        },
-        {
-          type: 'buttons',
-          data: [
-            {
-              press: function () {
-                moves[0]();
-              },
-              icon: 'chevron-left'
-            },
-            {
-              press: function () {
-                moves[6]();
-              },
-              icon: 'circle-blank'
-            },
-            {
-              press: function () {
-                moves[2]();
-              },
-              icon: 'chevron-right'
-            }
-          ]
-        }
-      ]
-    }
-
-  } else {
-
-    function extractUrl(input) {
-     // remove quotes and wrapping url()
-     if (typeof input !== "undefined") {
-      return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
-     } else {
-      return;
-     }
-    }
+  } else if(window.location.host == "hypem.com") {
 
     setInterval(function(){
 
@@ -218,6 +159,181 @@ exec(function(){
           type: 'select',
           data: [
             {
+              optgroup: 'Latest',
+              text: 'Latest',
+              action: function() {
+                window.location = "/latest";
+              }
+            },
+            {
+              optgroup: 'Latest',
+              text: 'Freshest',
+              action: function() {
+                window.location = "/latest/fresh";
+              }
+            },
+            {
+              optgroup: 'Latest',
+              text: 'Remixes Only',
+              action: function() {
+                window.location = "/latest/remix";
+              }
+            },
+            {
+              optgroup: 'Latest',
+              text: 'No Remixes',
+              action: function() {
+                window.location = "/latest/noremix";
+              }
+            },
+            {
+              optgroup: 'Latest',
+              text: 'Blogs in USA',
+              action: function() {
+                window.location = "/latest/us";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'Now',
+              action: function() {
+                window.location = "/popular";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'Last Week',
+              action: function() {
+                window.location = "/popular/lastweek";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'Remixes Only',
+              action: function() {
+                window.location = "/popular/remix";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'No Remixes',
+              action: function() {
+                window.location = "/popular/noremix";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'Artists',
+              action: function() {
+                window.location = "/popular/artists";
+              }
+            },
+            {
+              optgroup: 'Popular',
+              text: 'On Twitter',
+              action: function() {
+                window.location = "/popular/twitter";
+              }
+            }
+          ]
+        }
+      ]
+    }
+
+
+  } else if(window.location.host == "www.htmltetris.com") {
+
+    // actual client code
+    window.moteio_config = {
+      api_version: '0.1',
+      app_name: 'Tetris',
+      blocks: [
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                moves[4]();
+              },
+              icon: 'undo',
+            },
+            {
+              press: function () {
+                moves[5]();
+              },
+              icon: 'repeat',
+            }
+          ]
+        },
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                moves[0]();
+              },
+              icon: 'chevron-left'
+            },
+            {
+              press: function () {
+                moves[6]();
+              },
+              icon: 'circle-blank'
+            },
+            {
+              press: function () {
+                moves[2]();
+              },
+              icon: 'chevron-right'
+            }
+          ]
+        }
+      ]
+    }
+
+  } else {
+
+    window.moteio_config = {
+      api_version: '0.1',
+      app_name: 'Grooveshark',
+      blocks: [
+        {
+          type: 'search',
+          action: function(query) {
+            $('#q').val(query);
+            $('#g').click();
+          }
+        },
+        {
+          type: 'buttons',
+          data: [
+            {
+              press: function () {
+                $('#play-prev').click();
+              },
+              icon: 'step-backward',
+              hash: 'back'
+            },
+            {
+              press: function () {
+                $('#play-pause').click();
+              },
+              icon: 'play',
+              hash: 'play'
+            },
+            {
+              press: function () {
+                $('#play-next').click();
+              },
+              icon: 'step-forward',
+              hash: 'next'
+            }
+          ]
+        },
+        {
+          type: 'select',
+          data: [
+            {
               optgroup: 'latest',
               text: 'Latest',
               action: function() {
@@ -256,6 +372,9 @@ exec(function(){
         }
       ]
     }
+
+    //
+
   }
 
 });

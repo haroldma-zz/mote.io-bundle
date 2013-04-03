@@ -64,12 +64,17 @@ var App = function () {
 
 
     console.log('emptying remote');
+    $('.ui-title').text(res.app_name);
     $('#remote-render').html('');
 
     console.log(res)
 
     var id = 0;
-    $.each(res.blocks, function(type, params) {
+
+    for(var key in res.blocks) {
+
+      var type = res.blocks[key].type,
+      params = res.blocks[key];
 
       params._id = id;
       id++;
@@ -158,7 +163,16 @@ var App = function () {
 
         for(var option in params.data){
           var option_html = $('<option value="' + option + '">' + params.data[option].text + '</option>');
-          select_html.append(option_html);
+          if(typeof params.data[option].optgroup !== "undefined") {
+            if(select_html.find('optgroup[label=' + params.data[option].optgroup + ']').html() == null){
+              select_html.append('<optgroup label="' + params.data[option].optgroup + '"></optgroup>')
+              select_html.find('optgroup[label=' + params.data[option].optgroup + ']').append(option_html);
+            } else {
+              select_html.find('optgroup[label=' + params.data[option].optgroup + ']').append(option_html);
+            }
+          } else {
+            select_html.append(option_html);
+          }
         }
 
         select_html.bind('change', function(e) {
@@ -222,13 +236,12 @@ var App = function () {
 
       }
 
-    });
+    }
 
     // fade loading out
     $('#loading-connecting').fadeOut();
     buttons = $('.moteio-button');
     console.log('there are ' + buttons.length + 'buttons');
-
 
   };
 
