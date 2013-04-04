@@ -24,7 +24,6 @@ var constructDBURL = function(db) {
   }
   dbUrl += db.host+':'+ db.port;
   dbUrl += '/' + db.db;
-  console.log(dbUrl)
   return dbUrl;
 }
 
@@ -67,7 +66,6 @@ app.configure('production', function(){
 });
 
 var sessionStore = new MongoStore(config.db);
-console.log(sessionStore)
 
 app.configure(function() {
 
@@ -138,9 +136,6 @@ var createRoom = function(roomName) {
     .authorization(function (handshakeData, callback) {
 
       console.log('room name is')
-
-      console.log(roomName)
-      console.log(handshakeData.user._id)
 
       console.log(roomName == handshakeData.user._id)
 
@@ -215,8 +210,6 @@ var createRoom = function(roomName) {
 }
 
 io.sockets.on('connection', function (socket) {
-
-  console.log(socket.handshake.user)
 
   var roomName = socket.handshake.user._id;
 

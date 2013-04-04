@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  #content.container.text-page
+    .heading
+      h1 Admin
+      hr
+
+
+    table.table-striped.table
+      thead
+        tr
+          th #
+          th _id
+          th Username
+          th Beta
+          th Action
+      tbody
+      each user, i in user_list
+        tr
+          td=i
+          td=user._id
+          td=user.username
+          td=user.beta
+          td
+            a(href='/admin/beta?user=' + user._id) Enabe Beta

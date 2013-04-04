@@ -7,7 +7,11 @@ block content
       .span4
         h2 Log In
         hr
-        form(action="/post/login",method="post")
+
+        if (err)
+          .alert.alert-error #{err}
+
+        form(action="/login",method="post")
           div
             label Email
             input(type="text",name="username")

@@ -338,7 +338,7 @@ var App = function () {
 
           } else {
             $.mobile.changePage($('#login'));
-            alert('Incorrect')
+            alert(response.reason);
           }
 
         },
