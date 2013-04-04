@@ -8,6 +8,12 @@ html, body {
   margin-top: -45px;
   margin-left: -45px;
 }
+#login a {
+  text-decoration: none;
+  color: #aaa;
+  font-weight: normal;
+  text-align: center;
+}
 #login-logo {
   max-width: 100%;
   margin: 50px auto;
