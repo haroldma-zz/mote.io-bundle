@@ -42,7 +42,7 @@ module.exports = function (app) {
               to: req.body.username,
               from: 'hello@mote.io',
               subject: 'Welcome to the wonderful world of mote.io',
-              text:
+              html:
               'Welcome to the wonderful world of mote.io.' +
               '<br/>' +
               '<br/>' +
