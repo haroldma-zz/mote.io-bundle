@@ -2,7 +2,7 @@
   "author": "Ian Jennings <ian@meetjennings.com> (http://ianjennin.gs)",
   "name": "mote.io",
   "description": "Mote.io control server",
-  "version": "0.0.0-42",
+  "version": "0.0.0-43",
   "homepage": "http://mote.io",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "passport.socketio": "1.0.1",
     "connect-mongo": "0.3.2",
     "validator": "0.4.28",
-    "sendgrid": "1.2.10"
+    "sendgrid": "0.2.6"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",

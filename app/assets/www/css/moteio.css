@@ -20,7 +20,7 @@ html, body {
   padding: 20px;
 }
 .block {
-  width: 363px;
+  width: 303px;
 }
 .buttons {
   margin: 0px auto;
@@ -31,9 +31,9 @@ html, body {
   display: inline-block;
    background-color: #d9d9d9;
    color: #434345;
-   width: 75px;
-   height: 75px;
-   line-height: 75px;
+   width: 60px;
+   height: 60px;
+   line-height: 60px;
    margin-left: 20px;
    text-align: center;
    -webkit-border-radius: 6px;

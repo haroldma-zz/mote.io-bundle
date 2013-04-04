@@ -14,8 +14,8 @@ var App = function () {
 
   var self = this;
 
-  // self.remote_location = 'http://lvh.me:3000';
-  self.remote_location = 'http://mote.io:80';
+  self.remote_location = 'http://lvh.me:3000';
+  // self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -126,10 +126,6 @@ var App = function () {
               data.press = true;
 
               self.channel.emit('input', data, function () {
-                navigator.notification.vibrate(100);
-                setTimeout(function () {
-                  navigator.notification.vibrate(100);
-                }, 150);
               });
 
             }).bind('vmouseup', function (e) {
@@ -140,10 +136,6 @@ var App = function () {
               data.press = false;
 
               self.channel.emit('input', data, function () {
-                navigator.notification.vibrate(100);
-                setTimeout(function () {
-                  navigator.notification.vibrate(100);
-                }, 150);
               });
 
             });
@@ -290,7 +282,7 @@ var App = function () {
       }
     });
 
-    $('#go-home').click(function(){
+    $('.go-home').click(function(){
       console.log('go home')
       self.channel.emit('go-home');
     });
@@ -329,7 +321,7 @@ var App = function () {
         url: self.remote_location + '/post/login',
         data: $(this).serialize(),
         dataType: 'jsonp',
-        timeout: 2000,
+        timeout: 6000,
         success: function(response) {
 
           console.log(response)

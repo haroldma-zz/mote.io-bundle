@@ -7,8 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-// var remote_location = "http://lvh.me:3000";
-var remote_location = 'http://mote.io:80';
+var remote_location = "http://lvh.me:3000";
+// var remote_location = 'http://mote.io:80';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"
@@ -31,36 +31,34 @@ exec(function(){
     setInterval(function(){
 
       var active = null;
-      $(document).ready(function() {
 
-        if(typeof window.moteio_rec !== "undefined") {
+      if(typeof window.moteio_rec !== "undefined") {
 
-          if($('.active-playing-green').length > 0) {
-            active = $('.active-playing-green');
-          } else {
-            active = $($('.section-track')[0]);
-          }
-
-          var thisArtist = $($('#player-nowplaying a')[3]).text(),
-            thisSong = $($('#player-nowplaying a')[4]).text(),
-            thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-            window.moteio_rec.notify(thisArtist, thisSong, thisImage);
-
-         // transfer button states
-         if($('#playerPlay').hasClass('play')) {
-           window.moteio_rec.updateButton('play', 'play', null);
-         }
-         if($('#playerPlay').hasClass('pause')) {
-           window.moteio_rec.updateButton('play', 'pause', null);
-         }
-         if($('#playerFav').hasClass('fav-on')) {
-           window.moteio_rec.updateButton('heart', null, '#ff0000');
-         } else {
-           window.moteio_rec.updateButton('heart', null, '#434345');
-         }
+        if($('.active-playing-green').length > 0) {
+          active = $('.active-playing-green');
+        } else {
+          active = $($('.section-track')[0]);
         }
 
-      });
+        var thisArtist = $($('#player-nowplaying a')[3]).text(),
+          thisSong = $($('#player-nowplaying a')[4]).text(),
+          thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
+          window.moteio_rec.notify(thisArtist, thisSong, thisImage);
+
+       // transfer button states
+       if($('#playerPlay').hasClass('play')) {
+         window.moteio_rec.updateButton('play', 'play', null);
+       }
+       if($('#playerPlay').hasClass('pause')) {
+         window.moteio_rec.updateButton('play', 'pause', null);
+       }
+       if($('#playerFav').hasClass('fav-on')) {
+         window.moteio_rec.updateButton('heart', null, '#ff0000');
+       } else {
+         window.moteio_rec.updateButton('heart', null, '#434345');
+       }
+      }
+
     }, 1000);
 
     window.moteio_config = {
