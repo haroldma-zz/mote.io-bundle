@@ -7,7 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var remote_location = "http://lvh.me:3000";
+// var remote_location = "http://lvh.me:3000";
+var remote_location = 'http://mote.io:80';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"

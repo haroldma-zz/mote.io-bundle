@@ -14,8 +14,8 @@ var App = function () {
 
   var self = this;
 
-  self.remote_location = 'http://lvh.me:3000';
-  // prod self.remote_location = 'http://mote.io:80';
+  // self.remote_location = 'http://lvh.me:3000';
+  self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -314,11 +314,22 @@ var App = function () {
 
       var data = $(this).serializeArray();
 
+      $.ajaxSetup({
+        statusCode: {
+          401: function(){
+            // Redirec the to the login page.
+            alert('Error authorizing.')
+            $.mobile.changePage($('#login'));
+          }
+        }
+      });
+
       $.ajax({
         type: 'get',
         url: self.remote_location + '/post/login',
         data: $(this).serialize(),
         dataType: 'jsonp',
+        timeout: 2000,
         success: function(response) {
 
           console.log(response)
@@ -340,11 +351,8 @@ var App = function () {
 
         },
         error: function(xhr, status, err) {
-          if (xhr.status == 401) {
-            alert('Incorrect')
-          } else {
-            alert('There was a problem, please try again.')
-          }
+
+          alert('There was a problem logging you in, please try again.')
           $.mobile.changePage($('#login'));
         }
       });
