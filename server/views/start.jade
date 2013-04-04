@@ -8,7 +8,9 @@ block content
       h1 Getting Started
       p It only takes a second to get started with Mote.io.
     if (user)
-      .alert.alert-success You are currently logged in as #{user.username}
+      .alert.alert-success
+        | You are currently logged in as #{user.username}.&nbsp;
+        a(href = '/logout') Logout.
     else
       .well.well-large
         h2 Sign in.

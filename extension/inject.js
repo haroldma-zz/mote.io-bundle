@@ -18,35 +18,48 @@ exec(function(){
 
   if(window.location.host == "hypem.com") {
 
+    function extractUrl(input) {
+      // remove quotes and wrapping url()
+      if (typeof input !== "undefined") {
+       return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
+      } else {
+       return;
+      }
+    }
+
     setInterval(function(){
 
       var active = null;
       $(document).ready(function() {
-        if($('.active-playing-green').length > 0) {
-          active = $('.active-playing-green');
-        } else {
-          active = $($('.section-track')[0]);
+
+        if(typeof window.moteio_rec !== "undefined") {
+
+          if($('.active-playing-green').length > 0) {
+            active = $('.active-playing-green');
+          } else {
+            active = $($('.section-track')[0]);
+          }
+
+          var thisArtist = $($('#player-nowplaying a')[3]).text(),
+            thisSong = $($('#player-nowplaying a')[4]).text(),
+            thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
+            window.moteio_rec.notify(thisArtist, thisSong, thisImage);
+
+         // transfer button states
+         if($('#playerPlay').hasClass('play')) {
+           window.moteio_rec.updateButton('play', 'play', null);
+         }
+         if($('#playerPlay').hasClass('pause')) {
+           window.moteio_rec.updateButton('play', 'pause', null);
+         }
+         if($('#playerFav').hasClass('fav-on')) {
+           window.moteio_rec.updateButton('heart', null, '#ff0000');
+         } else {
+           window.moteio_rec.updateButton('heart', null, '#434345');
+         }
         }
+
       });
-
-      var thisArtist = $($('#player-nowplaying a')[3]).text(),
-        thisSong = $($('#player-nowplaying a')[4]).text(),
-        thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-      rec.notify(thisArtist, thisSong, thisImage);
-
-      // transfer button states
-      if($('#playerPlay').hasClass('play')) {
-        rec.updateButton('play', 'play', null);
-      }
-      if($('#playerPlay').hasClass('pause')) {
-        rec.updateButton('play', 'pause', null);
-      }
-      if($('#playerFav').hasClass('fav-on')) {
-        rec.updateButton('heart', null, '#ff0000');
-      } else {
-        rec.updateButton('heart', null, '#434345');
-      }
-
     }, 1000);
 
     window.moteio_config = {
@@ -68,28 +81,28 @@ exec(function(){
           data: [
             {
               press: function () {
-                rec.simulateClick('playerPrev');
+                window.moteio_rec.simulateClick('playerPrev');
               },
               icon: 'backward',
               hash: 'back'
             },
             {
               press: function () {
-                rec.simulateClick('playerPlay');
+                window.moteio_rec.simulateClick('playerPlay');
               },
               icon: 'play',
               hash: 'play'
             },
             {
               press: function () {
-                rec.simulateClick('playerFav');
+                window.moteio_rec.simulateClick('playerFav');
               },
               icon: 'heart',
               hash: 'heart'
             },
             {
               press: function () {
-                rec.simulateClick('playerNext');
+                window.moteio_rec.simulateClick('playerNext');
               },
               icon: 'forward',
               hash: 'next'
@@ -180,7 +193,6 @@ exec(function(){
         }
       ]
     }
-
 
   } else if(window.location.host == "www.htmltetris.com") {
 

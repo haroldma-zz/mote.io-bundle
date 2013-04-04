@@ -29,7 +29,8 @@
     "jade": "0.28.2",
     "passport.socketio": "1.0.1",
     "connect-mongo": "0.3.2",
-    "validator": "0.4.28"
+    "validator": "0.4.28",
+    "sendgrid": "1.2.10"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",
