@@ -15,7 +15,7 @@ var App = function () {
   var self = this;
 
   self.remote_location = 'http://lvh.me:3000';
-  // self.remote_location = 'http://mote.io:80';
+  //self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -117,7 +117,7 @@ var App = function () {
 
           var data = self.populateHash(params.hash, data);
 
-          element = $('<a id="moteio-button-' + data.hash + '" class="moteio-button icon-' + button.icon + '" /></a>')
+          element = $('<span id="moteio-button-' + data.hash + '" class="moteio-button icon-' + button.icon + '" /></span>')
             .bind('vmousedown', function (e) {
 
               navigator.notification.vibrate(250);
@@ -128,7 +128,9 @@ var App = function () {
               self.channel.emit('input', data, function () {
               });
 
-            }).bind('vmouseup', function (e) {
+            })
+            /*
+            element.bind('vmouseup', function (e) {
 
               navigator.notification.vibrate(250);
               e.stopPropagation();
@@ -139,6 +141,7 @@ var App = function () {
               });
 
             });
+            */
 
             container.append(element);
             i++;

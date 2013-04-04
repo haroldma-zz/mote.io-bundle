@@ -10,7 +10,7 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  // self.remote_location = 'http://mote.io:80';
+  //self.remote_location = 'http://mote.io:80';
   self.remote_location = 'http://lvh.me:3000';
 
   self.channel = null;
@@ -194,9 +194,12 @@ window.MoteioReceiver = function() {
       line2: line2,
       image: image
     }
-    self.channel.emit('notify', data, function(){
-      // self.clog('cb');
-    });
+
+    if(self.channel) {
+      self.channel.emit('notify', data, function(){
+        // self.clog('cb');
+      });
+    }
 
   };
 
@@ -209,9 +212,12 @@ window.MoteioReceiver = function() {
       color: color
     }
 
-    self.channel.emit('update-button', data, function(){
-      // self.clog('cbb');
-    })
+
+    if (self.channel) {
+      self.channel.emit('update-button', data, function(){
+        // self.clog('cbb');
+      });
+    }
 
   }
 

@@ -8,7 +8,7 @@ function exec(fn) {
 }
 
 var remote_location = "http://lvh.me:3000";
-// var remote_location = 'http://mote.io:80';
+//var remote_location = 'http://mote.io:80';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"
@@ -243,87 +243,27 @@ exec(function(){
       ]
     }
 
-  } else {
+  } else if (window.location.host == "mote.io" && window.location.pathname = "/start") {
 
-    window.moteio_config = {
-      api_version: '0.1',
-      app_name: 'Grooveshark',
-      blocks: [
-        {
-          type: 'search',
-          action: function(query) {
-            $('#q').val(query);
-            $('#g').click();
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Press Button to Sync.',
+        blocks: [
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'refresh'
+              }
+            ]
           }
-        },
-        {
-          type: 'buttons',
-          data: [
-            {
-              press: function () {
-                $('#play-prev').click();
-              },
-              icon: 'step-backward',
-              hash: 'back'
-            },
-            {
-              press: function () {
-                $('#play-pause').click();
-              },
-              icon: 'play',
-              hash: 'play'
-            },
-            {
-              press: function () {
-                $('#play-next').click();
-              },
-              icon: 'step-forward',
-              hash: 'next'
-            }
-          ]
-        },
-        {
-          type: 'select',
-          data: [
-            {
-              optgroup: 'latest',
-              text: 'Latest',
-              action: function() {
-                window.location = "/latest";
-              }
-            },
-            {
-              optgroup: 'latest',
-              text: 'Freshest',
-              action: function() {
-                window.location = "/latest/fresh";
-              }
-            },
-            {
-              optgroup: 'latest',
-              text: 'Remixes Only',
-              action: function() {
-                window.location = "/latest/remix";
-              }
-            },
-            {
-              optgroup: 'latest',
-              text: 'No Remixes',
-              action: function() {
-                window.location = "/latest/noremix";
-              }
-            },
-            {
-              optgroup: 'latest',
-              text: 'Blogs in USA',
-              action: function() {
-                window.location = "/latest/us";
-              }
-            }
-          ]
-        }
-      ]
-    }
+        ]
+      }
 
     //
 

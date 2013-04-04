@@ -65,6 +65,10 @@ module.exports = function (app) {
                           'http://mote.io/start' +
                           '<br/>' +
                           '<br/>' +
+                          'And you can download the Android APK here:' +
+                          'http://mote.io/downloads/Mote.io.apk' +
+                          '<br/>' +
+                          '<br/>' +
                           'Thanks for testing! Follow me on twitter for more updates about mote.io:' +
                           '<br/>' +
                           'http://twttier.com/sw1tch' +
@@ -104,30 +108,35 @@ module.exports = function (app) {
 
         Account.register(new Account({ username : req.body.username, beta: false }), req.body.password, function(err, account) {
 
-            sendgrid.send({
-              to: req.body.username,
-              from: 'hello@mote.io',
-              subject: 'Welcome to the wonderful world of mote.io',
-              html:
-              'Welcome to the wonderful world of mote.io.' +
-              '<br/>' +
-              '<br/>' +
-              'You\'re on the beta list! New accounts are provisioned daily, expect access soon.' +
-              '<br/>' +
-              '<br/>' +
-              'Follow me on twitter for more updates about mote.io:' +
-              '<br/>' +
-              'http://twttier.com/sw1tch' +
-              '<br/>' +
-              '<br/>' +
-              '--------------------'
-            }, function(success, message) {
-              if (!success) {
-                console.log(message);
-              }
-            });
+            if (err) {
+                res.render('register', { user : null, err: err, page: 'start' });
+            } else {
+                sendgrid.send({
+                  to: req.body.username,
+                  from: 'hello@mote.io',
+                  subject: 'Welcome to the wonderful world of mote.io',
+                  html:
+                  'Welcome to the wonderful world of mote.io.' +
+                  '<br/>' +
+                  '<br/>' +
+                  'You\'re on the beta list! New accounts are provisioned daily, expect access soon.' +
+                  '<br/>' +
+                  '<br/>' +
+                  'Follow me on twitter for more updates about mote.io:' +
+                  '<br/>' +
+                  'http://twttier.com/sw1tch' +
+                  '<br/>' +
+                  '<br/>' +
+                  '--------------------'
+                }, function(success, message) {
+                  if (!success) {
+                    console.log(message);
+                  }
+                });
 
-            res.redirect('/beta');
+                res.redirect('/beta');
+
+            }
 
         });
     });
