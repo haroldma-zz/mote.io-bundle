@@ -10,8 +10,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'http://lvh.me:3000';
   // self.remote_location = 'http://mote.io:80';
+  self.remote_location = 'http://lvh.me:3000';
 
   self.channel = null;
 
@@ -146,6 +146,7 @@ window.MoteioReceiver = function() {
       $('.moteio-state-signed-in').show();
 
       self.channel.emit('update-config', self.params);
+
     });
 
     self.channel.on('go-home', function(){
