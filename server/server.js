@@ -379,6 +379,9 @@ var createRoom = function(roomName) {
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
+      clients = io.of('/' + handshakeData.user.id).clients();
+      console.log(clients)
+
       winston.info('room name is')
 
       console.log(handshakeData)
