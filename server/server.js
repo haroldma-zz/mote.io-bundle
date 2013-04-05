@@ -48,15 +48,15 @@ app.configure('production', function(){
 
   config = {
     db: {
-      db: 'nodejitsu_sw1tch_nodejitsudb2423373404',
-      host: 'ds051947.mongolab.com',
-      port: 51947,
-      username: 'nodejitsu_sw1tch',
-      password: 'devo6no14em8qckhucr6fndapm',
+      db: 'qet7idOn',
+      host: 'mongo.onmodulus.net',
+      port: 27017,
+      username: 'moteio',
+      password: 'honeywell',
       collection: 'sessions'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: 1337
+    port: process.env.PORT
   };
   // app.use(express.errorHandler());
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));

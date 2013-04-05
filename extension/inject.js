@@ -243,7 +243,65 @@ exec(function(){
       ]
     }
 
-  } else if (window.location.host == "mote.io" && window.location.pathname = "/start") {
+  } else if (window.location.host == "www.rdio.com") {
+
+
+    window.moteio_update = function() {
+      window.moteio_rec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'));
+      setTimeout(function(){
+        window.moteio_update();
+      }, 1000);
+    }
+
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Rdio',
+        blocks: [
+          {
+            type: 'notify'
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  $('.prev').click();
+                },
+                icon: 'backward',
+                hash: 'back'
+              },
+              {
+                press: function () {
+                  $('.play_pause').click();
+                },
+                icon: 'play',
+                hash: 'play'
+              },
+              {
+                press: function () {
+                  $('.next').click();
+                },
+                icon: 'forward',
+                hash: 'next'
+              },
+              {
+                press: function () {
+                  $('.shuffle').click();
+                },
+                icon: 'random',
+                hash: 'random'
+              }
+            ]
+          },
+        ]
+      }
+
+    //
+
+
+  } else if ((window.location.host == "mote.io" || window.location.host == "lvh.me:3000")&& window.location.pathname == "/start") {
 
     // actual client code
     window.moteio_config =

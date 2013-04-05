@@ -1,6 +1,6 @@
 {
   "name": "Mote.io",
-  "version": "0.1",
+  "version": "0.31",
   "manifest_version": 2,
   "description": "Control websites with the mote.io mobile app! Use this to sync the mote.io app with your browser.",
   "permissions": [
@@ -51,8 +51,8 @@
         "http://*.shelby.tv/*",
         "http://*.pandora.com/*",
         "http://pandora.com/*",
-        "http://lvh.me:3000/*",
-        "http://mote.io/*"
+        "http://lvh.me:3000/start",
+        "http://mote.io/start"
       ],
       "js": [
         "inject.js"

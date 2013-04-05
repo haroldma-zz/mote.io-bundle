@@ -2,7 +2,7 @@
   "author": "Ian Jennings <ian@meetjennings.com> (http://ianjennin.gs)",
   "name": "mote.io",
   "description": "Mote.io control server",
-  "version": "0.0.0-62",
+  "version": "0.0.0-82",
   "homepage": "http://mote.io",
   "repository": {
     "type": "git",
@@ -36,5 +36,6 @@
   "subdomain": "sw1tch-moteio",
   "scripts": {
     "start": "node server.js"
-  }
+  },
+  "main":"server.js"
 }

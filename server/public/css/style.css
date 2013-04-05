@@ -387,6 +387,9 @@ footer input[type=submit].btn {
 	}
 	@media (max-width: 767px) {
 
+		body #phone {
+			top:  141px;
+		}
 		#macbook_carousel {
 			background:none;
 			height:auto;
@@ -1344,4 +1347,33 @@ Ian Custom
 }
 .moteio-state-installed {
 	display: none;
+}
+#phone {
+	background:url(../images/phone.png) transparent top center no-repeat;
+	position: absolute;
+	width: 137px;
+	height: 247px;left: 80px;
+	z-index: 100;
+	top: 202px;
+}
+#phone .site {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+}
+#phone .site .rdio, #phone .site .hypem {
+	display: none;
+}
+#macbook_carousel .carousel {
+	width:600px;
+	margin:0 auto;
+	padding:28px 0 0 0;
+}
+#macbook_carousel .carousel .item {
+	width:600px;
+	height:360px;
+	overflow:hidden;
+}
+#macbook_carousel .carousel img {
+	width:600px;
 }

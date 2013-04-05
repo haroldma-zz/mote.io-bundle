@@ -7,14 +7,21 @@ block content
         p.ac
           | Don't Get Up.
         #macbook_carousel
+          #phone
+            .site.homebase
+              img(src='images/phone/homebase.png')
+            .site.hypem
+              img(src='images/phone/hypem.png')
+            .site.rdio
+              img(src='images/phone/rdio.png')
           #carousel.carousel.slide(rel='carousel')
             .carousel-inner
-              .active.item
-                img(src='assets/carousel_1.jpg', alt='')
-              .item
-                img(src='assets/carousel_2.gif', alt='')
-              .item
-                img(src='assets/carousel_3.gif', alt='')
+              .active.item.homebase
+                img(src='images/carousel/homebase.png', alt='')
+              .item.hypem
+                img(src='images/carousel/hypem.png', alt='')
+              .item.rdio
+                img(src='images/carousel/rdio.png', alt='')
             a.carousel-control.left(href='#carousel', data-slide='prev') ‹
             a.carousel-control.right(href='#carousel', data-slide='next') ›
       .row

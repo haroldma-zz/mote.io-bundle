@@ -2,7 +2,7 @@
 jQuery('html').removeClass('no-js').addClass('js');
 
 // Add .osx class to html if on Os/x
-if ( navigator.appVersion.indexOf("Mac")!=-1 ) 
+if ( navigator.appVersion.indexOf("Mac")!=-1 )
 	jQuery('html').addClass('osx');
 
 /* Opera fix: */
@@ -17,12 +17,25 @@ jQuery(document).ready(function($) {
 
 	(function() {
 
-	/* --------------------------------------------------------	
-		Twitter bootstrap - carousel, tooltip, popover 
-	   --------------------------------------------------------	*/	
+	/* --------------------------------------------------------
+		Twitter bootstrap - carousel, tooltip, popover
+	   --------------------------------------------------------	*/
 
 		// initialize carousel
-		$('[rel=carousel]').carousel()
+		$('[rel=carousel]').carousel().on('slid', function(){
+			if($('.active').hasClass('homebase')) {
+				$('#phone .site').fadeOut();
+				$('#phone .homebase').fadeIn();
+			}
+			if($('.active').hasClass('hypem')) {
+				$('#phone .site').fadeOut();
+				$('#phone .hypem').fadeIn();
+			}
+			if($('.active').hasClass('rdio')) {
+				$('#phone .site').fadeOut();
+				$('#phone .rdio').fadeIn();
+			}
+		});
 		// initialize tooltip
 		$('[rel=tooltip]').tooltip();
 		// initialize popover
@@ -37,21 +50,21 @@ jQuery(document).ready(function($) {
 	    });
 
 
-	/* --------------------------------------------------------	
+	/* --------------------------------------------------------
 		External links
-	   --------------------------------------------------------	*/	
+	   --------------------------------------------------------	*/
 
 	    $(window).load(function() {
 
 			$('a[rel=external]').attr('target','_blank');
-			
+
 		});
 
 	})();
 
-/* --------------------------------------------------------	
+/* --------------------------------------------------------
 	Zoom and link overlays (e.g. for thumbnails)
-   --------------------------------------------------------	*/	
+   --------------------------------------------------------	*/
 
 	(function() {
 
@@ -79,9 +92,9 @@ jQuery(document).ready(function($) {
 	})();
 
 
-/* --------------------------------------------------------	
-	Portfolio 
-   --------------------------------------------------------	*/	
+/* --------------------------------------------------------
+	Portfolio
+   --------------------------------------------------------	*/
 
    (function() {
 
@@ -144,9 +157,9 @@ jQuery(document).ready(function($) {
 	})();
 
 
-/* --------------------------------------------------------	
+/* --------------------------------------------------------
 	Back to top button
-   --------------------------------------------------------	*/	
+   --------------------------------------------------------	*/
 
 	(function() {
 
@@ -155,22 +168,22 @@ jQuery(document).ready(function($) {
 			$(window).scroll(function() {
 
 				if($(this).scrollTop() != 0) {
-					$('#back-to-top').fadeIn();	
+					$('#back-to-top').fadeIn();
 				} else {
 					$('#back-to-top').fadeOut();
 				}
 
 			});
-			
+
 			$('#back-to-top').click(function() {
 				$('body,html').animate({scrollTop:0},600);
-			});	
+			});
 
 	})();
 
-/* --------------------------------------------------------	
+/* --------------------------------------------------------
 	FAQ
-   --------------------------------------------------------	*/	
+   --------------------------------------------------------	*/
 
 	(function() {
 
@@ -215,9 +228,9 @@ jQuery(document).ready(function($) {
 	})();
 
 
-/* --------------------------------------------------------	
+/* --------------------------------------------------------
 	Swipe support for slider
-   --------------------------------------------------------	*/	
+   --------------------------------------------------------	*/
 
    (function() {
 
@@ -226,14 +239,14 @@ jQuery(document).ready(function($) {
 		function swipe( e, direction ) {
 
 			var $carousel = $(e.currentTarget);
-			
+
 			if( direction === 'left' )
 				$carousel.find('.carousel-control.right').trigger('click');
-			
+
 			if( direction === 'right' )
 				$carousel.find('.carousel-control.left').trigger('click');
 		}
-		
+
 		if (is_touch_device === true) {
 
 			$('.carousel').swipe({
@@ -246,9 +259,9 @@ jQuery(document).ready(function($) {
 
 	})();
 
-/* --------------------------------------------------------	
+/* --------------------------------------------------------
 	Keyboard shortcuts
-   --------------------------------------------------------	*/	
+   --------------------------------------------------------	*/
 
    (function() {
 

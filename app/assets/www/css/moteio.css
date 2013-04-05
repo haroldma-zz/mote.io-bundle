@@ -60,13 +60,9 @@ html, body {
 .block {
   margin: 30px auto;
 }
-.moteio-button.moteio-down {
-   top: 2px;
-   height: 48px;
-   box-shadow: inset 0px -1px 1px #888, inset 0px 1px 1px #eee;
-   -webkit-user-select: none;
+#remote-render a {
+  color: #2489ce;
 }
-
 .notify {
   position: relative;
   padding-left: 60px;
