@@ -1361,7 +1361,7 @@ Ian Custom
 	top: 15px;
 	left: 15px;
 }
-#phone .site .rdio, #phone .site .hypem {
+#phone .site.rdio, #phone .site.hypem {
 	display: none;
 }
 #macbook_carousel .carousel {
@@ -1375,4 +1375,7 @@ Ian Custom
 }
 #macbook_carousel .carousel img {
 	width:600px;
+}
+.developers section {
+	margin: 100px 0px;
 }

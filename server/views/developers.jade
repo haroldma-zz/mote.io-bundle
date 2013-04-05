@@ -1,10 +1,39 @@
 extends layout
 
 block content
-  #content.container.text-page
+  #content.container.text-page.developers
     .heading
-      h1 Developer API Documentation Coming Soon
+      h1 Developer Docs
+    section
+      h2 The script
       hr
-      p Follow me on&nbsp;
-        a(href='http://twitter.com/sw1tch') Twitter
-        | &nbsp;for updates about the API.
+      p Paste the following code on the page
+      script(src='https://gist.github.com/ianjennings/5322966.js')
+
+    section
+      h2 The config
+      hr
+      h3 The variable
+      p Here we define a variable called window.moteio_config. This variable is read by the script tag supplied above when it starts.
+      h3 API version
+      p For now, the API version should always be '0.1' Versioning doesn't exist yet.
+      h3 App Name
+      p This is the name displayed at the top of the app after sync. Keep it short, there isn't much room there.
+      h3 Blocks
+      p Blocks act as rows for your remote.
+      h4 Type
+      p Type is a string. Valid options are:
+      ul
+        li notify
+        li search
+        li buttons
+        li select
+      h5 Notify
+
+      hr
+      p This is an example config for the Hype Machine app. This is the kitchen sink.
+      script(src='https://gist.github.com/ianjennings/5323006.js')
+
+
+  script
+  script(type='text/javascript', src='http://mote.io:80/js/plugin.js')

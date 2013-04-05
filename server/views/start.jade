@@ -5,6 +5,22 @@ block content
     .heading
       h1 Getting Started.
       p It only takes a second to get started with Mote.io.
+
+    .moteio-state-signed-in
+      .alert.alert-success App found.
+      p
+        a.btn.btn-large Launch Homebase
+    .moteio-state-not-signed-in
+      .well.well-large
+        h2 Sign into the mobile app.
+        hr
+        p
+          a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=org.moteio.app') Get Mote.io for Android
+        p Then&nbsp;
+          a(href='/start') refresh this page.
+        hr
+        p Mote.io for iPhone coming soon
+
     if (user)
       .alert.alert-success
         | You are currently logged in as #{user.username}.&nbsp;
@@ -31,19 +47,4 @@ block content
           a(href='/start') refresh this page.
         p
           a.btn(target='_blank', href='https://chrome.google.com/webstore/detail/moteio/okkhbojknlfdoooeghbkplihbjajpecc') Get Mote.io Chrome Extension
-    .moteio-state-signed-in
-      .alert.alert-success App found.
-      p
-        a.btn.btn-large Launch Homebase
-    .moteio-state-not-signed-in
-      .well.well-large
-        h2 Sign into the mobile app.
-        hr
-        p
-          a.btn(href='/downloads/Mote.io.apk') Get Mote.io for Android
-        p You will probably need to&nbsp;
-          a(href='http://www.androidcentral.com/allow-app-installs-unknown-sources') allow apps from unknown sources
-          | .
-        hr
-        p Mote.io for iPhone coming soon
 

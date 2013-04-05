@@ -73,6 +73,9 @@ exec(function(){
           action: function(query) {
             $('#q').val(query);
             $('#g').click();
+            setTimeout(function(){
+              location.reload();
+            }, 3000);
           }
         },
         {
