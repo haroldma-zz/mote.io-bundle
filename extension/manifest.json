@@ -1,6 +1,6 @@
 {
   "name": "Mote.io",
-  "version": "0.33",
+  "version": "0.34",
   "manifest_version": 2,
   "description": "Control websites with the mote.io mobile app! Use this to sync the mote.io app with your browser.",
   "permissions": [
@@ -40,17 +40,10 @@
     },
     {
       "matches": [
-        "http://*.grooveshark.com/*",
+        "http://www.rdio.com/*",
         "http://*.hypem.com/*",
         "http://hypem.com/*",
-        "http://*.rdio.com/*",
-        "http://vimeo.com/*",
-        "https://vimeo.com/*",
         "http://www.htmltetris.com/",
-        "http://shelby.tv/*",
-        "http://*.shelby.tv/*",
-        "http://*.pandora.com/*",
-        "http://pandora.com/*",
         "http://lvh.me:3000/start",
         "http://mote.io/start"
       ],
