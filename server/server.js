@@ -371,6 +371,20 @@ io.configure(function () {
 
 });
 
+io.sockets.on('connection', function (socket) {
+
+  console.log(socket.handshake.user)
+
+  var username = socket.handshake.user.username;
+
+  console.log('socket manager')
+  console.log(io.sockets.manager.namespaces['/' + username])
+  if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
+      createRoom(username);
+  }
+
+});
+
 var createRoom = function(roomName) {
 
   winston.info('creating room with name ' + roomName);

@@ -254,6 +254,10 @@ var App = function () {
       self.renderRemote(data);
     });
 
+    self.channel.on('connect_failed', function (reason) {
+      alert('There has been a terrible error.');
+    });
+
     self.channel.on('notify', function (data) {
 
       console.log('got notification');
