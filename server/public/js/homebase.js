@@ -1,7 +1,6 @@
 (function($){
 
-    var $apps = $('#apps li:not(.soon)
-      '),
+    var $apps = $('#apps li:not(.soon)'),
       appsPerRow = 2,
       currentApp = 0,
       loading = $('#loading');
@@ -46,7 +45,7 @@
         spot = 0;
       }
       if (spot >= $apps.length) {
-        spot = $apps.length;
+        spot = $apps.length - 1;
       }
       window.selectApp(spot);
     }

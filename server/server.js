@@ -15,7 +15,14 @@ var
   passportSocketIo = require("passport.socketio"),
   passportLocalMongoose = require('passport-local-mongoose'),
   MongoStore = require('connect-mongo')(express),
-  config = {};
+  config = {},
+  passport = require('passport'),
+  Account = require('./models/account'),
+  check = require('validator').check,
+  sanitize = require('validator').sanitize;
+
+var SendGrid = require('sendgrid').SendGrid;
+var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
 
 var constructDBURL = function(db) {
   var dbUrl = 'mongodb://';
@@ -61,7 +68,7 @@ app.configure('production', function(){
   // app.use(express.errorHandler());
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-  console.log('running in prod')
+  winston.info('running in prod')
   mongoose.connect(constructDBURL(config.db));
 });
 
@@ -99,15 +106,252 @@ passport.use(Account.createStrategy());
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-require('./routes')(app);
+
+app.get('/', function (req, res) {
+    res.render('index', { user : req.user, page: 'home' });
+});
+
+app.get('/homebase', function(req, res) {
+    res.render('homebase', { user : req.user, page: 'home' });
+});
+
+app.get('/start', function(req, res) {
+    res.render('start', {err: null, user: req.user, page: 'start'});
+});
+
+app.get('/developers', function(req, res){
+    res.render('developers', {err: null, user: req.user, page: 'developers'});
+});
+
+app.get('/admin', function(req, res) {
+
+    if(req.user && req.user.username == "ian@meetjennings.com") {
+
+        Account.find({}, function (err, all_users) {
+          res.render('admin', {err: null, user: req.user, page: 'admin', user_list: all_users});
+        });
+
+    } else {
+        res.redirect('/');
+    }
+});
+
+app.get('/admin/beta', function(req, res) {
+    if(req.user.username == "ian@meetjennings.com") {
+
+        winston.info(req.query.user)
+
+        Account.findById(req.query.user, function(err,user){
+            if(err) {
+                winston.info(err)
+                res.redirect('/')
+            } else {
+                user.beta = true;
+                user.save(function(){
+
+                    winston.info('saved')
+                    winston.info(user)
+                    sendgrid.send({
+                      to: user.username,
+                      from: 'hello@mote.io',
+                      subject: 'You\'ve been granted access to the mote.io beta!',
+                      html:
+                      'Welcome to mote.io.' +
+                      '<br/>' +
+                      '<br/>' +
+                      'You\'re account has been approved for beta! Get started here:' +
+                      '<br/>' +
+                      'http://mote.io/start' +
+                      '<br/>' +
+                      '<br/>' +
+                      'And you can download the Android APK here:' +
+                      'http://mote.io/downloads/Mote.io.apk' +
+                      '<br/>' +
+                      '<br/>' +
+                      'Thanks for testing! Follow me on twitter for more updates about mote.io:' +
+                      '<br/>' +
+                      'http://twttier.com/sw1tch' +
+                      '<br/>' +
+                      '<br/>' +
+                      '--------------------'
+                    }, function(success, message) {
+                      if (!success) {
+                        winston.info(message);
+                      }
+                    });
+
+                    res.redirect('/admin');
+                })
+            }
+        });
+    } else {
+        redirect('/');
+    }
+});
+
+app.get('/beta', function(req, res) {
+    res.render('beta', {err: null, user: req.user, page: 'start' });
+});
+
+app.get('/register', function(req, res) {
+    res.render('register', {err: null, user: req.user, page: 'start' });
+});
+
+app.post('/register', function(req, res) {
+    try {
+        check(req.body.username, 'Please enter a valid email address.').len(6, 64).isEmail();
+        check(req.body.password, 'Please enter a password between 3 and 64 characters.').len(3, 64);
+    } catch (err) {
+        return res.render('register', { user : null, err: err, page: 'start' });
+    }
+
+    Account.register(new Account({ username : req.body.username, beta: false }), req.body.password, function(err, account) {
+
+        if (err) {
+            res.render('register', { user : null, err: err, page: 'start' });
+        } else {
+            sendgrid.send({
+              to: req.body.username,
+              from: 'hello@mote.io',
+              subject: 'Welcome to the wonderful world of mote.io',
+              html:
+              'Welcome to the wonderful world of mote.io.' +
+              '<br/>' +
+              '<br/>' +
+              'You\'re on the beta list! New accounts are provisioned daily, expect access soon.' +
+              '<br/>' +
+              '<br/>' +
+              'Follow me on twitter for more updates about mote.io:' +
+              '<br/>' +
+              'http://twttier.com/sw1tch' +
+              '<br/>' +
+              '<br/>' +
+              '--------------------'
+            }, function(success, message) {
+              if (!success) {
+                winston.info(message);
+              }
+            });
+
+            res.redirect('/beta');
+
+        }
+
+    });
+});
+
+app.get('/login', function(req, res) {
+    if(req.user) {
+        res.redirect('/start');
+    } else {
+        res.render('login', { page: 'start', err: null });
+    }
+});
+
+app.post('/login', passport.authenticate('local'), function(req, res) {
+
+    if(req.user) {
+
+        if(req.user.beta) {
+            createRoom(req.user._id);
+            res.redirect('/start');
+        } else {
+            res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
+        }
+
+    } else {
+        res.render('login', {page: 'start', err: 'Invalid login!'});
+    }
+
+});
+
+app.get('/get/login', function(req, res) {
+    if(req.user) {
+
+        if(req.user.beta) {
+
+            createRoom(req.user._id);
+            res.jsonp({
+                valid: true,
+                user: {
+                    username: req.user.username,
+                    _id: req.user._id
+                }
+            });
+
+        } else {
+
+            res.jsonp({
+                valid: false,
+                reason: 'Account has not been approved for beta yet!'
+            })
+
+        }
+
+    } else {
+        res.jsonp({
+            valid: false
+        });
+    }
+});
+
+app.get('/post/login', passport.authenticate('local'), function(req, res) {
+    if(req.user) {
+        if(req.user.beta) {
+
+            createRoom(req.user._id);
+            res.jsonp({
+                valid: true,
+                user: {
+                    username: req.user.username,
+                    _id: req.user._id
+                }
+            });
+
+        } else{
+            res.jsonp({
+                valid: false,
+                reason: 'Account has not been approved for beta yet!'
+            })
+        }
+    } else {
+        res.jsonp({
+            valid: false,
+            reason: 'Invalid login!'
+        });
+    }
+
+});
+
+app.get('/post/logout', function(req, res) {
+
+    if(req.user) {
+
+      console.log(io.sockets.manager.namespaces);
+
+      req.logout();
+      res.jsonp({
+          valid: true,
+      })
+    } else {
+      res.jsonp({
+          valid: false,
+          reason: 'Not even logged in!'
+      });
+    }
+
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
 var app = app.listen(config.port);
 var io = require('socket.io').listen(app);
 
-console.log('Listening on port ' + config.port);
+winston.info('Listening on port ' + config.port);
 
-// uuid - phones
-// uid - session
 io.configure(function () {
 
   // io.set('polling duration', 30);
@@ -129,38 +373,47 @@ io.configure(function () {
 
 var createRoom = function(roomName) {
 
-  console.log('creating room')
+  winston.info('creating room')
 
   io
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      console.log('room name is')
+      winston.info('room name is')
 
-      console.log(roomName == handshakeData.user._id)
+      console.log(handshakeData)
+
+      winston.info(roomName)
+      winston.info(handshakeData.user.id)
+
+      winston.info(roomName == handshakeData.user.id)
 
       // addittional auth to make sure we are correct user
-      if(String(roomName) === String(handshakeData.user._id)) {
+      if(String(roomName) === String(handshakeData.user.id)) {
         callback(null, true);
       } else {
         callback(null, false);
       }
 
     })
+    .on('connect_failed', function (reason) {
+      console.error('unable to connect to namespace', reason);
+    })
     .on('connection', function (socket) {
 
-      console.log("user connected: ", socket.handshake.user.username);
+      winston.info("user connected: ", socket.handshake.user.username);
+      console.log(socket.handshake.user)
       var address = socket.handshake.address;
 
       winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
-        console.log('got this')
+        winston.info('got config')
         socket.broadcast.emit('get-config');
       });
       socket.on('update-config', function(data) {
-        console.log('update-config')
+        winston.info('update-config')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
@@ -174,12 +427,12 @@ var createRoom = function(roomName) {
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        // winston.info('#extension has sent out #update-button');
+        winston.info('#extension has sent out #update-button');
         socket.broadcast.emit('update-button', data);
         holla();
       });
       socket.on('go-home', function(data, holla){
-        console.log('go-home')
+        winston.info('go-home')
         socket.broadcast.emit('go-home');
       });
       socket.on('input', function (data, holla) {
@@ -207,16 +460,4 @@ var createRoom = function(roomName) {
 
     });
 
-}
-
-io.sockets.on('connection', function (socket) {
-
-  var roomName = socket.handshake.user._id;
-
-  console.log('socket manager')
-  console.log(io.sockets.manager.namespaces['/' + roomName])
-  if(typeof io.sockets.manager.namespaces['/' + roomName] == "undefined") {
-      createRoom(roomName);
-  }
-
-});
+};

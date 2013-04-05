@@ -205,13 +205,13 @@ exec(function(){
           data: [
             {
               press: function () {
-                moves[4]();
+                moves[5]();
               },
               icon: 'undo',
             },
             {
               press: function () {
-                moves[5]();
+                moves[4]();
               },
               icon: 'repeat',
             }

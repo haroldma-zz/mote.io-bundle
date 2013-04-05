@@ -17,7 +17,7 @@
        under the License.
  */
 
-package org.apache.cordova.example;
+package org.moteio.app;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

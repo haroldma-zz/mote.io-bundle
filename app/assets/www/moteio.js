@@ -293,8 +293,35 @@ var App = function () {
   };
 
   self.logout = function () {
-    self.set('login', null);
-    self.shush();
+
+    self.channel.disconnect();
+
+    $.ajax({
+      type: 'get',
+      url: self.remote_location + '/post/logout',
+      data: $(this).serialize(),
+      dataType: 'jsonp',
+      timeout: 6000,
+      success: function(response) {
+
+        console.log(response)
+
+        if(response.valid) {
+          self.set('login', null);
+          self.shush();
+        } else {
+          $.mobile.changePage($('#login'));
+          alert(response.reason);
+        }
+
+      },
+      error: function(xhr, status, err) {
+
+        alert('There was a problem logging you in, please try again.')
+        $.mobile.changePage($('#login'));
+      }
+    });
+
   }
 
   self.init = function () {
