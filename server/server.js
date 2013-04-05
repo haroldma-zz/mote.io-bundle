@@ -65,8 +65,8 @@ app.configure('production', function(){
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: process.env.PORT
   };
-  // app.use(express.errorHandler());
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler());
+  //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
   winston.info('running in prod')
   mongoose.connect(constructDBURL(config.db));
@@ -253,7 +253,6 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
     if(req.user) {
 
         if(req.user.beta) {
-            createRoom(req.user._id);
             res.redirect('/start');
         } else {
             res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
@@ -270,7 +269,6 @@ app.get('/get/login', function(req, res) {
 
         if(req.user.beta) {
 
-            createRoom(req.user._id);
             res.jsonp({
                 valid: true,
                 user: {
@@ -299,7 +297,6 @@ app.get('/post/login', passport.authenticate('local'), function(req, res) {
     if(req.user) {
         if(req.user.beta) {
 
-            createRoom(req.user._id);
             res.jsonp({
                 valid: true,
                 user: {
@@ -327,7 +324,7 @@ app.get('/post/logout', function(req, res) {
 
     if(req.user) {
 
-      console.log(io.sockets.manager.namespaces);
+      // console.log(io.sockets.manager.namespaces);
 
       req.logout();
       res.jsonp({
@@ -373,12 +370,9 @@ io.configure(function () {
 
 io.sockets.on('connection', function (socket) {
 
-  console.log(socket.handshake.user)
+  var username = socket.handshake.user._id;
 
-  var username = socket.handshake.user.username;
-
-  console.log('socket manager')
-  console.log(io.sockets.manager.namespaces['/' + username])
+  //console.log(io.sockets.manager.namespaces['/' + username])
   if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
       createRoom(username);
   }
@@ -393,12 +387,7 @@ var createRoom = function(roomName) {
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      var clients = io.of('/' + handshakeData.user.id).clients();
-      console.log(clients)
-
       winston.info('room name is')
-
-      console.log(handshakeData)
 
       winston.info(roomName)
       winston.info(handshakeData.user.id)
@@ -413,13 +402,9 @@ var createRoom = function(roomName) {
       }
 
     })
-    .on('connect_failed', function (reason) {
-      console.error('unable to connect to namespace', reason);
-    })
     .on('connection', function (socket) {
 
       winston.info("user connected: ", socket.handshake.user.username);
-      console.log(socket.handshake.user)
       var address = socket.handshake.address;
 
       winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
@@ -430,7 +415,7 @@ var createRoom = function(roomName) {
         socket.broadcast.emit('get-config');
       });
       socket.on('update-config', function(data) {
-        winston.info('update-config')
+        // winston.info('update-config')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
@@ -444,7 +429,7 @@ var createRoom = function(roomName) {
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        winston.info('#extension has sent out #update-button');
+        // winston.info('#extension has sent out #update-button');
         socket.broadcast.emit('update-button', data);
         holla();
       });
@@ -453,12 +438,12 @@ var createRoom = function(roomName) {
         socket.broadcast.emit('go-home');
       });
       socket.on('input', function (data, holla) {
-        winston.info('#client is emitting input');
+        // winston.info('#client is emitting input');
         socket.broadcast.emit('input', data);
         holla();
       });
       socket.on('select', function (data, holla) {
-        winston.info('#client is emitting select');
+        // winston.info('#client is emitting select');
         socket.broadcast.emit('select', data);
         holla();
       });

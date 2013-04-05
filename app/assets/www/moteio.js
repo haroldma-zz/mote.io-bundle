@@ -14,8 +14,8 @@ var App = function () {
 
   var self = this;
 
-  self.remote_location = 'http://lvh.me:3000';
-  //self.remote_location = 'http://mote.io:80';
+  //self.remote_location = 'http://lvh.me:3000';
+  self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -61,6 +61,10 @@ var App = function () {
       button_size = 0,
       element = null,
       buttons = null;
+
+    if(!$('#remote-render').html()) {
+      $.mobile.changePage($('#remote'));
+    }
 
 
     console.log('emptying remote');
@@ -255,7 +259,7 @@ var App = function () {
     });
 
     self.channel.on('connect_failed', function (reason) {
-      alert('There has been a terrible error.');
+      alert('There has been a terrible error. Just a terrible one.');
     });
 
     self.channel.on('notify', function (data) {
