@@ -123,7 +123,7 @@ window.MoteioReceiver = function() {
   self.listen = function(roomName) {
 
     console.log('trying to listen')
-    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection':true});
+    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
     self.channel.on('connect', function () {

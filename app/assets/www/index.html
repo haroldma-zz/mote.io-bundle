@@ -71,10 +71,20 @@
 
 	</div>
 
-	<div id="loading" data-role="page" data-theme="c">
+	<div id="loading" class="loading" data-role="page" data-theme="c">
 		<img src="images/loading.gif" id="loading-image" />
+		<div data-role="content">
+			Logging In...
+		</div>
 	</div>
 
+	<div id="waiting" class="loading" data-role="page" data-theme="c">
+		<img src="images/loading.gif" id="loading-image" />
+		<div data-role="content">
+			<p>Waiting for sync...</p>
+			<p>Visit <a>http://mote.io/start</a> on your computer to get started.<p>
+		</div>
+	</div>
 
 	<div id="register" data-role="page" data-theme="a">
 
@@ -105,10 +115,7 @@
 
 		<div data-role="content">
 
-			<div id="remote-render" data-theme="a">
-				<p>Waiting for remote...</p>
-				<p>Visit <a>http://mote.io/start</a> on your computer to get started.<p>
-			</div>
+			<div id="remote-render" data-theme="a"></div>
 
 		</div>
 

@@ -373,13 +373,13 @@ io.configure(function () {
 
 var createRoom = function(roomName) {
 
-  winston.info('creating room')
+  winston.info('creating room with name ' + roomName);
 
   io
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      clients = io.of('/' + handshakeData.user.id).clients();
+      var clients = io.of('/' + handshakeData.user.id).clients();
       console.log(clients)
 
       winston.info('room name is')

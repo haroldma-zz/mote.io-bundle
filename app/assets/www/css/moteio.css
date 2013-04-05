@@ -25,6 +25,18 @@ html, body {
 #login-button .ui-btn-inner  {
   padding: 20px;
 }
+.loading .ui-content {
+  position: absolute;
+  bottom: 10px;
+  width: 80%;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  color: #ccc;
+}
+.loading .ui-content a {
+  color: #fff;
+}
 .block {
   width: 280px;
 }

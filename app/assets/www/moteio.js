@@ -233,8 +233,8 @@ var App = function () {
 
     }
 
-    // fade loading out
-    $('#loading-connecting').fadeOut();
+    $.mobile.changePage($('#remote'));
+
     buttons = $('.moteio-button');
     console.log('there are ' + buttons.length + 'buttons');
 
@@ -244,7 +244,9 @@ var App = function () {
 
     console.log('trying to connect to channel ' + roomName);
 
-    self.channel = io.connect(self.remote_location + '/' + roomName);
+    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
+
+    console.log(self.channel)
 
     self.channel.emit('get-config');
 
@@ -294,33 +296,10 @@ var App = function () {
 
   self.logout = function () {
 
-    self.channel.disconnect();
-
-    $.ajax({
-      type: 'get',
-      url: self.remote_location + '/post/logout',
-      data: $(this).serialize(),
-      dataType: 'jsonp',
-      timeout: 6000,
-      success: function(response) {
-
-        console.log(response)
-
-        if(response.valid) {
-          self.set('login', null);
-          self.shush();
-        } else {
-          $.mobile.changePage($('#login'));
-          alert(response.reason);
-        }
-
-      },
-      error: function(xhr, status, err) {
-
-        alert('There was a problem logging you in, please try again.')
-        $.mobile.changePage($('#login'));
-      }
-    });
+      self.set('login', null);
+      $('#remote-render').html('');
+      self.shush();
+      $.mobile.changePage($('#login'));
 
   }
 
@@ -364,7 +343,7 @@ var App = function () {
             }
 
             self.listen(response.user._id);
-            $.mobile.changePage($('#remote'));
+            $.mobile.changePage($('#waiting'));
 
           } else {
             $.mobile.changePage($('#login'));
