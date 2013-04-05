@@ -307,7 +307,7 @@ exec(function(){
     window.moteio_config =
       {
         api_version: '0.1',
-        app_name: 'Press Button to Sync.',
+        app_name: 'Sync',
         blocks: [
           {
             type: 'buttons',
@@ -316,7 +316,7 @@ exec(function(){
                 press: function () {
                   return false;
                 },
-                icon: 'refresh'
+                icon: 'off'
               }
             ]
           }
