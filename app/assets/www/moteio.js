@@ -14,8 +14,8 @@ var App = function () {
 
   var self = this;
 
-  //self.remote_location = 'http://lvh.me:3000';
-  self.remote_location = 'http://mote.io:80';
+  self.remote_location = 'http://lvh.me:3000';
+  // self.remote_location = 'http://mote.io:80';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -79,6 +79,9 @@ var App = function () {
 
       var type = res.blocks[key].type,
       params = res.blocks[key];
+
+      console.log(params)
+      console.log(id)
 
       params._id = id;
       id++;
@@ -156,12 +159,10 @@ var App = function () {
 
       if(type == "select") {
 
-        console.log(params)
-
         var select_html = $('<select></select>');
 
         for(var option in params.data){
-          var option_html = $('<option value="' + option + '">' + params.data[option].text + '</option>');
+          var option_html = $('<option value="' + option + '" data-paramid="' + params._id + '">' + params.data[option].text + '</option>');
           if(typeof params.data[option].optgroup !== "undefined") {
             if(select_html.find('optgroup[label=' + params.data[option].optgroup + ']').html() == null){
               select_html.append('<optgroup label="' + params.data[option].optgroup + '"></optgroup>')
@@ -176,10 +177,12 @@ var App = function () {
 
         select_html.bind('change', function(e) {
 
+          var option_data = $(this).find(":selected").data();
+
           var data = {
-            block_id: params._id,
+            block_id: option_data.paramid,
             _id: $(this).val(),
-            hash: params._id + '_' + $(this).val(),
+            hash: option_data.paramid + '_' + $(this).val(),
             uuid: device.uuid
           }
 
@@ -259,7 +262,8 @@ var App = function () {
     });
 
     self.channel.on('connect_failed', function (reason) {
-      alert('There has been a terrible error. Just a terrible one.');
+      alert('The server has restarted. Pleae login again. Sorry.');
+      self.logout();
     });
 
     self.channel.on('notify', function (data) {

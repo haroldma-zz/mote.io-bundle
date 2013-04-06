@@ -7,8 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-//var remote_location = "http://lvh.me:3000";
-var remote_location = 'http://mote.io:80';
+var remote_location = "http://lvh.me:3000";
+//var remote_location = 'http://mote.io:80';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"
@@ -304,7 +304,7 @@ exec(function(){
     //
 
 
-  } else if ((window.location.host == "mote.io" || window.location.host == "lvh.me:3000")&& window.location.pathname == "/start") {
+  } else if ((window.location.host == "mote.io" || window.location.host == "lvh.me:3000") && window.location.pathname == "/start") {
 
     // actual client code
     window.moteio_config =

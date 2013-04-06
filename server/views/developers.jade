@@ -2,104 +2,211 @@ extends layout
 
 block content
   #content.container.text-page.developers
-    .heading
-      h1 Developer Docs
-    section
-      h2 Getting Started
-      hr
-      p Paste the following code on the page. window.moteio_config is where you will define the layout and actions for your remote.
-      p The script sends an update to the phone on every load, so you can test your remote simply by refreshing the page.
-      script(src='https://gist.github.com/ianjennings/5322966.js')
 
-    section
-      h2 Config Variables
-      hr
-      p Here we define a variable called window.moteio_config. This variable is read by the script tag supplied above when it starts.
-      script(src='https://gist.github.com/ianjennings/5324439.js')
-      hr
-      h3 API version
-      p For now, the API version should always be '0.1'. Versioning doesn't exist yet.
-      hr
-      h3 App Name
-      p This is the name displayed at the top of the app after sync. Keep it short, there isn't much room there.
-      hr
-      h3 Blocks
-      p Blocks act as rows for your remote.
-      p This must be an array, and order matters!
+    .row
+      .span3
+        div#toc
+      .span9
+        .heading
+          h1 Developer Docs
 
-    section
-      h2 Block Types
-      hr
-      h3 Notify
-      p Notify is the area in which app notifications are shown. There are no other parameters besides type.
-      p
-        img.img-rounded(src='/images/developers/notify.png', width='300')
-      script(src='https://gist.github.com/ianjennings/5324464.js')
-      hr
-      h3 Search
-      p Search displays a text box with a search icon
-      p The only valid parameter for search is "action"
-      p Action must be a function. Action returns the query value as the first parame\.
-      p
-        img.img-rounded(src='/images/developers/search.png', width='300')
-      script(src='https://gist.github.com/ianjennings/5324471.js')
-      hr
-      h3 Buttons
-      p The buttons type represents a row of buttons. The only valid parameter for buttons is an array called "data."
-      p
-        img.img-rounded(src='/images/developers/buttons.png', width='300')
-      h4 Buttons.data
-      p Buttons.data is an array of button objects. Buttons are aligned from left to right but always centered on screen. The yellow lines here represent seperate blocks of buttons.
-      p
-        img.img-rounded(src='/images/developers/rows_center.png', width='150')
-      p A button object need the following parameters
-      ul
-        li press - A function to call when the button is pressed
-        li icon - This is an icon from&nbsp;
-          a(href='http://fortawesome.github.io/Font-Awesome/') font-awesome&nbsp;
-          | . The "icon-" part is stripped out
-        li hash - This is optional but needed to reference the button in updates
-      script(src='https://gist.github.com/ianjennings/5324485.js')
-      hr
-      h3 Select
-      p Select represents a select box in the app. The only valid parameter for select is "data"
-      h4 Select.data
-      p Select data is an array of select options. Options can have the following parameters
-      ul
-        li text - The option text
-        li action - A function to fire when the select button is pressed
-        li optgroup - A string representing the parent group
-      p
-        img.img-rounded(src='/images/developers/select.png', width='300')
-      script(src='https://gist.github.com/ianjennings/5324490.js')
-      hr
+        section
+          h2 Getting Started
+          hr
+          p Paste the following code on the page. window.moteio_config is where you will define the layout and actions for your remote.
+          p The script sends an update to the phone on every load, so you can test your remote simply by refreshing the page.
+          script(src='https://gist.github.com/ianjennings/5322966.js')
 
-    section
-      h2 Methods
-      hr
-      h3 Notify
-      p Notify sends information to the notify block about what to display.
-      p The notify function takes three parameters
-      ul
-        li line1 - The first line of text
-        li line2 - The second line of text
-        li image - An image to display next to text. Resized to 50px x 50px
-      p
-        img.img-rounded(src='/images/developers/notify.png', width='300')
-      script(src='https://gist.github.com/ianjennings/5324448.js')
-      hr
-      h3 Update Button
-      p The update button method allows you to change the color and icon of a button on a remote.
-      p The update button function takes three parameters
-      ul
-        li button hash - The hash identifier of the button. Make sure you assign this variable in the button in config.
-        li icon - The new icon to display.
-        li color - The button icon color. A 6 character hex code like #000000 or #ffffff
-      p
-        img.img-rounded(src='/images/developers/button_update.png', width='50')
-      script(src='https://gist.github.com/ianjennings/5324497.js')
-    section
-      h2 Kitchen sink
-      hr
-      p This is an example config for the Hype Machine app. It uses all available APIs.
-      script(src='https://gist.github.com/ianjennings/5323006.js')
+        section
+          h2 Config Variables
+          hr
+          p Here we define a variable called window.moteio_config. This variable is read by the script tag supplied above when it starts.
+          script(src='https://gist.github.com/ianjennings/5324439.js')
+          hr
+          h3 API version
+          p For now, the API version should always be '0.1'. Versioning doesn't exist yet.
+          hr
+          h3 App Name
+          p This is the name displayed at the top of the app after sync. Keep it short, there isn't much room there.
+          hr
+          h3 Blocks
+          p Blocks act as rows for your remote.
+          p This must be an array, and order matters!
+
+        section
+          h2 Testing
+          hr
+          p Remember, this is a rough beta. You are one of the first people to ever use this API. You'll probably break things!
+          p For example, if you send a bad remote config over, you may crash the app or leave it in a bad state. Restart the app and you should be good to go.
+          p You may see errors pop up on the app. This happens during deployment and other random times. Try logging out and logging back in.
+          hr
+          h4 Testing Remotes
+          p It's annoying to define a remote, launch the app, try it out, and test, etc. You can call moteio_config functions from the browser window like so:
+          script(src='https://gist.github.com/ianjennings/5326374.js')
+
+        section
+          h2 Block Types
+          hr
+          h3 Notify
+          p Notify is the area in which app notifications are shown. There are no other parameters besides type.
+          p
+            img.img-rounded(src='/images/developers/notify.png', width='300')
+          script(src='https://gist.github.com/ianjennings/5324464.js')
+          hr
+          h3 Search
+          p Search displays a text box with a search icon
+          p The only valid parameter for search is "action"
+          p Action must be a function. Action returns the query value as the first parame\.
+          p
+            img.img-rounded(src='/images/developers/search.png', width='300')
+          script(src='https://gist.github.com/ianjennings/5324471.js')
+          hr
+          h3 Buttons
+          p The buttons type represents a row of buttons. The only valid parameter for buttons is an array called "data."
+          p
+            img.img-rounded(src='/images/developers/buttons.png', width='300')
+          h4 Buttons.data
+          p Buttons.data is an array of button objects. Buttons are aligned from left to right but always centered on screen. The yellow lines here represent seperate blocks of buttons.
+          p
+            img.img-rounded(src='/images/developers/rows_center.png', width='150')
+          p A button object need the following parameters
+          ul
+            li press - A function to call when the button is pressed
+            li icon - This is an icon from&nbsp;
+              a(href='http://fortawesome.github.io/Font-Awesome/') font-awesome&nbsp;
+              | . The "icon-" part is stripped out
+            li hash - This is optional but needed to reference the button in updates
+          script(src='https://gist.github.com/ianjennings/5324485.js')
+          hr
+          h3 Select
+          p Select represents a select box in the app. The only valid parameter for select is "data"
+          h4 Select.data
+          p Select data is an array of select options. Options can have the following parameters
+          ul
+            li text - The option text
+            li action - A function to fire when the select button is pressed
+            li optgroup - A string representing the parent group
+          p
+            img.img-rounded(src='/images/developers/select.png', width='300')
+          script(src='https://gist.github.com/ianjennings/5324490.js')
+          hr
+
+        section
+          h2 Methods
+          hr
+          h3 Notify
+          p Notify sends information to the notify block about what to display.
+          p The notify function takes three parameters
+          ul
+            li line1 - The first line of text
+            li line2 - The second line of text
+            li image - An image to display next to text. Resized to 50px x 50px
+          p
+            img.img-rounded(src='/images/developers/notify.png', width='300')
+          script(src='https://gist.github.com/ianjennings/5324448.js')
+          hr
+          h3 Update Button
+          p The update button method allows you to change the color and icon of a button on a remote.
+          p The update button function takes three parameters
+          ul
+            li button hash - The hash identifier of the button. Make sure you assign this variable in the button in config.
+            li icon - The new icon to display.
+            li color - The button icon color. A 6 character hex code like #000000 or #ffffff
+          p
+            img.img-rounded(src='/images/developers/button_update.png', width='50')
+          script(src='https://gist.github.com/ianjennings/5324497.js')
+        section
+          h2 Kitchen sink
+          hr
+          p This is an example config for the Hype Machine app. It uses all available APIs.
+          script(src='https://gist.github.com/ianjennings/5323006.js')
+
+      link(rel='stylesheet',href='css/jquery.tocify.css')
+      script(src='//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js')
+      script(src='/js/jquery.tocify.min.js')
+      script
+        $(function() {
+          $("#toc").tocify({ selectors: "h2, h3, h4, h5", hashGenerator: "pretty" });
+        });
+
+      script
+
+        window.scroll_to_id = function(id) {
+          $('html,body').animate({ scrollTop: $("[name='" + id + "']").offset().top}, 200);
+        }
+
+        window.moteio_config = {
+          api_version: '0.1',
+          app_name: 'Dev Doc',
+          blocks: [
+            {
+              type: 'buttons',
+              data: [
+                {
+                  press: function () {
+                    $('html, body').animate({
+                      scrollTop: $(window).scrollTop() - 300
+                    }, 1000);
+                  },
+                  icon: 'chevron-up'
+                }
+              ]
+            },
+            {
+              type: 'buttons',
+              data: [
+                {
+                  press: function () {
+                    $('html, body').animate({
+                      scrollTop: $(window).scrollTop() + 300
+                    }, 1000);
+                  },
+                  icon: 'chevron-down'
+                }
+              ]
+            },
+            {
+              type: 'select',
+              data: [
+                {
+                  text: 'Getting Started',
+                  action: function() {
+                    window.scroll_to_id('getting-started');
+                  }
+                },
+                {
+                  text: 'Config Variables',
+                  action: function() {
+                    window.scroll_to_id('getting-started');
+                  }
+                },
+                {
+                  text: 'Testing',
+                  action: function() {
+                    window.scroll_to_id('testing');
+                  }
+                },
+                {
+                  text: 'Block Types',
+                  action: function() {
+                    window.scroll_to_id('block-types');
+                  }
+                },
+                {
+                  text: 'Methods',
+                  action: function() {
+                    window.scroll_to_id('methods');
+                  }
+                },
+                {
+                  text: 'Kitchen Sink',
+                  action: function() {
+                    window.scroll_to_id('kitchen-sink');
+                  }
+                }
+              ]
+            }
+          ]
+        }
+
+      script(type='text/javascript', src='http://lvh.me:3000/js/plugin.js')
