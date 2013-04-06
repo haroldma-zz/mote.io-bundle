@@ -5,9 +5,10 @@ block content
     .heading
       h1 Developer Docs
     section
-      h2 The Script
+      h2 Getting Started
       hr
-      p Paste the following code on the page
+      p Paste the following code on the page. window.moteio_config is where you will define the layout and actions for your remote.
+      p The script sends an update to the phone on every load, so you can test your remote simply by refreshing the page.
       script(src='https://gist.github.com/ianjennings/5322966.js')
 
     section
@@ -48,7 +49,7 @@ block content
       p
         img.img-rounded(src='/images/developers/buttons.png', width='300')
       h4 Buttons.data
-      p Buttons.data is an array of button objects. Buttons are aligned from left to right but always centered on screen.
+      p Buttons.data is an array of button objects. Buttons are aligned from left to right but always centered on screen. The yellow lines here represent seperate blocks of buttons.
       p
         img.img-rounded(src='/images/developers/rows_center.png', width='150')
       p A button object need the following parameters
@@ -102,7 +103,3 @@ block content
       hr
       p This is an example config for the Hype Machine app. It uses all available APIs.
       script(src='https://gist.github.com/ianjennings/5323006.js')
-
-
-  script
-  script(type='text/javascript', src='http://mote.io:80/js/plugin.js')
