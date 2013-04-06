@@ -5,32 +5,68 @@ block content
     .heading
       h1 Developer Docs
     section
-      h2 The script
+      h2 The Script
       hr
       p Paste the following code on the page
       script(src='https://gist.github.com/ianjennings/5322966.js')
 
     section
-      h2 The config
+      h2 The Config
       hr
       h3 The variable
       p Here we define a variable called window.moteio_config. This variable is read by the script tag supplied above when it starts.
+
+    section
+      h2 Config Variables
+      hr
       h3 API version
       p For now, the API version should always be '0.1' Versioning doesn't exist yet.
+      hr
       h3 App Name
       p This is the name displayed at the top of the app after sync. Keep it short, there isn't much room there.
+      hr
       h3 Blocks
       p Blocks act as rows for your remote.
       h4 Type
-      p Type is a string. Valid options are:
+      p Type is a string. The type of block determines other valid parameters. Valid options are:
       ul
         li notify
         li search
         li buttons
         li select
-      h5 Notify
 
+    section
+      h2 Block Types
       hr
+      h3 Notify
+      p Notify is the area in which app notifications are shown. There are no other parameters besides type.
+      hr
+      h3 Search
+      p Search displays a text box with a search icon
+      p The only valid parameter for search is "action"
+      p Action must be a function
+      hr
+      h3 Buttons
+      p The buttons type represents a row of buttons. The only valid parameter for buttons is an array called "data"
+      h4 Buttons.data
+      p Buttons.data is an array of button objects. Buttons are aligned from left to right but always centered on screen.
+      p A button object need the following parameters
+      ul
+        li press - A function to call when the button is pressed
+        li icon - This is an icon from font-awesome. The "icon-" part is stripped out
+        li hash - This is optional but needed to reference the button in updates
+      hr
+      h3 Select
+      p Select represents a select box in the app. The only valid parameter for select is "data"
+      h4 Select.data
+      p Select data is an array of select options. Options can have the following parameters
+      ul
+        li text - The option text
+        li action - A function to fire when the select button is pressed
+        li optgroup - A string representing the parent group
+      hr
+
+    section
       p This is an example config for the Hype Machine app. This is the kitchen sink.
       script(src='https://gist.github.com/ianjennings/5323006.js')
 
