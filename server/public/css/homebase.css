@@ -1087,4 +1087,6 @@ body, html {
     #homebase ul#apps li#shelby {
       background-image: url(/images/sites/shelby.png); }
     #homebase ul#apps li#tetris {
-      background-image: url("/images/sites/tetris.png"); }
+      background-image: url(/images/sites/tetris.png); }
+    #homebase ul#apps li#docs {
+      background-image: url(/images/sites/docs.png); }
