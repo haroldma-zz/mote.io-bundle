@@ -170,7 +170,7 @@ app.get('/admin/beta', function(req, res) {
                       '<br/>' +
                       'Thanks for testing! Follow me on twitter for more updates about mote.io:' +
                       '<br/>' +
-                      'http://twttier.com/sw1tch' +
+                      'http://twitter.com/sw1tch' +
                       '<br/>' +
                       '<br/>' +
                       '--------------------'
@@ -223,7 +223,7 @@ app.post('/register', function(req, res) {
               '<br/>' +
               'Follow me on twitter for more updates about mote.io:' +
               '<br/>' +
-              'http://twttier.com/sw1tch' +
+              'http://twitter.com/sw1tch' +
               '<br/>' +
               '<br/>' +
               '--------------------'

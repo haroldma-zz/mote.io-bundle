@@ -328,7 +328,7 @@ exec(function(){
 
     //
 
-  }
+  } else if (window.location.host == "http://reedditapp.com/")
 
 });
 
