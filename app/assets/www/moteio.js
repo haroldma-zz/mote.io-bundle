@@ -307,12 +307,16 @@ var App = function () {
   };
 
   self.logout = function () {
+    self.set('login', null);
+    $('#remote-render').html('');
+    self.shush();
+    $.mobile.changePage($('#login'));
+  }
 
-      self.set('login', null);
-      $('#remote-render').html('');
-      self.shush();
-      $.mobile.changePage($('#login'));
-
+  self.offline = function() {
+    alert('Not connected to the internet or connection lost! Try connecting to WIFI!');
+    self.logout();
+    $.mobile.changePage($('#login'));
   }
 
   self.init = function () {
@@ -324,6 +328,20 @@ var App = function () {
       e.preventDefault();
 
       $.mobile.changePage($('#loading'));
+
+      /*
+      var networkState = navigator.network.connection.type;
+      var states = {};
+      states[Connection.UNKNOWN]  = 'Unknown connection';
+      states[Connection.ETHERNET] = 'Ethernet connection';
+      states[Connection.WIFI]     = 'WiFi connection';
+      states[Connection.CELL_2G]  = 'Cell 2G connection';
+      states[Connection.CELL_3G]  = 'Cell 3G connection';
+      states[Connection.CELL_4G]  = 'Cell 4G connection';
+      states[Connection.NONE]     = 'No network connection';
+
+      alert('Connection type: ' + states[networkState]);
+      */
 
       var data = $(this).serializeArray();
 
@@ -365,7 +383,7 @@ var App = function () {
         },
         error: function(xhr, status, err) {
 
-          alert('There was a problem logging you in, please try again.')
+          alert('There was a problem logging you in. Check your username and password.');
           $.mobile.changePage($('#login'));
         }
       });

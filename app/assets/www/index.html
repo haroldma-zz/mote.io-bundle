@@ -30,6 +30,10 @@
 			var moteio = new App();
 			moteio.init();
 
+			document.addEventListener("offline", function(){
+				moteio.offline();
+			}, false);
+
 		}
 
 	</script>
