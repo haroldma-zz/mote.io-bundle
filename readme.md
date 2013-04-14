@@ -32,12 +32,14 @@ sh start.sh
 
 * http://lvh.me:8080
 * http://lvh.me:8000
-* http://lvh.me:5000
+* http://lvh.me:3000
 
 ## Ripple
 
-1. Navigate to http://lvh.me:8000
+1. Navigate to http://lvh.me:3000
 2. Open up ripple, and select the Phonegap 2.0 library.
 
 ## Sync
+
+Login!
 
