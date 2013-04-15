@@ -16,6 +16,7 @@ var extension_url = remote_location + "/js/plugin.js",
 exec(function(){
 
   console.log(window.location.host)
+  console.log(window.location.pathname)
 
   if(window.location.host == "hypem.com") {
 
@@ -329,6 +330,79 @@ exec(function(){
     //
 
   } else if (window.location.host == "http://reedditapp.com/") {
+
+  } else if (window.location.host == "vimeo.com") {
+
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Sync',
+        blocks: [
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  $('.play_pause_button').click();
+                },
+                icon: 'play'
+              },
+              {
+                press: function () {
+                  $('.like').click();
+                },
+                icon: 'heart'
+              },
+              {
+                press: function () {
+                  if($('#login_lightbox').is(':visible')){
+                    $('#lightbox_overlay').click();
+                  } else {
+                    $('.later').click();
+                  }
+                },
+                icon: 'time'
+              },
+              {
+                press: function () {
+                  $('.info').click();
+                },
+                icon: 'info-sign'
+              }
+            ]
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'fast-backward'
+              },
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'backward'
+              },
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'forward'
+              },
+              {
+                press: function () {
+                  return false;
+                },
+                icon: 'fast-forward'
+              }
+            ]
+          }
+        ]
+      }
 
   }
 

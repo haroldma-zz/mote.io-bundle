@@ -3,7 +3,8 @@
 
 var
   path = require('path'),
-  http = require('http'),
+  https = require('https'),
+  fs = require('fs'),
   winston = require('winston'),
   express = require('express'),
   app = express(),
@@ -24,6 +25,8 @@ var
 var SendGrid = require('sendgrid').SendGrid;
 var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
 
+var app = express();
+
 var constructDBURL = function(db) {
   var dbUrl = 'mongodb://';
   if(db.username) {
@@ -43,7 +46,11 @@ app.configure('development', function(){
       host: 'localhost'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: 3000
+    port: 3000,
+    key: fs.readFileSync('./self.key').toString(),
+    ca: fs.readFileSync('./self.csr').toString(),
+    cert: fs.readFileSync('./self.crt').toString(),
+    passphrase: 'honeywell'
   };
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -63,7 +70,11 @@ app.configure('production', function(){
       collection: 'sessions'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: process.env.PORT
+    port: process.env.PORT,
+    key: fs.readFileSync('./server-key.pem').toString(),
+    ca: fs.readFileSync('./server-csr.pem').toString(),
+    cert: fs.readFileSync('./server-cert.pem').toString(),
+    passphrase: null
   };
   app.use(express.errorHandler());
   //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -105,7 +116,6 @@ passport.use(Account.createStrategy());
 
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-
 
 app.get('/', function (req, res) {
     res.render('index', { user : req.user, page: 'home' });
@@ -348,8 +358,21 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-var app = app.listen(config.port);
-var io = require('socket.io').listen(app);
+var options = {
+  key: config.key,
+  ca: [config.ca],
+  cert: config.cert,
+  passphrase: config.passphrase
+}
+
+console.log(config.key)
+console.log(config.cert)
+console.log(config.ca)
+
+var server = https.createServer(options, app);
+var io = require('socket.io').listen(server);
+
+server.listen(config.port);
 
 winston.info('Listening on port ' + config.port);
 

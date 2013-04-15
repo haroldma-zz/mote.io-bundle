@@ -62,10 +62,15 @@ var App = function () {
       element = null,
       buttons = null;
 
+    if(typeof res == "undefined" || !res) {
+      alert('Connected to site but window.moteio_config is not defined on web page.');
+    } else if(typeof res.app_name == "undefined" || !res.app_name) {
+      alert('Please supply an app name in the moteio_config.')
+    }
+
     if(!$('#remote-render').html()) {
       $.mobile.changePage($('#remote'));
     }
-
 
     console.log('emptying remote');
     $('.ui-title').text(res.app_name);
