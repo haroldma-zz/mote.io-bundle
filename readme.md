@@ -30,13 +30,13 @@ sh start.sh
 
 ## Load Tabs
 
-* http://lvh.me:8080
-* http://lvh.me:8000
-* http://lvh.me:3000
+* http://localhost:8080
+* http://localhost:8000
+* http://localhost:3000
 
 ## Ripple
 
-1. Navigate to http://lvh.me:3000
+1. Navigate to http://localhost:3000
 2. Open up ripple, and select the Phonegap 2.0 library.
 
 ## Sync

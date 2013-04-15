@@ -12,8 +12,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  //self.remote_location = 'http://mote.io:80';
-  self.remote_location = 'http://lvh.me:3000';
+  //self.remote_location = '//mote.io:80';
+  self.remote_location = '//localhost:3000';
 
   self.channel = null;
 
@@ -155,7 +155,7 @@ window.MoteioReceiver = function() {
 
     self.channel.on('input', function (data) {
 
-      if((window.location.host == "lvh.me:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
+      if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
         console.log('go home')
         self.goHome();
       }

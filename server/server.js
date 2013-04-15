@@ -47,9 +47,9 @@ app.configure('development', function(){
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: 3000,
-    key: fs.readFileSync('./self.key').toString(),
-    ca: fs.readFileSync('./self.csr').toString(),
-    cert: fs.readFileSync('./self.crt').toString(),
+    key: fs.readFileSync(__dirname + '/self.key').toString(),
+    ca: fs.readFileSync(__dirname + '/self.csr').toString(),
+    cert: fs.readFileSync(__dirname + '/self.crt').toString(),
     passphrase: 'honeywell'
   };
 
@@ -71,9 +71,9 @@ app.configure('production', function(){
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: process.env.PORT,
-    key: fs.readFileSync('./server-key.pem').toString(),
-    ca: fs.readFileSync('./server-csr.pem').toString(),
-    cert: fs.readFileSync('./server-cert.pem').toString(),
+    key: null,
+    ca: null,
+    cert: null,
     passphrase: null
   };
   app.use(express.errorHandler());
@@ -364,10 +364,6 @@ var options = {
   cert: config.cert,
   passphrase: config.passphrase
 }
-
-console.log(config.key)
-console.log(config.cert)
-console.log(config.ca)
 
 var server = https.createServer(options, app);
 var io = require('socket.io').listen(server);
