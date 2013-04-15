@@ -98,7 +98,11 @@ exec(function(){
             },
             {
               press: function () {
-                window.moteio_rec.simulateClick('playerFav');
+                if($('#overlay').is(':visible')) {
+                  $('#close').click();
+                } else {
+                  $('#playerFav').click();
+                }
               },
               icon: 'heart',
               hash: 'heart'
