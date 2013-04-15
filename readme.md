@@ -30,9 +30,8 @@ sh start.sh
 
 ## Load Tabs
 
-* http://localhost:8080
 * http://localhost:8000
-* http://localhost:3000
+* https://localhost:3000
 
 ## Ripple
 
