@@ -44,9 +44,8 @@
         "http://*.hypem.com/*",
         "http://hypem.com/*",
         "http://www.htmltetris.com/",
-        "http://localhost:3000/start",
-        "http://vimeo.com/couchmode/*",
-        "https://vimeo.com/couchmode/*",
+        "https://localhost:3000/start",
+        "*://*.vimeo.com/couchmode*",
         "http://mote.io/start/",
         "http://reedditapp.com/"
       ],

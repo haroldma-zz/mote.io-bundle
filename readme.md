@@ -36,7 +36,7 @@ sh start.sh
 
 ## Ripple
 
-1. Navigate to http://localhost:3000
+1. Navigate to https://localhost:3000
 2. Open up ripple, and select the Phonegap 2.0 library.
 
 ## Sync

@@ -7,7 +7,7 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var remote_location = "//localhost:3000";
+var remote_location = "https://localhost:3000";
 //var remote_location = '//mote.io:80';
 
 var extension_url = remote_location + "/js/plugin.js",
@@ -333,12 +333,22 @@ exec(function(){
 
   } else if (window.location.host == "vimeo.com") {
 
+    window.moteio_update = function() {
+      window.moteio_rec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'));
+      setTimeout(function(){
+        window.moteio_update();
+      }, 1000);
+    }
+
     // actual client code
     window.moteio_config =
       {
         api_version: '0.1',
-        app_name: 'Sync',
+        app_name: 'Vimeo',
         blocks: [
+          {
+            type: 'notify'
+          },
           {
             type: 'buttons',
             data: [
@@ -350,7 +360,11 @@ exec(function(){
               },
               {
                 press: function () {
-                  $('.like').click();
+                  if($('#login_lightbox').is(':visible')){
+                    $('#lightbox_overlay').click();
+                  } else {
+                    $('.like').click();
+                  }
                 },
                 icon: 'heart'
               },
@@ -366,7 +380,11 @@ exec(function(){
               },
               {
                 press: function () {
-                  $('.info').click();
+                  if($('#info_blanket').is(':visible')){
+                    $('.click_catcher').click();
+                  } else {
+                    $('.info').click();
+                  }
                 },
                 icon: 'info-sign'
               }
@@ -377,25 +395,25 @@ exec(function(){
             data: [
               {
                 press: function () {
-                  return false;
+                  $('.previous_button').click();
                 },
                 icon: 'fast-backward'
               },
               {
                 press: function () {
-                  return false;
+                  $('.rewind_button').click();
                 },
                 icon: 'backward'
               },
               {
                 press: function () {
-                  return false;
+                  $('.fast_forward_button').click();
                 },
                 icon: 'forward'
               },
               {
                 press: function () {
-                  return false;
+                  $('.next_button').click();
                 },
                 icon: 'fast-forward'
               }
@@ -408,28 +426,25 @@ exec(function(){
 
 });
 
-exec((function() {
+function async_load(){
 
-  function async_load(){
+    var link = document.createElement("link");
+    link.href = css_url;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    document.getElementsByTagName("head")[0].appendChild(link);
 
-      var link = document.createElement("link");
-      link.href = css_url;
-      link.type = "text/css";
-      link.rel = "stylesheet";
-      document.getElementsByTagName("head")[0].appendChild(link);
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = extension_url;
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
 
-      var s = document.createElement('script');
-      s.type = 'text/javascript';
-      s.async = true;
-      s.src = extension_url;
-      var x = document.getElementsByTagName('script')[0];
-      x.parentNode.insertBefore(s, x);
+}
 
-  }
-  if (window.attachEvent) {
-      window.attachEvent('onload', async_load);
-  } else {
-      window.addEventListener('load', async_load, false);
-  }
-
-})());
+if (window.attachEvent) {
+    window.attachEvent('onload', async_load);
+} else {
+    window.addEventListener('load', async_load, false);
+}

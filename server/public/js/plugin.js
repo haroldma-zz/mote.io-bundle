@@ -13,7 +13,7 @@ window.MoteioReceiver = function() {
   var self = this;
 
   //self.remote_location = '//mote.io:80';
-  self.remote_location = '//localhost:3000';
+  self.remote_location = 'https://localhost:3000';
 
   self.channel = null;
 
@@ -253,6 +253,9 @@ window.MoteioReceiver = function() {
   }
 
   self.init = function(params) {
+
+    console.log('moteio_update is')
+    console.log(window.moteio_update)
 
     $(document).ready(function() {
 
