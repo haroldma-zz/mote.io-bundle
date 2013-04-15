@@ -119,6 +119,10 @@ app.get('/start', function(req, res) {
     res.render('start', {err: null, user: req.user, page: 'start'});
 });
 
+app.get('/community', function(req, res) {
+    res.render('community', {err: null, user: req.user, page: 'community'});
+});
+
 app.get('/developers', function(req, res){
     res.render('developers', {err: null, user: req.user, page: 'developers'});
 });
