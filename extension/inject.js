@@ -84,14 +84,14 @@ exec(function(){
           data: [
             {
               press: function () {
-                window.moteio_rec.simulateClick('playerPrev');
+                $('#playerPrev').click();
               },
               icon: 'backward',
               hash: 'back'
             },
             {
               press: function () {
-                window.moteio_rec.simulateClick('playerPlay');
+                $('#playerPlay').click();
               },
               icon: 'play',
               hash: 'play'
@@ -109,7 +109,7 @@ exec(function(){
             },
             {
               press: function () {
-                window.moteio_rec.simulateClick('playerNext');
+                $('#playerNext').click();
               },
               icon: 'forward',
               hash: 'next'
