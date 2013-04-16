@@ -195,15 +195,11 @@ app.post('/admin/email', function(req, res) {
             '--------------------'
           }
 
-          console.log(email)
-
-          /*
           sendgrid.send(email, function(success, message) {
             if (!success) {
               clog('Email sent to ' + all_users[i].username);
             }
           });
-          */
 
         }
 
