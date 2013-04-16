@@ -3,7 +3,7 @@
 
 var
   path = require('path'),
-  https = require('https'),
+  http = require('http'),
   fs = require('fs'),
   express = require('express'),
   app = express(),
@@ -52,9 +52,6 @@ var clog = function(message) {
   client.log('768dbb5f-a7eb-4821-a20f-839283e23553', message)
 }
 
-var airbrake = require('airbrake').createClient("d29ef481a1a5bef7a6358be2ab0519e272ee4605 ");
-airbrake.handleExceptions();
-
 app.configure('development', function(){
 
   config = {
@@ -79,6 +76,7 @@ app.configure('development', function(){
 app.configure('production', function(){
 
   clog = function(message) {
+    console.log(message)
     client.log('670411fa-e21f-4211-90d0-17357aa5c16b', message)
   }
 
@@ -462,14 +460,7 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-var options = {
-  key: config.key,
-  ca: [config.ca],
-  cert: config.cert,
-  passphrase: config.passphrase
-}
-
-var server = https.createServer(options, app);
+var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 server.listen(config.port);
