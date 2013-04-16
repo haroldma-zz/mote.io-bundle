@@ -490,83 +490,79 @@ io.sockets.on('connection', function (socket) {
 
 var createRoom = function(roomName) {
 
-  winston.info('creating room with name ' + roomName);
+  winston.info('[bouncer][create room][' + roomName + ']');
 
   io
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      winston.info('room name is')
-
-      winston.info(roomName)
-      winston.info(handshakeData.user.id)
-
-      winston.info(roomName == handshakeData.user.id)
+      winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][try]');
 
       // addittional auth to make sure we are correct user
       if(String(roomName) === String(handshakeData.user.id)) {
+        winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][success]');
         callback(null, true);
       } else {
+        winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][fail]');
         callback(null, false);
       }
 
     })
     .on('connection', function (socket) {
 
-      winston.info("user connected: ", socket.handshake.user.username);
       var address = socket.handshake.address;
 
-      winston.info('#client has connected to #extension from ' + address.address + ':' + address.port);
+      winston.info('[' + socket.handshake.user.username + '][connection][' + address.address + ':' + address.port + ']');
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
         winston.info('got config')
-        socket.broadcast.emit('get-config');
+        socket.broadcast.emit('[' + socket.handshake.user.username + '] get-config');
       });
       socket.on('update-config', function(data) {
-        // winston.info('update-config')
+        winston.info('[' + socket.handshake.user.username + '][update-config]')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
-        // winston.info('#extension has sent out a #notification');
+        winston.info('[' + socket.handshake.user.username + '][notify]');
         socket.broadcast.emit('notify', data);
         holla();
       });
       socket.on('art', function (data, holla) {
-        winston.info('#extension has sent out #art');
+        winston.info('[' + socket.handshake.user.username + '][art]');
         socket.broadcast.emit('art', data);
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        // winston.info('#extension has sent out #update-button');
+        winston.info('[' + socket.handshake.user.username + '][update-buton]');
         socket.broadcast.emit('update-button', data);
         holla();
       });
       socket.on('go-home', function(data, holla){
-        winston.info('go-home')
+        winston.info('[' + socket.handshake.user.username + '][go-home]')
         socket.broadcast.emit('go-home');
       });
       socket.on('input', function (data, holla) {
-        // winston.info('#client is emitting input');
+        winston.info('[' + socket.handshake.user.username + '][input]');
         socket.broadcast.emit('input', data);
         holla();
       });
       socket.on('select', function (data, holla) {
-        // winston.info('#client is emitting select');
+        winston.info('[' + socket.handshake.user.username + '][select]');
         socket.broadcast.emit('select', data);
         holla();
       });
       socket.on('search', function (data, holla) {
-        winston.info('#client is searching for' + data.value);
+        winston.info('[' + socket.handshake.user.username + '][search][' + data.value + ']');
         socket.broadcast.emit('search', data);
         holla();
       });
       socket.on('activate', function (data, holla) {
-        winston.info('#client emits "activate"!');
+        winston.info('[' + socket.handshake.user.username + '][activate]');
         socket.broadcast.emit('deactivate');
       });
       socket.on('disconnect', function () {
-        winston.info('#client has left #extension');
+        winston.info('[' + socket.handshake.user.username + '][disconnect]');
       });
 
     });
