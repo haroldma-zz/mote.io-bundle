@@ -48,9 +48,12 @@ var constructDBURL = function(db) {
 }
 
 var clog = function(message) {
-    console.log('[debug]' + message);
-    client.log('768dbb5f-a7eb-4821-a20f-839283e23553', message)
-  }
+  console.log('[debug]' + message);
+  client.log('768dbb5f-a7eb-4821-a20f-839283e23553', message)
+}
+
+var airbrake = require('airbrake').createClient("d29ef481a1a5bef7a6358be2ab0519e272ee4605 ");
+airbrake.handleExceptions();
 
 app.configure('development', function(){
 
@@ -95,6 +98,7 @@ app.configure('production', function(){
     cert: null,
     passphrase: null
   };
+
   app.use(express.errorHandler());
   //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
