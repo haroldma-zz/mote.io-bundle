@@ -47,7 +47,8 @@
         "https://localhost:3000/start",
         "*://*.vimeo.com/couchmode*",
         "http://mote.io/start/",
-        "http://reedditapp.com/"
+        "http://reedditapp.com/",
+        "http://www.pandora.com/*"
       ],
       "js": [
         "inject.js"

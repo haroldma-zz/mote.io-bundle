@@ -253,7 +253,6 @@ exec(function(){
 
   } else if (window.location.host == "www.rdio.com") {
 
-
     window.moteio_update = function() {
       window.moteio_rec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'));
       setTimeout(function(){
@@ -334,6 +333,98 @@ exec(function(){
     //
 
   } else if (window.location.host == "http://reedditapp.com/") {
+
+  } else if (window.location.host == "www.pandora.com") {
+
+    function extractUrl(input) {
+      // remove quotes and wrapping url()
+      if (typeof input !== "undefined") {
+       return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
+      } else {
+       return;
+      }
+    }
+
+    window.moteio_update = function() {
+
+       var thisArtist = $('.playerBarSong').text(),
+         thisSong = $('.playerBarArtist').text(),
+         thisImage = $('.playerBarArt').prop('src');
+         window.moteio_rec.notify(thisArtist, thisSong, thisImage);
+
+      // transfer button states
+      if($('.pauseButton').is(':visible')) {
+        window.moteio_rec.updateButton('play', 'pause', null);
+      } else {
+        window.moteio_rec.updateButton('play', 'play', null);
+      }
+
+      if($('.thumbDownButton').hasClass('indicator')){
+        window.moteio_rec.updateButton('down', null, '#f28141');
+      } else {
+        window.moteio_rec.updateButton('down', null, '#434345');
+      }
+
+      if($('.thumbUpButton').hasClass('indicator')){
+        window.moteio_rec.updateButton('up', null, '#f28141');
+      } else {
+        window.moteio_rec.updateButton('up', null, '#434345');
+      }
+
+      setTimeout(function(){
+        window.moteio_update();
+      }, 1000);
+    }
+
+    // actual client code
+    window.moteio_config =
+      {
+        api_version: '0.1',
+        app_name: 'Pandora',
+
+        blocks: [
+          {
+            type: 'notify'
+          },
+          {
+            type: 'buttons',
+            data: [
+              {
+                press: function () {
+                  $('.thumbDownButton a').click();
+                },
+                icon: 'thumbs-down',
+                hash: 'down'
+              },
+              {
+                press: function () {
+                  $('.thumbUpButton a').click();
+                },
+                icon: 'thumbs-up',
+                hash: 'up'
+              },
+              {
+                press: function () {
+                  if($('.pauseButton').is(':visible')){
+                    $('.pauseButton a').click();
+                  } else {
+                    $('.playButton a').click();
+                  }
+                },
+                icon: 'play',
+                hash: 'play'
+              },
+              {
+                press: function () {
+                  $('.skipButton a').click();
+                },
+                icon: 'fast-forward',
+                hash: 'skip'
+              }
+            ]
+          },
+        ]
+      }
 
   } else if (window.location.host == "vimeo.com") {
 
