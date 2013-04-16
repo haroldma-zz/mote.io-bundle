@@ -5,7 +5,6 @@ var
   path = require('path'),
   https = require('https'),
   fs = require('fs'),
-  winston = require('winston'),
   express = require('express'),
   app = express(),
   passport = require('passport'),
@@ -23,6 +22,16 @@ var
   sanitize = require('validator').sanitize,
   marked = require('marked');
 
+var loggly = require('loggly');
+var config = {
+  subdomain: "moteiologs",
+    auth: {
+      username: "sw1tch",
+      password: "0K1:a7P68G-i95;"
+    }
+  };
+var client = loggly.createClient(config);
+
 var SendGrid = require('sendgrid').SendGrid;
 var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
 
@@ -37,6 +46,11 @@ var constructDBURL = function(db) {
   dbUrl += '/' + db.db;
   return dbUrl;
 }
+
+var clog = function(message) {
+    console.log('[debug]' + message);
+    client.log('768dbb5f-a7eb-4821-a20f-839283e23553', message)
+  }
 
 app.configure('development', function(){
 
@@ -61,6 +75,10 @@ app.configure('development', function(){
 
 app.configure('production', function(){
 
+  clog = function(message) {
+    client.log('670411fa-e21f-4211-90d0-17357aa5c16b', message)
+  }
+
   config = {
     db: {
       db: 'qet7idOn',
@@ -80,7 +98,7 @@ app.configure('production', function(){
   app.use(express.errorHandler());
   //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-  winston.info('running in prod')
+  clog('[server][boot][prod]');
   mongoose.connect(constructDBURL(config.db));
 });
 
@@ -178,7 +196,7 @@ app.post('/admin/email', function(req, res) {
           /*
           sendgrid.send(email, function(success, message) {
             if (!success) {
-              winston.info('Email sent to ' + all_users[i].username);
+              clog('Email sent to ' + all_users[i].username);
             }
           });
           */
@@ -211,11 +229,11 @@ app.post('/admin/email', function(req, res) {
 
         sendgrid.send(email, function(success, message) {
           if (!success) {
-            winston.info(message);
+            clog(message);
           }
         });
 
-        winston.info('Sending test email to ' + req.body.test_email);
+        clog('Sending test email to ' + req.body.test_email);
 
       }
 
@@ -239,18 +257,18 @@ app.post('/admin/email', function(req, res) {
 app.get('/admin/beta', function(req, res) {
     if(req.user.username == "ian@meetjennings.com") {
 
-        winston.info(req.query.user)
+        clog(req.query.user)
 
         Account.findById(req.query.user, function(err,user){
             if(err) {
-                winston.info(err)
+                clog(err)
                 res.redirect('/')
             } else {
                 user.beta = true;
                 user.save(function(){
 
-                    winston.info('saved')
-                    winston.info(user)
+                    clog('saved')
+                    clog(user)
                     sendgrid.send({
                       to: user.username,
                       from: 'hello@mote.io',
@@ -276,7 +294,7 @@ app.get('/admin/beta', function(req, res) {
                       '--------------------'
                     }, function(success, message) {
                       if (!success) {
-                        winston.info(message);
+                        clog(message);
                       }
                     });
 
@@ -329,7 +347,7 @@ app.post('/register', function(req, res) {
               '--------------------'
             }, function(success, message) {
               if (!success) {
-                winston.info(message);
+                clog(message);
               }
             });
 
@@ -456,7 +474,7 @@ var io = require('socket.io').listen(server);
 
 server.listen(config.port);
 
-winston.info('Listening on port ' + config.port);
+clog('Listening on port ' + config.port);
 
 io.configure(function () {
 
@@ -490,20 +508,20 @@ io.sockets.on('connection', function (socket) {
 
 var createRoom = function(roomName) {
 
-  winston.info('[bouncer][create room][' + roomName + ']');
+  clog('[bouncer][create room][' + roomName + ']');
 
   io
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][try]');
+      clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][try]');
 
       // addittional auth to make sure we are correct user
       if(String(roomName) === String(handshakeData.user.id)) {
-        winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][success]');
+        clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][success]');
         callback(null, true);
       } else {
-        winston.info('[' + handshakeData.user.username + '][authorization][' + roomName + '][fail]');
+        clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][fail]');
         callback(null, false);
       }
 
@@ -512,57 +530,57 @@ var createRoom = function(roomName) {
 
       var address = socket.handshake.address;
 
-      winston.info('[' + socket.handshake.user.username + '][connection][' + address.address + ':' + address.port + ']');
+      clog('[' + socket.handshake.user.username + '][connection][' + address.address + ':' + address.port + ']');
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
-        winston.info('got config')
+        clog('got config')
         socket.broadcast.emit('[' + socket.handshake.user.username + '] get-config');
       });
       socket.on('update-config', function(data) {
-        winston.info('[' + socket.handshake.user.username + '][update-config]')
+        clog('[' + socket.handshake.user.username + '][update-config]')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][notify]');
+        clog('[' + socket.handshake.user.username + '][notify]');
         socket.broadcast.emit('notify', data);
         holla();
       });
       socket.on('art', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][art]');
+        clog('[' + socket.handshake.user.username + '][art]');
         socket.broadcast.emit('art', data);
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][update-buton]');
+        clog('[' + socket.handshake.user.username + '][update-buton]');
         socket.broadcast.emit('update-button', data);
         holla();
       });
       socket.on('go-home', function(data, holla){
-        winston.info('[' + socket.handshake.user.username + '][go-home]')
+        clog('[' + socket.handshake.user.username + '][go-home]')
         socket.broadcast.emit('go-home');
       });
       socket.on('input', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][input]');
+        clog('[' + socket.handshake.user.username + '][input]');
         socket.broadcast.emit('input', data);
         holla();
       });
       socket.on('select', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][select]');
+        clog('[' + socket.handshake.user.username + '][select]');
         socket.broadcast.emit('select', data);
         holla();
       });
       socket.on('search', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][search][' + data.value + ']');
+        clog('[' + socket.handshake.user.username + '][search][' + data.value + ']');
         socket.broadcast.emit('search', data);
         holla();
       });
       socket.on('activate', function (data, holla) {
-        winston.info('[' + socket.handshake.user.username + '][activate]');
+        clog('[' + socket.handshake.user.username + '][activate]');
         socket.broadcast.emit('deactivate');
       });
       socket.on('disconnect', function () {
-        winston.info('[' + socket.handshake.user.username + '][disconnect]');
+        clog('[' + socket.handshake.user.username + '][disconnect]');
       });
 
     });
