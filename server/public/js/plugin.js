@@ -12,8 +12,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  //self.remote_location = '//mote.io:80';
-  self.remote_location = 'https://localhost:3000';
+  // self.remote_location = 'https://localhost:3000'
+  self.remote_location = 'https://mote.io:443';
 
   self.channel = null;
 
@@ -120,7 +120,7 @@ window.MoteioReceiver = function() {
   // Listen to channel uid
   self.listen = function(roomName) {
 
-    console.log('trying to listen')
+    self.clog('trying to listen')
     self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
@@ -129,7 +129,7 @@ window.MoteioReceiver = function() {
       self.clog('connected');
 
       self.channel.emit('activate', function(){
-        console.log('got response')
+        self.clog('got response')
       });
       self.channel.emit('update-config', self.params);
 
@@ -156,7 +156,7 @@ window.MoteioReceiver = function() {
     self.channel.on('input', function (data) {
 
       if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
-        console.log('go home')
+        self.clog('go home')
         self.goHome();
       }
 
@@ -166,9 +166,8 @@ window.MoteioReceiver = function() {
 
     self.channel.on('select', function (data) {
       self.clog('Got Select Input');
-      console.log(data)
-      console.log('self.params.blocks[data.block_id].data[data._id].action()')
-      console.log(self.params.blocks[data.block_id].data[data._id].action());
+      self.clog('self.params.blocks[data.block_id].data[data._id].action()')
+      self.clog(self.params.blocks[data.block_id].data[data._id].action());
       self.params.blocks[data.block_id].data[data._id].action();
     });
 
@@ -222,22 +221,22 @@ window.MoteioReceiver = function() {
 
   self.stop = function () {
     if (self.channel) {
-      console.log('connected to a channel, disconnecting, ');
+      self.clog('connected to a channel, disconnecting, ');
       self.channel.disconnect();
       self.channel = null;
     } else {
-      console.log('not connected to any channels yet');
+      self.clog('not connected to any channels yet');
     }
   };
 
   self.start = function () {
-    console.log('!!! STARTING UP');
+    self.clog('!!! STARTING UP');
     $.ajax({
       type: 'get',
       url: self.remote_location + '/get/login/',
       dataType: 'jsonp',
       success: function(data) {
-        console.log('got login response')
+        self.clog('got login response')
         if(data.valid) {
 
           self.listen(data.user._id);
@@ -254,9 +253,6 @@ window.MoteioReceiver = function() {
 
   self.init = function(params) {
 
-    console.log('moteio_update is')
-    console.log(window.moteio_update)
-
     $(document).ready(function() {
 
       if(typeof window.moteio_update !== "undefined") {
@@ -264,17 +260,13 @@ window.MoteioReceiver = function() {
       }
 
       self.start();
-      console.log($('.moteio-state-not-installed'))
       $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
 
       $(window).on("focus", function() {
 
-        console.log('!!!!!!! FOCUS')
-
         // activate this channel if it's not already active
         if (!self.channel) {
-          console.log('STARTING')
           self.start();
           // this will set is_active
         } else {

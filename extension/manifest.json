@@ -46,7 +46,7 @@
         "http://www.htmltetris.com/",
         "https://localhost:3000/start",
         "*://*.vimeo.com/couchmode*",
-        "http://mote.io/start/",
+        "https://mote.io/start/",
         "http://reedditapp.com/",
         "http://www.pandora.com/*"
       ],

@@ -7,16 +7,16 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var remote_location = "https://localhost:3000";
-//var remote_location = '//mote.io:80';
+//var remote_location = "https://localhost:3000";
+var remote_location = 'https://mote.io:443';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"
 
 exec(function(){
 
-  console.log(window.location.host)
-  console.log(window.location.pathname)
+  //console.log(window.location.host)
+  //console.log(window.location.pathname)
 
   if(window.location.host == "hypem.com") {
 
