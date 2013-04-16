@@ -20,7 +20,8 @@ var
   passport = require('passport'),
   Account = require('./models/account'),
   check = require('validator').check,
-  sanitize = require('validator').sanitize;
+  sanitize = require('validator').sanitize,
+  marked = require('marked');
 
 var SendGrid = require('sendgrid').SendGrid;
 var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
@@ -91,7 +92,6 @@ app.configure(function() {
   app.set('view engine', 'jade');
   app.set('view options', { layout: false });
 
-  app.use(express.logger());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
 
@@ -138,16 +138,102 @@ app.get('/developers', function(req, res){
 });
 
 app.get('/admin', function(req, res) {
+  if(req.user && req.user.username == "ian@meetjennings.com") {
+    Account.find({}, function (err, all_users) {
+      res.render('admin', {err: null, user: req.user, page: 'admin', user_list: all_users});
+    });
+  } else {
+    res.redirect('/');
+  }
+});
 
-    if(req.user && req.user.username == "ian@meetjennings.com") {
+app.get('/admin/email', function(req, res) {
+  if(req.user && req.user.username == "ian@meetjennings.com") {
+    res.render('admin-email.jade', {err: null, user: req.user, page: 'admin', user_list: false, test_email: '', blast_title: '', blast_text: ''});
+  } else {
+    res.redirect('/');
+  }
+});
 
-        Account.find({}, function (err, all_users) {
-          res.render('admin', {err: null, user: req.user, page: 'admin', user_list: all_users});
+app.post('/admin/email', function(req, res) {
+
+  if(req.user && req.user.username == "ian@meetjennings.com") {
+
+    if(req.body.forreals) {
+
+      Account.find({}, function (err, all_users) {
+
+        for (var i = 0; i < all_users.length; i++) {
+
+          var email = {
+            to: all_users[i].username,
+            from: 'hello@mote.io',
+            subject: req.body.blast_title,
+            html: marked(req.body.blast_text) +
+            '--------------------'
+          }
+
+          console.log(email)
+
+          /*
+          sendgrid.send(email, function(success, message) {
+            if (!success) {
+              winston.info('Email sent to ' + all_users[i].username);
+            }
+          });
+          */
+
+        }
+
+        res.render('admin-email.jade', {
+          err: null,
+          user: req.user,
+          page: 'admin',
+          user_list: all_users,
+          blast_text: '',
+          blast_title: '',
+          test_email: ''
         });
 
+      });
+
     } else {
-        res.redirect('/');
+
+      if(req.body.test_email) {
+
+        var email = {
+          to: req.body.test_email,
+          from: 'hello@mote.io',
+          subject: req.body.blast_title,
+          html: marked(req.body.blast_text) +
+          '--------------------'
+        }
+
+        sendgrid.send(email, function(success, message) {
+          if (!success) {
+            winston.info(message);
+          }
+        });
+
+        winston.info('Sending test email to ' + req.body.test_email);
+
+      }
+
+      res.render('admin-email.jade', {
+        err: null,
+        user: req.user,
+        page: 'admin',
+        user_list: false,
+        blast_text: req.body.blast_text,
+        blast_title: req.body.blast_title,
+        test_email: req.body.test_email
+      });
+
     }
+
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.get('/admin/beta', function(req, res) {

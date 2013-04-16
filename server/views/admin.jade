@@ -2,10 +2,16 @@ extends layout
 
 block content
   #content.container.text-page
-    .heading
-      h1 Admin
-      hr
 
+    ul.nav.nav-tabs
+      li.active
+        a(href='/admin') User Admin
+      li
+        a(href='/admin/email') Email Blast
+
+    .heading
+      h1 User Admin
+      hr
 
     table.table-striped.table
       thead

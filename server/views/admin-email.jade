@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  #content.container.text-page
+
+    ul.nav.nav-tabs
+      li
+        a(href='/admin') User Admin
+      li.active
+        a(href='/admin/email') Email Blast
+
+    .heading
+      h1 Email Blast
+      hr
+
+    .row
+      .span3
+      .span6
+        if (user_list)
+          .alert Message sent to all users
+        if (test_email)
+          .alert Message sent to #{test_email}
+        form(action='/admin/email', method='post')
+          fieldset
+            legend Email Everybody
+            label Email Title
+            input.input-block-level(type='text', name='blast_title', value="#{blast_title}")
+            label Email Text
+            textarea.input-block-level(rows='20', name='blast_text') #{blast_text}
+            hr
+            span.help-block Send as test email to:
+            input.input-block-level(type='text', name='test_email', value="#{test_email}")
+            label.checkbox
+              input(type='checkbox', name='forreals')
+              | or send for realsies.
+            hr
+            button.btn(type='submit') Submit
+      .span2
+

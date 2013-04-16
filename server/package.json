@@ -30,7 +30,8 @@
     "passport.socketio": "1.0.1",
     "connect-mongo": "0.3.2",
     "validator": "0.4.28",
-    "sendgrid": "0.2.6"
+    "sendgrid": "0.2.6",
+    "marked": "0.2.8"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",
