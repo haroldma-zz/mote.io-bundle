@@ -28,7 +28,7 @@ sh start.sh
 
     open /Applications/Google\ Chrome.app/ --args --disable-web-security
 
-## Load Tabs
+## Load Tabs (note the https on the second one)
 
 * http://localhost:8000
 * https://localhost:3000

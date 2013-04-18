@@ -43,6 +43,8 @@
         "http://www.rdio.com/*",
         "http://*.hypem.com/*",
         "http://hypem.com/*",
+        "http://*.grooveshark.com/*",
+        "http://grooveshark.com/*",
         "http://www.htmltetris.com/",
         "https://localhost:3000/start",
         "*://*.vimeo.com/couchmode*",

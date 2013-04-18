@@ -250,6 +250,8 @@ exec(function(){
         }
       ]
     }
+  } else if(window.location.host == "grooveshark.com") {
+    console.log("we're here!");
 
   } else if (window.location.host == "www.rdio.com") {
 
