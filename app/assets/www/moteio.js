@@ -324,11 +324,7 @@ var App = function () {
     $.mobile.changePage($('#login'));
   }
 
-  self.init = function () {
-
-    var data = null;
-
-    $.mobile.changePage($('#login'));
+  self.online = function () {
 
     var networkState = navigator.connection.type;
     var states = {};
@@ -344,7 +340,21 @@ var App = function () {
 
     console.log('connection state is ' + states[networkState]);
 
+    if(networkState !== Connection.WIFI && networkState !== Connection.ETHERNET) {
+      alert('Try connecting to a Wifi network, it makes Mote.io faster!')
+    }
+
+  }
+
+  self.init = function () {
+
+    console.log('init fired')
+
+    var data = null;
+
     $("#login-form").submit(function (e) {
+
+      console.log('form submitted')
 
       e.preventDefault();
 
@@ -363,13 +373,14 @@ var App = function () {
       });
 
       $.ajax({
-        type: 'get',
+        type: 'post',
         url: self.remote_location + '/post/login',
         data: $(this).serialize(),
         dataType: 'jsonp',
         timeout: 6000,
         success: function(response) {
 
+          console.log('got a response')
           console.log(response)
 
           if(response.valid) {
@@ -404,6 +415,8 @@ var App = function () {
       $.mobile.changePage($('#login'));
     })
 
+    self.online();
+
     if(self.get('login')) {
 
       var data = self.get('login')
@@ -412,6 +425,8 @@ var App = function () {
       $('#password').val(data[1].value)
       $("#login-form").submit();
 
+    } else {
+      $.mobile.changePage($('#login'));
     }
 
   };

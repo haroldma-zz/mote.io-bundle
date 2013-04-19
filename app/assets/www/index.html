@@ -26,6 +26,7 @@
 
 		function onDeviceReady() {
 
+			console.log('ready')
 			document.addEventListener("offline", function(){
 				moteio.offline();
 			}, false);
@@ -33,7 +34,7 @@
 			var moteio = new App();
 
 			document.addEventListener("online", function(){
-				moteio.init();
+				moteio.online();
 			}, false);
 			moteio.init();
 
