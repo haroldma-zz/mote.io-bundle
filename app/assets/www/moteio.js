@@ -271,6 +271,14 @@ var App = function () {
       self.logout();
     });
 
+    self.channel.on('disconnect', function() {
+      alert('Connection lost!');
+
+      self.logout();
+      $.mobile.changePage($('#login'));
+
+    });
+
     self.channel.on('notify', function (data) {
 
       console.log('got notification');
@@ -314,39 +322,17 @@ var App = function () {
   self.logout = function () {
     self.set('login', null);
     $('#remote-render').html('');
-    self.shush();
     $.mobile.changePage($('#login'));
   }
 
   self.offline = function() {
-    alert('Not connected to the internet or connection lost! Try connecting to WIFI!');
-    self.logout();
-    $.mobile.changePage($('#login'));
-  }
-
-  self.online = function () {
-
-    var networkState = navigator.connection.type;
-    var states = {};
-
-    states[Connection.UNKNOWN]  = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI]     = 'WiFi connection';
-
-    states[Connection.CELL_2G]  = 'Cell 2G connection';
-    states[Connection.CELL_3G]  = 'Cell 3G connection';
-    states[Connection.CELL_4G]  = 'Cell 4G connection';
-    states[Connection.NONE]     = 'No network connection';
-
-    console.log('connection state is ' + states[networkState]);
-
-    if(networkState !== Connection.WIFI && networkState !== Connection.ETHERNET) {
-      alert('Try connecting to a Wifi network, it makes Mote.io faster!')
-    }
-
   }
 
   self.init = function () {
+
+    if(navigator.connection.type !== Connection.WIFI && navigator.connection.type !== Connection.ETHERNET) {
+      alert('Try connecting to a Wifi network, it makes Mote.io faster!')
+    }
 
     console.log('init fired')
 
@@ -411,11 +397,10 @@ var App = function () {
     });
 
     $('#logout').click(function(){
+      self.shush();
       self.logout();
       $.mobile.changePage($('#login'));
-    })
-
-    self.online();
+    });
 
     if(self.get('login')) {
 
