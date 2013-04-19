@@ -15,7 +15,7 @@ var App = function () {
   var self = this;
 
   //self.remote_location = 'https://localhost:3000';
-  self.remote_location = 'https://mote.io:443';
+  self.remote_location = 'https://mote.io';
   self.channel = null;
 
   self.set = function(key, data) {
@@ -256,7 +256,7 @@ var App = function () {
 
     console.log('trying to connect to channel ' + roomName);
 
-    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
+    self.channel = io.connect(self.remote_location + ':443/' + roomName, {'force new connection': true, 'secure': true});
 
     console.log(self.channel)
 

@@ -13,7 +13,7 @@ window.MoteioReceiver = function() {
   var self = this;
 
   // self.remote_location = 'https://localhost:3000'
-  self.remote_location = 'https://mote.io:443';
+  self.remote_location = 'https://mote.io';
 
   self.channel = null;
 
@@ -121,7 +121,7 @@ window.MoteioReceiver = function() {
   self.listen = function(roomName) {
 
     self.clog('trying to listen')
-    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
+    self.channel = io.connect(self.remote_location + ':443/' + roomName, {'force new connection': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
     self.channel.on('connect', function () {

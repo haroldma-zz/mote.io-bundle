@@ -44,9 +44,10 @@
         "http://*.hypem.com/*",
         "http://hypem.com/*",
         "http://www.htmltetris.com/",
+        "http://localhost:3000/start",
         "https://localhost:3000/start",
         "*://*.vimeo.com/couchmode*",
-        "https://mote.io/start/",
+        "https://mote.io/start",
         "http://reedditapp.com/",
         "http://www.pandora.com/*"
       ],

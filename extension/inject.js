@@ -8,7 +8,7 @@ function exec(fn) {
 }
 
 //var remote_location = "https://localhost:3000";
-var remote_location = 'https://mote.io:443';
+var remote_location = 'https://mote.io';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"

@@ -4,6 +4,7 @@
 var
   path = require('path'),
   http = require('http'),
+  https = require('https'),
   fs = require('fs'),
   express = require('express'),
   app = express(),
@@ -460,10 +461,26 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+if(process.env.NODE_ENV == "production") {
 
-server.listen(config.port);
+  var server = http.createServer(app);
+  var io = require('socket.io').listen(server);
+  server.listen(config.port);
+
+} else {
+
+  var options = {
+    key: config.key,
+    ca: [config.ca],
+    cert: config.cert,
+    passphrase: config.passphrase
+  }
+
+  var server = https.createServer(options, app);
+  var io = require('socket.io').listen(server);
+  server.listen(config.port);
+}
+
 
 clog('Listening on port ' + config.port);
 
