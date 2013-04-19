@@ -26,19 +26,29 @@
 
 		function onDeviceReady() {
 
-			console.log('started');
-			var moteio = new App();
-			moteio.init();
-
 			document.addEventListener("offline", function(){
 				moteio.offline();
 			}, false);
+
+			var moteio = new App();
+
+			document.addEventListener("online", function(){
+				moteio.init();
+			}, false);
+			moteio.init();
 
 		}
 
 	</script>
 </head>
 <body>
+
+	<div id="connecting" class="loading" data-role="page" data-theme="c">
+		<img src="images/loading.gif" id="loading-image" />
+		<div data-role="content">
+			Connecting...
+		</div>
+	</div>
 
 	<div id="login" data-role="page" data-theme="c">
 
