@@ -1348,6 +1348,14 @@ Ian Custom
 .moteio-state-installed {
 	display: none;
 }
+.show-on-mobile { display: none; }
+@media only screen and (max-width: 760px) {
+  .show-on-mobile { display: block; }
+}
+.hide-on-mobile { display: block; }
+@media only screen and (max-width: 760px) {
+  .hide-on-mobile { display: none; }
+}
 #phone {
 	background:url(../images/phone.png) transparent top center no-repeat;
 	position: absolute;
@@ -1378,4 +1386,7 @@ Ian Custom
 }
 .developers section {
 	margin: 100px 0px;
+}
+.mobile-download {
+	margin: 80px 0px;
 }
