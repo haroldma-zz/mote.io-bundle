@@ -539,11 +539,12 @@ var createRoom = function(roomName) {
       var address = socket.handshake.address;
 
       clog('[' + socket.handshake.user.username + '][connection][' + address.address + ':' + address.port + ']');
+      socket.broadcast.emit('new-connection');
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
-        clog('got config')
-        socket.broadcast.emit('[' + socket.handshake.user.username + '] get-config');
+        clog('[' + socket.handshake.user.username + '] get-config')
+        socket.broadcast.emit('get-config');
       });
       socket.on('update-config', function(data) {
         clog('[' + socket.handshake.user.username + '][update-config]')

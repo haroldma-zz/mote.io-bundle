@@ -149,6 +149,10 @@ window.MoteioReceiver = function() {
 
     });
 
+    self.channel.on('new-connection', function(data, holla) {
+      self.channel.emit('update-config', self.params);
+    });
+
     self.channel.on('go-home', function(){
       self.goHome();
     });
