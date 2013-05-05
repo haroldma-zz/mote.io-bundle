@@ -377,7 +377,6 @@ var App = function () {
             console.log(response)
             console.log(data)
             if(data[2].value == "1") {
-              alert('setting login!')
               self.set('login', data);
             } else {
               self.set('login', null)
