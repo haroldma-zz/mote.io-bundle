@@ -276,10 +276,11 @@ var App = function () {
     });
 
     self.channel.on('disconnect', function() {
-      alert('Connection lost!');
 
-      self.logout();
-      $.mobile.changePage($('#login'));
+      console.log('Connection lost!');
+
+      // self.logout();
+      // $.mobile.changePage($('#login'));
 
     });
 
@@ -397,6 +398,9 @@ var App = function () {
           $.mobile.changePage($('#login'));
         }
       });
+
+      console.log('end reached')
+
 
       return false;
 
