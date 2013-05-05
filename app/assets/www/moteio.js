@@ -20,13 +20,17 @@ var App = function () {
 
   self.set = function(key, data) {
     // Put the object into storage
+    console.log('set ' + key + ' as')
+    console.log(data)
     localStorage.setItem(key, JSON.stringify(data));
     return true;
   }
   self.get = function(key) {
     // Retrieve the object from storage
+    console.log('get ' + key)
     var retrievedObject = localStorage.getItem(key);
     if(typeof retrievedObject !== "undefined") {
+      console.log(retrievedObject)
       return JSON.parse(retrievedObject);
     } else {
       return false;
@@ -320,7 +324,6 @@ var App = function () {
   };
 
   self.logout = function () {
-    self.set('login', null);
     $('#remote-render').html('');
     $.mobile.changePage($('#login'));
   }
@@ -372,8 +375,12 @@ var App = function () {
           if(response.valid) {
 
             console.log(response)
+            console.log(data)
             if(data[2].value == "1") {
+              alert('setting login!')
               self.set('login', data);
+            } else {
+              self.set('login', null)
             }
 
             self.listen(response.user._id);
@@ -402,17 +409,20 @@ var App = function () {
       $.mobile.changePage($('#login'));
     });
 
+    console.log(self.get('login'))
+
     if(self.get('login')) {
 
       var data = self.get('login')
 
       $('#username').val(data[0].value)
       $('#password').val(data[1].value)
-      $("#login-form").submit();
+      $('#remember-me').val('1')
+      // $("#login-form").submit();
 
-    } else {
-      $.mobile.changePage($('#login'));
     }
+
+    $.mobile.changePage($('#login'));
 
   };
 
