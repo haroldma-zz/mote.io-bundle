@@ -12,8 +12,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'https://localhost:3000'
-  //self.remote_location = 'https://mote.io';
+  //self.remote_location = 'https://localhost:3000'
+  self.remote_location = 'https://mote.io';
 
   self.channel = null;
 
