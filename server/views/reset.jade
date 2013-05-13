@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  #content.container.text-page
+    .row
+      .span4
+      .span5
+
+        if (err)
+          .alert.alert-error #{err}
+
+        h2 Reset your password
+        hr
+
+        form(action="/reset",method="post")
+
+          div
+            label Email
+            input(type="email",name="email")
+
+          div
+            input.btn(type="submit",value="Reset Password")

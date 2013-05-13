@@ -410,6 +410,55 @@ app.get('/get/login', function(req, res) {
     }
 });
 
+app.get('/reset', function(req, res) {
+  res.render('reset', { page: 'start', err: null });
+});
+
+app.post('/reset', function(req, res) {
+
+  if(req.body.email) {
+
+    Account.findOne({username: req.body.email}, function (err, the_user) {
+
+      if(the_user) {
+
+        var ts = new Date().getTime();
+        the_user.reset_expires = ts + (60 * 60 * 24 * 1000);
+        the_user.reset = require('crypto').randomBytes(32).toString('hex');
+        the_user.save(function (err) {
+
+          sendgrid.send({
+            to: the_user.username,
+            from: 'hello@mote.io',
+            subject: 'Mote.io Password Reset',
+            html:
+            'Forgot your password? It\'ts ok, happens to the best of us.' +
+            '<br/>' +
+            '<br/>' +
+            'Click here to reset your password:' +
+            '<br/>' +
+            'http://mote.io/reset/confirm/?key=' + the_user.reset +
+            '<br/>' +
+            '--------------------'
+          }, function(success, message) {
+            if (!success) {
+              clog(message);
+            }
+          });
+          res.redirect('/beta');
+        });
+
+      } else {
+        console.log('nope')
+      }
+    });
+  }
+});
+
+app.get('/reset/confirm', function(req, res) {
+
+});
+
 app.get('/post/login', passport.authenticate('local'), function(req, res) {
     if(req.user) {
         if(req.user.beta) {

@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
 
 var Account = new Schema({
     beta: Boolean,
-    reset: Boolean
+    reset: String,
+    reset_expires: Date
 });
 
 Account.plugin(passportLocalMongoose);
