@@ -8,7 +8,6 @@ var Account = new Schema({
     reset_expires: Date
 });
 
-Account.plugin(passportLocalMongoose);
-// Account.plugin(passportLocalMongoose,  {iterations:1000});
+Account.plugin(passportLocalMongoose, {iterations: 250});
 
 module.exports = mongoose.model('Account', Account);

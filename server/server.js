@@ -119,7 +119,7 @@ app.configure(function() {
   app.use(express.cookieParser());
   app.use(express.session({
     store: sessionStore,
-    secret: 'keyboard cat',
+    secret: 'N+&%B/.E<b&J95l',
     cookie: { maxAge: 60000 * 60 * 24 * 365 * 4}
   }));
 
@@ -147,21 +147,21 @@ app.get('/homebase', function(req, res) {
 });
 
 app.get('/start', function(req, res) {
-    res.render('start', {err: null, user: req.user, page: 'start'});
+    res.render('start', {user: req.user, page: 'start'});
 });
 
 app.get('/community', function(req, res) {
-    res.render('community', {err: null, user: req.user, page: 'community'});
+    res.render('community', {user: req.user, page: 'community'});
 });
 
 app.get('/developers', function(req, res){
-    res.render('developers', {err: null, user: req.user, page: 'developers'});
+    res.render('developers', {user: req.user, page: 'developers'});
 });
 
 app.get('/admin', function(req, res) {
   if(req.user && req.user.username == "ian@meetjennings.com") {
     Account.find({}, function (err, all_users) {
-      res.render('admin', {err: null, user: req.user, page: 'admin', user_list: all_users});
+      res.render('admin', {user: req.user, page: 'admin', user_list: all_users});
     });
   } else {
     res.redirect('/');
@@ -170,7 +170,7 @@ app.get('/admin', function(req, res) {
 
 app.get('/admin/email', function(req, res) {
   if(req.user && req.user.username == "ian@meetjennings.com") {
-    res.render('admin-email.jade', {err: null, user: req.user, page: 'admin', user_list: false, test_email: '', blast_title: '', blast_text: ''});
+    res.render('admin-email.jade', {user: req.user, page: 'admin', user_list: false, test_email: '', blast_title: '', blast_text: ''});
   } else {
     res.redirect('/');
   }
@@ -307,11 +307,11 @@ app.get('/admin/beta', function(req, res) {
 });
 
 app.get('/beta', function(req, res) {
-    res.render('beta', {err: null, user: req.user, page: 'start' });
+    res.render('beta', {user: req.user, page: 'start' });
 });
 
 app.get('/register', function(req, res) {
-    res.render('register', {err: null, user: req.user, page: 'start' });
+    res.render('register', {user: req.user, page: 'start' });
 });
 
 app.post('/register', function(req, res) {
@@ -361,7 +361,7 @@ app.get('/login', function(req, res) {
     if(req.user) {
         res.redirect('/start');
     } else {
-        res.render('login', { page: 'start', err: null });
+        res.render('login', { page: 'start'});
     }
 });
 
@@ -411,7 +411,7 @@ app.get('/get/login', function(req, res) {
 });
 
 app.get('/reset', function(req, res) {
-  res.render('reset', { page: 'start', err: null });
+  res.render('reset', { page: 'start'});
 });
 
 app.post('/reset', function(req, res) {
@@ -420,42 +420,109 @@ app.post('/reset', function(req, res) {
 
     Account.findOne({username: req.body.email}, function (err, the_user) {
 
-      if(the_user) {
-
-        var ts = new Date().getTime();
-        the_user.reset_expires = ts + (60 * 60 * 24 * 1000);
-        the_user.reset = require('crypto').randomBytes(32).toString('hex');
-        the_user.save(function (err) {
-
-          sendgrid.send({
-            to: the_user.username,
-            from: 'hello@mote.io',
-            subject: 'Mote.io Password Reset',
-            html:
-            'Forgot your password? It\'ts ok, happens to the best of us.' +
-            '<br/>' +
-            '<br/>' +
-            'Click here to reset your password:' +
-            '<br/>' +
-            'http://mote.io/reset/confirm/?key=' + the_user.reset +
-            '<br/>' +
-            '--------------------'
-          }, function(success, message) {
-            if (!success) {
-              clog(message);
-            }
-          });
-          res.redirect('/beta');
-        });
-
+      if (err) {
+        res.render('reset', { page: 'start', err: err });
       } else {
-        console.log('nope')
+
+        if(the_user) {
+
+          var ts = new Date().getTime();
+          the_user.reset_expires = ts + (60 * 60 * 24 * 1000);
+          the_user.reset = require('crypto').randomBytes(32).toString('hex');
+          the_user.save(function (err) {
+
+            sendgrid.send({
+              to: the_user.username,
+              from: 'hello@mote.io',
+              subject: 'Mote.io Password Reset',
+              html:
+                'Forgot your password?' +
+                '<br/>' +
+                '<br/>' +
+                'Click here to reset your password:' +
+                '<br/>' +
+                'http://mote.io/reset/confirm/?username=' + the_user.username + '&key=' + the_user.reset +
+                '<br/>' +
+                '--------------------'
+            }, function(success, message) {
+              if (!success) {
+                res.render('reset', { page: 'start', err: 'Failed sending email.' });
+              } else {
+                res.render('reset', { page: 'start', alert: 'Reset email sent!' });
+              }
+            });
+
+          });
+
+        } else {
+          res.render('reset', { page: 'start', err: 'User does not exist.' });
+        }
+
       }
+
     });
+
   }
+
 });
 
 app.get('/reset/confirm', function(req, res) {
+
+  Account.findOne({username: req.query.username, reset: req.query.key}, function (err, the_user) {
+
+    if(err) {
+      res.render('reset', { page: 'start', err: 'Error looking for user.' });
+    } else {
+
+      if(the_user) {
+        if(new Date().getTime() > the_user.reset_expires) {
+          res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
+        } else {
+          res.render('confirm_password', {page: 'start', email: the_user.username, key: req.query.key, username: req.query.username});
+        }
+      } else {
+        res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+      }
+
+    }
+
+  });
+
+});
+
+app.post('/reset/confirm', function(req, res) {
+
+  Account.findOne({username: req.body.username, reset: req.body.key}, function (err, the_user) {
+
+    if(err) {
+      res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+    } else {
+
+      if(the_user) {
+
+        if(new Date().getTime() > the_user.reset_expires) {
+          res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
+        } else {
+          the_user.setPassword(req.body.password, function(err) {
+            the_user.reset = null;
+            the_user.reset_expires = null;
+            the_user.save(function (err) {
+              if(err) {
+                res.render('reset', { page: 'start', err: 'Problem resetting password' });
+              } else {
+                res.render('login', { page: 'start', alert: 'Password reset!' });
+              }
+            });
+          });
+        }
+
+      } else {
+        res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+      }
+
+    }
+
+  });
 
 });
 
@@ -540,7 +607,7 @@ io.configure(function () {
 
   io.set("authorization", passportSocketIo.authorize({
     key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
-    secret: 'keyboard cat', //the session secret to parse the cookie
+    secret: 'N+&%B/.E<b&J95l', //the session secret to parse the cookie
     store:   sessionStore,     //the session store that express uses
     fail: function(data, accept) {     // *optional* callbacks on success or fail
       accept(null, false);             // second param takes boolean on whether or not to allow handshake

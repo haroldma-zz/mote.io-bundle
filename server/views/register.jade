@@ -17,8 +17,14 @@ block content
 
       .span2
       .span4
-        if (err)
+
+        - if (typeof(alert) !== 'undefined'){
+          .alert #{alert}
+        - }
+
+        - if (typeof(err) !== 'undefined'){
           .alert.alert-error #{err}
+        - }
 
         form(action="/register",method="post")
           div

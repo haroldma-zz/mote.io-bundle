@@ -5,11 +5,17 @@ block content
     .row
       .span4
       .span4
+
+        - if (typeof(alert) !== 'undefined'){
+          .alert #{alert}
+        - }
+
+        - if (typeof(err) !== 'undefined'){
+          .alert.alert-error #{err}
+        - }
+
         h2 Log In
         hr
-
-        if (err)
-          .alert.alert-error #{err}
 
         form(action="/login",method="post")
           div
