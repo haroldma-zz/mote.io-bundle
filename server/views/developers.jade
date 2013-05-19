@@ -13,14 +13,14 @@ block content
         section
           h2 Getting Started
           hr
-          p Paste the following code on the page. window.moteio_config is where you will define the layout and actions for your remote.
+          p Paste the following code on the page. window.moteioConfig is where you will define the layout and actions for your remote.
           p The script sends an update to the phone on every load, so you can test your remote simply by refreshing the page.
           script(src='https://gist.github.com/ianjennings/5322966.js')
 
         section
           h2 Config Variables
           hr
-          p Here we define a variable called window.moteio_config. This variable is read by the script tag supplied above when it starts.
+          p Here we define a variable called window.moteioConfig. This variable is read by the script tag supplied above when it starts.
           script(src='https://gist.github.com/ianjennings/5324439.js')
           hr
           h3 API version
@@ -41,7 +41,7 @@ block content
           p You may see errors pop up on the app. This happens during deployment and other random times. Try logging out and logging back in.
           hr
           h4 Testing Remotes
-          p It's annoying to define a remote, launch the app, try it out, and test, etc. You can call moteio_config functions from the browser window like so:
+          p It's annoying to define a remote, launch the app, try it out, and test, etc. You can call moteioConfig functions from the browser window like so:
           script(src='https://gist.github.com/ianjennings/5326374.js')
 
         section
@@ -137,7 +137,7 @@ block content
           $('html,body').animate({ scrollTop: $("[name='" + id + "']").offset().top}, 200);
         }
 
-        window.moteio_config = {
+        window.moteioConfig = {
           api_version: '0.1',
           app_name: 'Dev Doc',
           blocks: [

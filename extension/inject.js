@@ -33,7 +33,7 @@ exec(function(){
 
       var active = null;
 
-      if(typeof window.moteio_rec !== "undefined") {
+      if(typeof window.moteioRec !== "undefined") {
 
         if($('.active-playing-green').length > 0) {
           active = $('.active-playing-green');
@@ -44,27 +44,30 @@ exec(function(){
         var thisArtist = $($('#player-nowplaying a')[3]).text(),
           thisSong = $($('#player-nowplaying a')[4]).text(),
           thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-          window.moteio_rec.notify(thisArtist, thisSong, thisImage);
+          window.moteioRec.notify(thisArtist, thisSong, thisImage);
 
        // transfer button states
        if($('#playerPlay').hasClass('play')) {
-         window.moteio_rec.updateButton('play', 'play', null);
+         window.moteioRec.updateButton('play', 'play', null);
        }
        if($('#playerPlay').hasClass('pause')) {
-         window.moteio_rec.updateButton('play', 'pause', null);
+         window.moteioRec.updateButton('play', 'pause', null);
        }
        if($('#playerFav').hasClass('fav-on')) {
-         window.moteio_rec.updateButton('heart', null, '#ff0000');
+         window.moteioRec.updateButton('heart', null, '#ff0000');
        } else {
-         window.moteio_rec.updateButton('heart', null, '#434345');
+         window.moteioRec.updateButton('heart', null, '#434345');
        }
       }
 
     }, 1000);
 
-    window.moteio_config = {
+    window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Hype Machine',
+      update: function() {
+
+      },
       blocks: [
         {
           type: 'notify'
@@ -204,7 +207,7 @@ exec(function(){
   } else if(window.location.host == "www.htmltetris.com") {
 
     // actual client code
-    window.moteio_config = {
+    window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Tetris',
       blocks: [
@@ -253,15 +256,15 @@ exec(function(){
 
   } else if (window.location.host == "www.rdio.com") {
 
-    window.moteio_update = function() {
-      window.moteio_rec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'));
+    window.moteioUpdate = function() {
+      window.moteioRec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'));
       setTimeout(function(){
-        window.moteio_update();
+        window.moteioUpdate();
       }, 1000);
     }
 
     // actual client code
-    window.moteio_config =
+    window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Rdio',
@@ -311,7 +314,7 @@ exec(function(){
   } else if ((window.location.host == "mote.io" || window.location.host == "localhost:3000") && window.location.pathname == "/start") {
 
     // actual client code
-    window.moteio_config =
+    window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Sync',
@@ -345,39 +348,39 @@ exec(function(){
       }
     }
 
-    window.moteio_update = function() {
+    window.moteioUpdate = function() {
 
        var thisArtist = $('.playerBarSong').text(),
          thisSong = $('.playerBarArtist').text(),
          thisImage = $('.playerBarArt').prop('src');
-         window.moteio_rec.notify(thisArtist, thisSong, thisImage);
+         window.moteioRec.notify(thisArtist, thisSong, thisImage);
 
       // transfer button states
       if($('.pauseButton').is(':visible')) {
-        window.moteio_rec.updateButton('play', 'pause', null);
+        window.moteioRec.updateButton('play', 'pause', null);
       } else {
-        window.moteio_rec.updateButton('play', 'play', null);
+        window.moteioRec.updateButton('play', 'play', null);
       }
 
       if($('.thumbDownButton').hasClass('indicator')){
-        window.moteio_rec.updateButton('down', null, '#f28141');
+        window.moteioRec.updateButton('down', null, '#f28141');
       } else {
-        window.moteio_rec.updateButton('down', null, '#434345');
+        window.moteioRec.updateButton('down', null, '#434345');
       }
 
       if($('.thumbUpButton').hasClass('indicator')){
-        window.moteio_rec.updateButton('up', null, '#f28141');
+        window.moteioRec.updateButton('up', null, '#f28141');
       } else {
-        window.moteio_rec.updateButton('up', null, '#434345');
+        window.moteioRec.updateButton('up', null, '#434345');
       }
 
       setTimeout(function(){
-        window.moteio_update();
+        window.moteioUpdate();
       }, 1000);
     }
 
     // actual client code
-    window.moteio_config =
+    window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Pandora',
@@ -428,15 +431,15 @@ exec(function(){
 
   } else if (window.location.host == "vimeo.com") {
 
-    window.moteio_update = function() {
-      window.moteio_rec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'));
+    window.moteioUpdate = function() {
+      window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'));
       setTimeout(function(){
-        window.moteio_update();
+        window.moteioUpdate();
       }, 1000);
     }
 
     // actual client code
-    window.moteio_config =
+    window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Vimeo',

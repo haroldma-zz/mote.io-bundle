@@ -68,7 +68,7 @@
     }
 
     // actual client code
-    window.moteio_config =
+    window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Homebase',
