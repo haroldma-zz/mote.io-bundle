@@ -148,6 +148,9 @@ window.MoteioReceiver = function() {
       $('.moteio-state-not-signed-in').hide();
       $('.moteio-state-signed-in').show();
 
+      console.log('sending out config')
+      console.log(self.params)
+
       self.channel.emit('update-config', self.params);
 
     });

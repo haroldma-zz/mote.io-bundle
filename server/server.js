@@ -664,6 +664,7 @@ var createRoom = function(roomName) {
       });
       socket.on('update-config', function(data) {
         clog('[' + socket.handshake.user.username + '][update-config]')
+        console.log('sending out config')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
