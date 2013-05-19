@@ -154,7 +154,6 @@ window.MoteioReceiver = function() {
 
     self.channel.on('new-connection', function(data, holla) {
       self.channel.emit('update-config', self.params);
-      self.params.update();
     });
 
     self.channel.on('go-home', function(){
@@ -217,20 +216,32 @@ window.MoteioReceiver = function() {
   			$.each(self.params.blocks[i].data, function(j, block_data) {
   				console.log(self.params.blocks[i].data[j])
   				if(self.params.blocks[i].data[j].hash == hash) {
+
   					console.log('hash is hash')
   					console.log(self.params.blocks[i].data[j])
   					console.log(data)
-  					if(typeof icon !== "undefined") {
+
+  					var worthUpdating = false;
+
+  					if(typeof icon !== "undefined" && icon && self.params.blocks[i].data[j].icon !== icon) {
   						self.params.blocks[i].data[j].icon = icon;
+  						worthUpdating = true;
   					}
-  					if(typeof color !== "undefined") {
+  					if(typeof color !== "undefined" && color && self.params.blocks[i].data[j].color !== color) {
   						self.params.blocks[i].data[j].color = color;
+  						worthUpdating = true;
   					}
-				    if (self.channel) {
+
+  					console.log(worthUpdating)
+
+				    if (self.channel && worthUpdating) {
+				    	console.log('worthUpdating')
+				    	console.log(self.params.blocks[i].data[j])
 				      self.channel.emit('update-button', self.params.blocks[i].data[j], function() {
 				        // self.clog('cbb');
 				      });
 				    }
+
   				}
   			});
   		}
