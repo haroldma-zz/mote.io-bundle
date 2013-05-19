@@ -134,7 +134,6 @@ window.MoteioReceiver = function() {
       self.channel.emit('activate', function(){
         self.clog('got response')
       });
-      self.channel.emit('update-config', self.params);
 
       self.channel.emit('start', null, function (key) {
         self.clog('started');
@@ -156,7 +155,6 @@ window.MoteioReceiver = function() {
     });
 
     self.channel.on('new-connection', function(data, holla) {
-      self.channel.emit('update-config', self.params);
     });
 
     self.channel.on('go-home', function(){
