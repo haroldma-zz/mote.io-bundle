@@ -7,8 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-//var remote_location = "https://localhost:3000";
-var remote_location = 'https://mote.io';
+var remote_location = "https://localhost:3000";
+//var remote_location = 'https://mote.io';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css"
@@ -29,11 +29,12 @@ exec(function(){
       }
     }
 
-    setInterval(function(){
+    window.moteioConfig = {
+      api_version: '0.1',
+      app_name: 'Hype Machine',
+      update: function() {
 
-      var active = null;
-
-      if(typeof window.moteioRec !== "undefined") {
+        console.log('updated')
 
         if($('.active-playing-green').length > 0) {
           active = $('.active-playing-green');
@@ -46,26 +47,18 @@ exec(function(){
           thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
           window.moteioRec.notify(thisArtist, thisSong, thisImage);
 
-       // transfer button states
-       if($('#playerPlay').hasClass('play')) {
+        // transfer button states
+        if($('#playerPlay').hasClass('play')) {
          window.moteioRec.updateButton('play', 'play', null);
-       }
-       if($('#playerPlay').hasClass('pause')) {
+        }
+        if($('#playerPlay').hasClass('pause')) {
          window.moteioRec.updateButton('play', 'pause', null);
-       }
-       if($('#playerFav').hasClass('fav-on')) {
+        }
+        if($('#playerFav').hasClass('fav-on')) {
          window.moteioRec.updateButton('heart', null, '#ff0000');
-       } else {
+        } else {
          window.moteioRec.updateButton('heart', null, '#434345');
-       }
-      }
-
-    }, 1000);
-
-    window.moteioConfig = {
-      api_version: '0.1',
-      app_name: 'Hype Machine',
-      update: function() {
+        }
 
       },
       blocks: [

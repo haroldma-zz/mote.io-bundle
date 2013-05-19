@@ -11,8 +11,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  //self.remote_location = 'https://localhost:3000'
-  self.remote_location = 'https://mote.io';
+  self.remote_location = 'https://localhost:3000'
+  //self.remote_location = 'https://mote.io';
 
   self.channel = null;
 
@@ -38,11 +38,7 @@ window.MoteioReceiver = function() {
   $('body').append($('<div id="input-display"></div>'));
 
   // Press a button.
-  // var button = which button# was pressed
-  // var down = event phase? down/up?
   self.triggerInput = function(data) {
-
-    console.log(data)
 
     var toCall = null,
     buttonFunct = self.params.blocks[data.block_id].data[data._id] || null;
@@ -127,6 +123,12 @@ window.MoteioReceiver = function() {
 
     self.channel.on('connect', function () {
 
+    	if(typeof self.params.update !== "undefined") {
+				setInterval(function(){
+					self.params.update();
+				}, 1000);
+    	}
+
       self.clog('connected');
 
       self.channel.emit('activate', function(){
@@ -152,6 +154,7 @@ window.MoteioReceiver = function() {
 
     self.channel.on('new-connection', function(data, holla) {
       self.channel.emit('update-config', self.params);
+      self.params.update();
     });
 
     self.channel.on('go-home', function(){
@@ -208,20 +211,30 @@ window.MoteioReceiver = function() {
 
   self.updateButton = function(hash, icon, color) {
 
-    // self.clog('update button')
-    data = {
-      hash: hash,
-      icon: icon,
-      color: color
-    }
-
-
-    if (self.channel) {
-      self.channel.emit('update-button', data, function(){
-        // self.clog('cbb');
-      });
-    }
-
+  	console.log(self.params);
+  	$.each(self.params.blocks, function(i, block) {
+  		if(self.params.blocks[i].type == "buttons") {
+  			$.each(self.params.blocks[i].data, function(j, block_data) {
+  				console.log(self.params.blocks[i].data[j])
+  				if(self.params.blocks[i].data[j].hash == hash) {
+  					console.log('hash is hash')
+  					console.log(self.params.blocks[i].data[j])
+  					console.log(data)
+  					if(typeof icon !== "undefined") {
+  						self.params.blocks[i].data[j].icon = icon;
+  					}
+  					if(typeof color !== "undefined") {
+  						self.params.blocks[i].data[j].color = color;
+  					}
+				    if (self.channel) {
+				      self.channel.emit('update-button', self.params.blocks[i].data[j], function() {
+				        // self.clog('cbb');
+				      });
+				    }
+  				}
+  			});
+  		}
+  	});
   }
 
   self.stop = function () {
@@ -259,11 +272,6 @@ window.MoteioReceiver = function() {
   self.init = function(params) {
 
     $(document).ready(function() {
-
-      if(typeof window.moteioUpdate !== "undefined") {
-        window.moteioUpdate();
-      }
-
       self.start();
       $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
