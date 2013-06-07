@@ -143,6 +143,14 @@ window.MoteioReceiver = function() {
 
     });
 
+    self.channel.on('new-connection', function(data){
+    	if(typeof self.params.update !== "undefined") {
+				setInterval(function(){
+					self.params.update(true);
+				}, 1000);
+    	}
+    });
+
     self.channel.on('get-config', function(data, holla){
 
       $('.moteio-state-not-signed-in').hide();
