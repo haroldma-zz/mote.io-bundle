@@ -32,7 +32,11 @@ exec(function(){
     window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Hype Machine',
-      update: function() {
+      update: function(force) {
+
+        if(typeof force == "undefined") {
+          force == false;
+        }
 
         console.log('updated')
 
@@ -45,7 +49,7 @@ exec(function(){
         var thisArtist = $($('#player-nowplaying a')[3]).text(),
           thisSong = $($('#player-nowplaying a')[4]).text(),
           thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-          window.moteioRec.notify(thisArtist, thisSong, thisImage);
+          window.moteioRec.notify(thisArtist, thisSong, thisImage, force);
 
         // transfer button states
         if($('#playerPlay').hasClass('play')) {
