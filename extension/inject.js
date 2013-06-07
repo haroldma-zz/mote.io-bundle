@@ -36,8 +36,8 @@ exec(function(){
 
         console.log('updated')
 
-        if($('.active-playing-green').length > 0) {
-          active = $('.active-playing-green');
+        if($('.haarp-active.section-track').length > 0) {
+          active = $('.haarp-active.section-track');
         } else {
           active = $($('.section-track')[0]);
         }

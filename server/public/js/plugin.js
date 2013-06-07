@@ -190,7 +190,11 @@ window.MoteioReceiver = function() {
   };
 
   // Notify the server of stuff.
-  self.notify = function(line1, line2, image) {
+  self.lastNotify = {}
+  self.notify = function(line1, line2, image, force) {
+
+  	console.log('image found is')
+  	console.log(image		)
 
     // self.clog('notify')
     data = {
@@ -199,11 +203,32 @@ window.MoteioReceiver = function() {
       image: image
     }
 
-    if(self.channel) {
-      self.channel.emit('notify', data, function(){
-        // self.clog('cb');
-      });
-    }
+  	if(typeof force == "undefined" || !force) {
+  		// do a check by default
+  		if(self.lastNotify.line1 !== line1 ||
+  			 self.lastNotify.line2 !== line2 ||
+  			 self.lastImage !== image) {
+  			console.log('this is different than last')
+				if(self.channel) {
+				  self.channel.emit('notify', data, function(){
+				    // self.clog('cb');
+				  });
+				}
+  		}
+  	} else {
+  		console.log('just update')
+  		// otherwise just update
+  		if(self.channel) {
+  		  self.channel.emit('notify', data, function(){
+  		    // self.clog('cb');
+  		  });
+  		}
+  	}
+
+
+    self.lastNotify.line1 = line1;
+    self.lastNotify.line2 = line2;
+    self.lastImage = image;
 
   };
 
