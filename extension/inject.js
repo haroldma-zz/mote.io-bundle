@@ -53,15 +53,15 @@ exec(function(){
 
         // transfer button states
         if($('#playerPlay').hasClass('play')) {
-         window.moteioRec.updateButton('play', 'play', null);
+         window.moteioRec.updateButton('play', 'play', null, force);
         }
         if($('#playerPlay').hasClass('pause')) {
-         window.moteioRec.updateButton('play', 'pause', null);
+         window.moteioRec.updateButton('play', 'pause', null, force);
         }
         if($('#playerFav').hasClass('fav-on')) {
-         window.moteioRec.updateButton('heart', null, '#ff0000');
+         window.moteioRec.updateButton('heart', null, '#ff0000', force);
         } else {
-         window.moteioRec.updateButton('heart', null, '#434345');
+         window.moteioRec.updateButton('heart', null, '#434345', force);
         }
 
       },
@@ -375,21 +375,21 @@ exec(function(){
 
           // transfer button states
           if($('.pauseButton').is(':visible')) {
-            window.moteioRec.updateButton('play', 'pause', null);
+            window.moteioRec.updateButton('play', 'pause', null, force);
           } else {
-            window.moteioRec.updateButton('play', 'play', null);
+            window.moteioRec.updateButton('play', 'play', null, force);
           }
 
           if($('.thumbDownButton').hasClass('indicator')){
-            window.moteioRec.updateButton('down', null, '#f28141');
+            window.moteioRec.updateButton('down', null, '#f28141', force);
           } else {
-            window.moteioRec.updateButton('down', null, '#434345');
+            window.moteioRec.updateButton('down', null, '#434345', force);
           }
 
           if($('.thumbUpButton').hasClass('indicator')){
-            window.moteioRec.updateButton('up', null, '#f28141');
+            window.moteioRec.updateButton('up', null, '#f28141', force);
           } else {
-            window.moteioRec.updateButton('up', null, '#434345');
+            window.moteioRec.updateButton('up', null, '#434345', force);
           }
 
         },
@@ -445,6 +445,17 @@ exec(function(){
         api_version: '0.1',
         app_name: 'Vimeo',
         update: function(force) {
+          if($('.play_pause_button').hasClass('playing')) {
+            window.moteioRec.updateButton('play', 'pause', null, force);
+          } else {
+            window.moteioRec.updateButton('play', 'play', null, force);
+          }
+          if($('.like').hasClass('on')) {
+           window.moteioRec.updateButton('heart', null, '#ff0000', force);
+          } else {
+            console.log('or else')
+           window.moteioRec.updateButton('heart', null, '#434345', force);
+          }
           window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'), force);
         },
         blocks: [
@@ -458,7 +469,8 @@ exec(function(){
                 press: function () {
                   $('.play_pause_button').click();
                 },
-                icon: 'play'
+                icon: 'play',
+                hash: 'play'
               },
               {
                 press: function () {
@@ -468,7 +480,8 @@ exec(function(){
                     $('.like').click();
                   }
                 },
-                icon: 'heart'
+                icon: 'heart',
+                hash: 'heart'
               },
               {
                 press: function () {

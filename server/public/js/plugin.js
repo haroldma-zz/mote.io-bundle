@@ -240,7 +240,7 @@ window.MoteioReceiver = function() {
 
   };
 
-  self.updateButton = function(hash, icon, color) {
+  self.updateButton = function(hash, icon, color, force) {
 
   	console.log(self.params);
   	$.each(self.params.blocks, function(i, block) {
@@ -251,20 +251,28 @@ window.MoteioReceiver = function() {
 
   					console.log('hash is hash')
   					console.log(self.params.blocks[i].data[j])
-  					console.log(data)
 
   					var worthUpdating = false;
 
-  					if(typeof icon !== "undefined" && icon && self.params.blocks[i].data[j].icon !== icon) {
-  						self.params.blocks[i].data[j].icon = icon;
+  					if(force){
   						worthUpdating = true;
-  					}
-  					if(typeof color !== "undefined" && color && self.params.blocks[i].data[j].color !== color) {
-  						self.params.blocks[i].data[j].color = color;
-  						worthUpdating = true;
-  					}
+  						console.log('forced')
+  					} else {
+  						if(typeof icon !== "undefined" && icon && self.params.blocks[i].data[j].icon !== icon) {
+  							self.params.blocks[i].data[j].icon = icon;
+  							worthUpdating = true;
+  							console.log('icon changed')
+  						}
+  						if(typeof color !== "undefined" && color && self.params.blocks[i].data[j].color !== color) {
+  							self.params.blocks[i].data[j].color = color;
+  							worthUpdating = true;
+  							console.log('color changed')
+  						}
 
-  					console.log(worthUpdating)
+  						console.log('is it worth updating?')
+  						console.log(worthUpdating)
+
+  					}
 
 				    if (self.channel && worthUpdating) {
 				    	console.log('worthUpdating')
