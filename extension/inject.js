@@ -209,17 +209,10 @@ exec(function(){
               action: function() {
                 $('#menu-item-mytracks > a').click();
               }
-            },
+            }
           ]
         }
       ]
-    }
-
-    console.log(jQuery)
-    if($('#menu-item-mytracks').length > 0) {
-      alert('done')
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(window.moteioConfig.blocks[3]);
     }
 
   } else if(window.location.host == "www.htmltetris.com") {
@@ -274,18 +267,14 @@ exec(function(){
 
   } else if (window.location.host == "www.rdio.com") {
 
-    window.moteioUpdate = function() {
-      window.moteioRec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'));
-      setTimeout(function(){
-        window.moteioUpdate();
-      }, 1000);
-    }
-
     // actual client code
     window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Rdio',
+        update: function(force) {
+          window.moteioRec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'), force);
+        },
         blocks: [
           {
             type: 'notify'
@@ -336,7 +325,13 @@ exec(function(){
       {
         api_version: '0.1',
         app_name: 'Sync',
+        update: function(force) {
+          window.moteioRec.notify('Connected Established!', 'Tap to launch Homebase.', 'http://www.terrariaonline.com/attachments/success-kid-jpg.33785/', force);
+        },
         blocks: [
+          {
+            type: 'notify',
+          },
           {
             type: 'buttons',
             data: [
@@ -366,43 +361,38 @@ exec(function(){
       }
     }
 
-    window.moteioUpdate = function() {
-
-       var thisArtist = $('.playerBarSong').text(),
-         thisSong = $('.playerBarArtist').text(),
-         thisImage = $('.playerBarArt').prop('src');
-         window.moteioRec.notify(thisArtist, thisSong, thisImage);
-
-      // transfer button states
-      if($('.pauseButton').is(':visible')) {
-        window.moteioRec.updateButton('play', 'pause', null);
-      } else {
-        window.moteioRec.updateButton('play', 'play', null);
-      }
-
-      if($('.thumbDownButton').hasClass('indicator')){
-        window.moteioRec.updateButton('down', null, '#f28141');
-      } else {
-        window.moteioRec.updateButton('down', null, '#434345');
-      }
-
-      if($('.thumbUpButton').hasClass('indicator')){
-        window.moteioRec.updateButton('up', null, '#f28141');
-      } else {
-        window.moteioRec.updateButton('up', null, '#434345');
-      }
-
-      setTimeout(function(){
-        window.moteioUpdate();
-      }, 1000);
-    }
-
     // actual client code
     window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Pandora',
+        update: function(force) {
 
+          var thisArtist = $('.playerBarSong').text(),
+            thisSong = $('.playerBarArtist').text(),
+            thisImage = $('.playerBarArt').prop('src');
+            window.moteioRec.notify(thisArtist, thisSong, thisImage, force);
+
+          // transfer button states
+          if($('.pauseButton').is(':visible')) {
+            window.moteioRec.updateButton('play', 'pause', null);
+          } else {
+            window.moteioRec.updateButton('play', 'play', null);
+          }
+
+          if($('.thumbDownButton').hasClass('indicator')){
+            window.moteioRec.updateButton('down', null, '#f28141');
+          } else {
+            window.moteioRec.updateButton('down', null, '#434345');
+          }
+
+          if($('.thumbUpButton').hasClass('indicator')){
+            window.moteioRec.updateButton('up', null, '#f28141');
+          } else {
+            window.moteioRec.updateButton('up', null, '#434345');
+          }
+
+        },
         blocks: [
           {
             type: 'notify'
@@ -449,18 +439,14 @@ exec(function(){
 
   } else if (window.location.host == "vimeo.com") {
 
-    window.moteioUpdate = function() {
-      window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'));
-      setTimeout(function(){
-        window.moteioUpdate();
-      }, 1000);
-    }
-
     // actual client code
     window.moteioConfig =
       {
         api_version: '0.1',
         app_name: 'Vimeo',
+        update: function(force) {
+          window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'), force);
+        },
         blocks: [
           {
             type: 'notify'
