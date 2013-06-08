@@ -195,10 +195,31 @@ exec(function(){
               action: function() {
                 window.location = "/popular/twitter";
               }
-            }
+            },
+            {
+              optgroup: 'Me',
+              text: 'Feed',
+              action: function() {
+                $('#user-menu-feed-link').click();
+              }
+            },
+            {
+              optgroup: 'Me',
+              text: 'Favorites',
+              action: function() {
+                $('#menu-item-mytracks > a').click();
+              }
+            },
           ]
         }
       ]
+    }
+
+    console.log(jQuery)
+    if($('#menu-item-mytracks').length > 0) {
+      alert('done')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(window.moteioConfig.blocks[3]);
     }
 
   } else if(window.location.host == "www.htmltetris.com") {
