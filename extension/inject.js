@@ -11,7 +11,8 @@ var remote_location = "https://localhost:3000";
 //var remote_location = 'https://mote.io';
 
 var extension_url = remote_location + "/js/plugin.js",
-  css_url = remote_location + "/css/plugin.css"
+  css_url = remote_location + "/css/plugin.css",
+  font_url = remote_location + "/css/font-awesome/font-awesome.css"
 
 exec(function(){
 
@@ -542,6 +543,12 @@ exec(function(){
 });
 
 function async_load(){
+
+    var link = document.createElement("link");
+    link.href = font_url;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    document.getElementsByTagName("head")[0].appendChild(link);
 
     var link = document.createElement("link");
     link.href = css_url;

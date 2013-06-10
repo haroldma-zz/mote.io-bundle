@@ -1,0 +1,19 @@
+.moteio-button-popup {
+	position: fixed;
+	z-index: 9999;
+	border-radius: 10px;
+	background-color: white;
+	opacity: .5;
+	text-align: center;
+	width: 33%;
+	left: 33%;
+	top: 33%;
+	height: 200px;
+	line-height: 200px;
+	display: block;
+	font-size: 50px;
+}
+
+.moteio-button-popup [class^="icon-"], .moteio-button-popup [class*=" icon-"] {
+	font-size: 50px;
+}

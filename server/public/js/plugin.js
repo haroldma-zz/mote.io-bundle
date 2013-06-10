@@ -23,19 +23,19 @@ window.MoteioReceiver = function() {
 
     var
       color = color || null,
-      popup = $('<div class="popup"><span class="icon-' + icon + '"></span></div>');
+      popup = $('<div class="moteio-container"><div class="moteio-button-popup"><span class="icon-' + icon + '"></span></div></div>');
 
     if(color) {
-      popup.css('color', color);
-     }
+	  	popup.css('color', color);
+	  }
 
-    $('#input-display').prepend(popup);
+    $('.moteio-button-popup').hide().remove();
+
+    $('body').append(popup);
 
     popup.show().delay(800).fadeOut();
 
   }
-
-  $('body').append($('<div id="input-display"></div>'));
 
   // Press a button.
   self.triggerInput = function(data) {
@@ -53,7 +53,7 @@ window.MoteioReceiver = function() {
 
       if (data.press) {
         toCall = buttonFunct.press;
-        // self.inputDisplay(buttonFunct.icon)
+        self.inputDisplay(buttonFunct.icon)
       } else {
         toCall = buttonFunct.release;
       }
