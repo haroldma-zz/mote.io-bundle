@@ -88,7 +88,7 @@ window.MoteioReceiver = function() {
   self.clog = function(description, level) {
 
     var level = level || 1;
-    if (self.debug && console && console.log) {
+    if (self.debug && console && // console.log) {
       var message  = [];
       message.push('[mote.io]');
       switch (level){
@@ -105,7 +105,7 @@ window.MoteioReceiver = function() {
       default:
         message.push('Notice: ');
         message.push(description);
-        console.log(message.join(' '));
+        // console.log(message.join(' '));
         break;
       }
     }
@@ -158,8 +158,8 @@ window.MoteioReceiver = function() {
       $('.moteio-state-not-signed-in').hide();
       $('.moteio-state-signed-in').show();
 
-      console.log('sending out config')
-      console.log(self.params)
+      // // console.log('sending out config')
+      // // console.log(self.params)
 
       self.channel.emit('update-config', self.params);
 
@@ -203,8 +203,8 @@ window.MoteioReceiver = function() {
   self.lastNotify = {}
   self.notify = function(line1, line2, image, force) {
 
-  	console.log('image found is')
-  	console.log(image		)
+  	// console.log('image found is')
+  	// console.log(image		)
 
     // self.clog('notify')
     data = {
@@ -218,7 +218,7 @@ window.MoteioReceiver = function() {
   		if(self.lastNotify.line1 !== line1 ||
   			 self.lastNotify.line2 !== line2 ||
   			 self.lastImage !== image) {
-  			console.log('this is different than last')
+  			// console.log('this is different than last')
 				if(self.channel) {
 				  self.channel.emit('notify', data, function(){
 				    // self.clog('cb');
@@ -226,7 +226,7 @@ window.MoteioReceiver = function() {
 				}
   		}
   	} else {
-  		console.log('just update')
+  		// console.log('just update')
   		// otherwise just update
   		if(self.channel) {
   		  self.channel.emit('notify', data, function(){
@@ -244,41 +244,41 @@ window.MoteioReceiver = function() {
 
   self.updateButton = function(hash, icon, color, force) {
 
-  	console.log(self.params);
+  	// console.log(self.params);
   	$.each(self.params.blocks, function(i, block) {
   		if(self.params.blocks[i].type == "buttons") {
   			$.each(self.params.blocks[i].data, function(j, block_data) {
-  				console.log(self.params.blocks[i].data[j])
+  				// console.log(self.params.blocks[i].data[j])
   				if(self.params.blocks[i].data[j].hash == hash) {
 
-  					console.log('hash is hash')
-  					console.log(self.params.blocks[i].data[j])
+  					// console.log('hash is hash')
+  					// console.log(self.params.blocks[i].data[j])
 
   					var worthUpdating = false;
 
   					if(force){
   						worthUpdating = true;
-  						console.log('forced')
+  						// console.log('forced')
   					} else {
   						if(typeof icon !== "undefined" && icon && self.params.blocks[i].data[j].icon !== icon) {
   							self.params.blocks[i].data[j].icon = icon;
   							worthUpdating = true;
-  							console.log('icon changed')
+  							// console.log('icon changed')
   						}
   						if(typeof color !== "undefined" && color && self.params.blocks[i].data[j].color !== color) {
   							self.params.blocks[i].data[j].color = color;
   							worthUpdating = true;
-  							console.log('color changed')
+  							// console.log('color changed')
   						}
 
-  						console.log('is it worth updating?')
-  						console.log(worthUpdating)
+  						// console.log('is it worth updating?')
+  						// console.log(worthUpdating)
 
   					}
 
 				    if (self.channel && worthUpdating) {
-				    	console.log('worthUpdating')
-				    	console.log(self.params.blocks[i].data[j])
+				    	// console.log('worthUpdating')
+				    	// console.log(self.params.blocks[i].data[j])
 				      self.channel.emit('update-button', self.params.blocks[i].data[j], function() {
 				        // self.clog('cbb');
 				      });
@@ -336,7 +336,7 @@ window.MoteioReceiver = function() {
           self.start();
           // this will set is_active
         } else {
-          //console.log('CHANNEL EXISTS, DONT START')
+          //// console.log('CHANNEL EXISTS, DONT START')
         }
 
       });

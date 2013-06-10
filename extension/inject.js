@@ -39,8 +39,6 @@ exec(function(){
           force == false;
         }
 
-        console.log('updated')
-
         if($('.haarp-active.section-track').length > 0) {
           active = $('.haarp-active.section-track');
         } else {
@@ -196,7 +194,8 @@ exec(function(){
               action: function() {
                 window.location = "/popular/twitter";
               }
-            },
+            }
+            /*,
             {
               optgroup: 'Me',
               text: 'Feed',
@@ -211,6 +210,7 @@ exec(function(){
                 $('#menu-item-mytracks > a').click();
               }
             }
+            */
           ]
         }
       ]
@@ -459,7 +459,6 @@ exec(function(){
           if($('.like').hasClass('on')) {
            window.moteioRec.updateButton('heart', null, '#ff0000', force);
           } else {
-            console.log('or else')
            window.moteioRec.updateButton('heart', null, '#434345', force);
           }
           window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'), force);
