@@ -33,7 +33,9 @@ window.MoteioReceiver = function() {
 
     $('body').append(popup);
 
-    popup.show().delay(800).fadeOut();
+    popup.show().delay(800).fadeOut('normal', function(){
+    	$(this).remove();
+    });
 
   }
 

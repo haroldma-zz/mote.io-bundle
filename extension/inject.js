@@ -274,7 +274,12 @@ exec(function(){
         api_version: '0.1',
         app_name: 'Rdio',
         update: function(force) {
-          window.moteioRec.notify($('.artist_title').text(), $('.song_title').text(), $('.album_icon').prop('src'), force);
+          if($('.play_pause').hasClass('playing')) {
+            window.moteioRec.updateButton('play', 'pause', null, force);
+          } else {
+            window.moteioRec.updateButton('play', 'play', null, force);
+          }
+          window.moteioRec.notify($('.text_metadata .artist_title').text(), $('.text_metadata .song_title').text(), $('.art').prop('src'), force);
         },
         blocks: [
           {
