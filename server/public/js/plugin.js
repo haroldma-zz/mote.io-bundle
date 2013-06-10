@@ -29,7 +29,7 @@ window.MoteioReceiver = function() {
 	  	popup.css('color', color);
 	  }
 
-    $('.moteio-button-popup').hide().remove();
+    $('.moteio-button-popup').remove();
 
     $('body').append(popup);
 

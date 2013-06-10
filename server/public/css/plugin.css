@@ -9,11 +9,11 @@
 	left: 33%;
 	top: 33%;
 	height: 200px;
-	line-height: 200px;
+	line-height: 150px;
 	display: block;
-	font-size: 50px;
+	font-size: 100px;
 }
 
 .moteio-button-popup [class^="icon-"], .moteio-button-popup [class*=" icon-"] {
-	font-size: 50px;
+	font-size: 100px;
 }
