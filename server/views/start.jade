@@ -2,58 +2,71 @@ extends layout
 
 block content
   #content.container.text-page
-    .heading
-      h1 Getting Started.
-      p It only takes a second to get started with Mote.io.
+    .row
+      .span12
+        .heading
+          h1 Getting Started.
+          p It only takes a second to get started with Mote.io.
+    .row
+      .span8
 
-    .show-on-mobile
-      p.text-center.mobile-download
-          a.btn.btn-large.btn-block(target="_blank", href='https://play.google.com/store/apps/details?id=org.moteio.app') Get Mote.io for Android
-      .alert
-        | We're hiding the other setup instructions because it looks like you're on a mobile device. If you want to see the computer instructions,&nbsp;
-        a.show-hide-on-mobile click here.
+        .show-on-mobile
+          p.text-center.mobile-download
+              a.btn.btn-large.btn-block(target="_blank", href='https://play.google.com/store/apps/details?id=org.moteio.app') Get Mote.io for Android
+          .alert
+            | We're hiding the other setup instructions because it looks like you're on a mobile device. If you want to see the computer instructions,&nbsp;
+            a.show-hide-on-mobile click here.
 
-    .hide-on-mobile
-      if (user)
-        .alert.alert-success
-          | You are currently logged in as #{user.username}.&nbsp;
-          a(href = '/logout') Logout.
-      else
-        .well.well-large
-          h2 Sign in.
-          hr
-          p
-            | You are logged out. &nbsp;
-            a(href='/register') Sign up for the beta
-            | &nbsp;or&nbsp;
-            a(href='/login') login
-            |.
+        .hide-on-mobile
+          if (user)
+            .alert.alert-success
+              | You are currently logged in as #{user.username}.&nbsp;
+              a(href = '/logout') Logout.
+          else
+            .well.well-large
+              h2 Sign in.
+              hr
+              p
+                | You are logged out. &nbsp;
+                a(href='/register') Sign up for the beta
+                | &nbsp;or&nbsp;
+                a(href='/login') login
+                |.
 
-      .moteio-state-installed
-        .alert.alert-success Mote.io Chrome Extension found.
-      .moteio-state-not-installed
-        .well.well-large
-          h2 Install the Chrome Extension.
-          hr
-          p Install the Chrome extension
-            | then&nbsp;
-            a(href='/start') refresh this page.
-          p
-            a.btn(target='_blank', href='https://chrome.google.com/webstore/detail/moteio/okkhbojknlfdoooeghbkplihbjajpecc') Get Mote.io Chrome Extension
+          .moteio-state-installed
+            .alert.alert-success Mote.io Chrome Extension found.
+          .moteio-state-not-installed
+            .well.well-large
+              h2 Install the Chrome Extension.
+              hr
+              p Install the Chrome extension
+                | then&nbsp;
+                a(href='/start') refresh this page.
+              p
+                a.btn(target='_blank', href='https://chrome.google.com/webstore/detail/moteio/okkhbojknlfdoooeghbkplihbjajpecc') Get Mote.io Chrome Extension
 
 
-      .moteio-state-signed-in
-        .alert.alert-success App found.
-      .moteio-state-not-signed-in
-        .well.well-large
-          h2 Sign into the mobile app.
-          hr
-          p
-            a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=org.moteio.app') Get Mote.io for Android
-          p Then&nbsp;
-            a(href='/start') refresh this page.
-          hr
-          p Mote.io for iPhone coming soon
+          .moteio-state-signed-in
+            .alert.alert-success App found.
+          .moteio-state-not-signed-in
+            .well.well-large
+              h2 Sign into the mobile app.
+              hr
+              p
+                a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=org.moteio.app') Get Mote.io for Android
+              p Then&nbsp;
+                a(href='/start') refresh this page.
+              hr
+              p Mote.io for iPhone coming soon
+
+      .span1
+      .span3
+        h4 Need Help?
+        p Tweet @sw1tch for support.
+        hr
+        h4 Want to keep your macbook awake?
+        p I reccomend&nbsp;
+          a(href='https://www.macupdate.com/app/mac/22211/insomniax') InsomniaX.
 
   script
     $(document).ready(function(){
