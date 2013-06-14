@@ -21,6 +21,7 @@ var
   Account = require('./models/account'),
   check = require('validator').check,
   sanitize = require('validator').sanitize,
+  redis = require('socket.io/node_modules/redis'),
   marked = require('marked');
 
 var loggly = require('loggly');
@@ -61,6 +62,11 @@ app.configure('development', function(){
       port: '27017',
       host: 'localhost'
     },
+    redis: {
+      pass: 'zAnmp7ashaltfv8CRDdJw7xx3T8xoheq0X5y9pAdO31sQeih4LphinmB3zRttWNz',
+      host: 'proxy2.openredis.com',
+      port: 12135
+    },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: 3000,
     key: fs.readFileSync(__dirname + '/self.key').toString(),
@@ -90,6 +96,11 @@ app.configure('production', function(){
       password: 'honeywell',
       collection: 'sessions'
     },
+    redis: {
+      pass: 'zAnmp7ashaltfv8CRDdJw7xx3T8xoheq0X5y9pAdO31sQeih4LphinmB3zRttWNz',
+      host: '54.243.253.145',
+      port: 12135
+    },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: process.env.PORT,
     key: null,
@@ -103,7 +114,15 @@ app.configure('production', function(){
 
   clog('[server][boot][prod]');
   mongoose.connect(constructDBURL(config.db));
+
 });
+
+var pub = redis.createClient(config.redis.port, config.redis.host);
+var sub = redis.createClient(config.redis.port, config.redis.host);
+var store = redis.createClient(config.redis.port, config.redis.host);
+pub.auth(config.redis.pass, function(){console.log("adentro! pub")});
+sub.auth(config.redis.pass, function(){console.log("adentro! sub")});
+store.auth(config.redis.pass, function(){console.log("adentro! store")});
 
 var sessionStore = new MongoStore(config.db);
 
@@ -616,6 +635,9 @@ io.configure(function () {
       accept(null, true);
     }
   }));
+
+  var RedisStore = require('socket.io/lib/stores/redis');
+  io.set('store', new RedisStore({redisPub:pub, redisSub:sub, redisClient:store}));
 
 });
 
