@@ -22,14 +22,15 @@ var
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   redis = require('socket.io/node_modules/redis'),
-  marked = require('marked');
+  marked = require('marked'),
+  clog = null;
 
 var loggly = require('loggly');
 var config = {
-  subdomain: "moteiologs",
+  subdomain: "moteioo",
     auth: {
-      username: "sw1tch",
-      password: "0K1:a7P68G-i95;"
+      username: "moteio",
+      password: "CUTh&5R7B:BVe@i"
     }
   };
 var client = loggly.createClient(config);
@@ -47,11 +48,6 @@ var constructDBURL = function(db) {
   dbUrl += db.host+':'+ db.port;
   dbUrl += '/' + db.db;
   return dbUrl;
-}
-
-var clog = function(message) {
-  console.log('[debug]' + message);
-  client.log('768dbb5f-a7eb-4821-a20f-839283e23553', message)
 }
 
 app.configure('development', function(){
@@ -72,20 +68,24 @@ app.configure('development', function(){
     key: fs.readFileSync(__dirname + '/self.key').toString(),
     ca: fs.readFileSync(__dirname + '/self.csr').toString(),
     cert: fs.readFileSync(__dirname + '/self.crt').toString(),
-    passphrase: 'honeywell'
+    passphrase: 'honeywell',
+    id: 1
   };
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   mongoose.connect(constructDBURL(config.db));
 
+  clog = function(message) {
+    message = '[debug]' + message;
+    console.log(message);
+    client.log('ea1f366a-a2bd-49c3-a279-e575db80420b', message)
+  }
+
+  clog('[server][boot][dev]');
+
 });
 
 app.configure('production', function(){
-
-  clog = function(message) {
-    console.log(message)
-    client.log('670411fa-e21f-4211-90d0-17357aa5c16b', message)
-  }
 
   config = {
     db: {
@@ -106,23 +106,31 @@ app.configure('production', function(){
     key: null,
     ca: null,
     cert: null,
-    passphrase: null
+    passphrase: null,
+    id: process.env.SERVO_ID
   };
 
   app.use(express.errorHandler());
   //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-  clog('[server][boot][prod]');
   mongoose.connect(constructDBURL(config.db));
+
+  clog = function(message) {
+    message = '[' + config.id + ']' + message;
+    // console.log(message)
+    client.log('8b6aee86-0628-4277-8786-87a057aa191d', message)
+  }
+
+  clog('[server][boot][prod]');
 
 });
 
 var pub = redis.createClient(config.redis.port, config.redis.host);
 var sub = redis.createClient(config.redis.port, config.redis.host);
 var store = redis.createClient(config.redis.port, config.redis.host);
-pub.auth(config.redis.pass, function(){console.log("adentro! pub")});
-sub.auth(config.redis.pass, function(){console.log("adentro! sub")});
-store.auth(config.redis.pass, function(){console.log("adentro! store")});
+pub.auth(config.redis.pass, function(){clog("[redis][auth][pub]")});
+sub.auth(config.redis.pass, function(){clog("[redis][auth][sub]")});
+store.auth(config.redis.pass, function(){clog("[redis][auth][store]")});
 
 var sessionStore = new MongoStore(config.db);
 
@@ -617,7 +625,7 @@ if(process.env.NODE_ENV == "production") {
 }
 
 
-clog('Listening on port ' + config.port);
+clog('[listening][port: ' + config.port + ']');
 
 io.configure(function () {
 
@@ -686,7 +694,7 @@ var createRoom = function(roomName) {
       });
       socket.on('update-config', function(data) {
         clog('[' + socket.handshake.user.username + '][update-config]')
-        console.log('sending out config')
+        clog('[sending out config]')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {

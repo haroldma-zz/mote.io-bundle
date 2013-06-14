@@ -88,7 +88,7 @@ window.MoteioReceiver = function() {
   self.clog = function(description, level) {
 
     var level = level || 1;
-    if (self.debug && console && // console.log) {
+    if (self.debug && console && console.log) {
       var message  = [];
       message.push('[mote.io]');
       switch (level){
