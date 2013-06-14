@@ -17,7 +17,6 @@ var
   passportLocalMongoose = require('passport-local-mongoose'),
   MongoStore = require('connect-mongo')(express),
   config = {},
-  passport = require('passport'),
   Account = require('./models/account'),
   check = require('validator').check,
   sanitize = require('validator').sanitize,
@@ -117,7 +116,7 @@ app.configure('production', function(){
 
   clog = function(message) {
     message = '[' + config.id + ']' + message;
-    // console.log(message)
+    console.log(message)
     client.log('8b6aee86-0628-4277-8786-87a057aa191d', message)
   }
 
@@ -125,12 +124,24 @@ app.configure('production', function(){
 
 });
 
+var db = mongoose.connection;
+db.on('error', function(error){
+  clog('[mongo][error]');
+  console.log(error);
+});
+db.once('open', function callback () {
+  clog('[mongo][connection][success]');
+});
+
 var pub = redis.createClient(config.redis.port, config.redis.host);
 var sub = redis.createClient(config.redis.port, config.redis.host);
 var store = redis.createClient(config.redis.port, config.redis.host);
-pub.auth(config.redis.pass, function(){clog("[redis][auth][pub]")});
-sub.auth(config.redis.pass, function(){clog("[redis][auth][sub]")});
-store.auth(config.redis.pass, function(){clog("[redis][auth][store]")});
+pub.on('error', function(err){clog('[redis][pub][error]' + err)});
+sub.on('error', function(err){clog('[redis][sub][error]' + err)});
+store.on('error', function(err){clog('[redis][store][error]' + err)});
+pub.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][pub][success]")});
+sub.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][sub][success]")});
+store.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][store][success]")});
 
 var sessionStore = new MongoStore(config.db);
 
@@ -630,13 +641,15 @@ clog('[listening][port: ' + config.port + ']');
 io.configure(function () {
 
   // io.set('polling duration', 30);
-  io.set('log level', 1);
+  // io.set('log level', 1);
 
   io.set("authorization", passportSocketIo.authorize({
     key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
     secret: 'N+&%B/.E<b&J95l', //the session secret to parse the cookie
     store:   sessionStore,     //the session store that express uses
     fail: function(data, accept) {     // *optional* callbacks on success or fail
+      console.log('failure')
+      console.log(data)
       accept(null, false);             // second param takes boolean on whether or not to allow handshake
     },
     success: function(data, accept) {
@@ -645,7 +658,12 @@ io.configure(function () {
   }));
 
   var RedisStore = require('socket.io/lib/stores/redis');
-  io.set('store', new RedisStore({redisPub:pub, redisSub:sub, redisClient:store}));
+  io.set('store', new RedisStore({
+    redis: redis,
+    redisPub: pub,
+    redisSub: sub,
+    redisClient: store
+  }));
 
 });
 
@@ -653,9 +671,11 @@ io.sockets.on('connection', function (socket) {
 
   var username = socket.handshake.user._id;
 
+  clog('[user._id]' + username);
+
   //console.log(io.sockets.manager.namespaces['/' + username])
   if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
-      createRoom(username);
+    createRoom(username);
   }
 
 });
@@ -671,7 +691,7 @@ var createRoom = function(roomName) {
       clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][try]');
 
       // addittional auth to make sure we are correct user
-      if(String(roomName) === String(handshakeData.user.id)) {
+      if(String(roomName) === String(handshakeData.user._id)) {
         clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][success]');
         callback(null, true);
       } else {
@@ -689,7 +709,7 @@ var createRoom = function(roomName) {
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
-        clog('[' + socket.handshake.user.username + '] get-config')
+        clog('[' + socket.handshake.user.username + '][get-config]')
         socket.broadcast.emit('get-config');
       });
       socket.on('update-config', function(data) {
@@ -718,6 +738,8 @@ var createRoom = function(roomName) {
       });
       socket.on('input', function (data, holla) {
         clog('[' + socket.handshake.user.username + '][input]');
+        console.log('got input')
+        console.log(data)
         socket.broadcast.emit('input', data);
         holla();
       });
