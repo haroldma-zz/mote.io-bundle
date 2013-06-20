@@ -140,13 +140,16 @@ app.configure('production', function(){
 });
 
 process.on('uncaughtException', function(err) {
-  err.source = "uncaughtException";
+  console.log('Caught exception: ' + err);
+  err.source = "uncaught-exception";
+  err.type = 'error';
   clog(err);
 });
 
 var db = mongoose.connection;
 db.on('error', function(err){
   err.source = 'mongoose';
+  err.type = 'error';
   clog(err);
 });
 db.once('open', function callback () {
@@ -158,19 +161,23 @@ var sub = redis.createClient(config.redis.port, config.redis.host);
 var store = redis.createClient(config.redis.port, config.redis.host);
 pub.on('error', function(err){
   err.source = 'redis-pub';
+  err.type = 'error';
   clog(err);
 });
 sub.on('error', function(err){
   err.source = 'redis-sub';
+  err.type = 'error';
   clog(err);
 });
 store.on('error', function(err){
   err.source = 'redis-store';
+  err.type = 'error';
   clog(err);
 });
 pub.auth(config.redis.pass, function(err){
   if(err){
     err.source = 'redis-pub';
+    err.type = 'error';
     clog(err);
   }
   clog({subject: 'redis-pub', 'message': 'auth-success'});
@@ -178,6 +185,7 @@ pub.auth(config.redis.pass, function(err){
 sub.auth(config.redis.pass, function(err){
   if(err){
     err.source = 'redis-sub';
+    err.type = 'error';
     clog(err);
   }
   clog({subject: 'redis-sub', 'message': 'auth-success'});
@@ -185,6 +193,7 @@ sub.auth(config.redis.pass, function(err){
 store.auth(config.redis.pass, function(err){
   if(err){
     err.source = 'redis-store';
+    err.type = 'error';
     clog(err);
   }
   clog({subject: 'redis-store', 'message': 'auth-success'});
@@ -345,6 +354,8 @@ app.get('/admin/beta', function(req, res) {
 
         Account.findById(req.query.user, function(err,user){
             if(err) {
+                err.type = 'error';
+                err.source = 'admin-login';
                 clog(err)
                 res.redirect('/')
             } else {
