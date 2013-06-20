@@ -21,21 +21,25 @@ window.MoteioReceiver = function() {
 
   self.inputDisplay = function(icon, color) {
 
-    var
-      color = color || null,
-      popup = $('<div class="moteio-container"><div class="moteio-button-popup"><span class="icon-' + icon + '"></span></div></div>');
+  	if(typeof self.params.display_input !== "undefined" && self.params.display_input) {
 
-    if(color) {
-	  	popup.css('color', color);
-	  }
+	    var
+	      color = color || null,
+	      popup = $('<div class="moteio-container"><div class="moteio-button-popup"><span class="icon-' + icon + '"></span></div></div>');
 
-    $('.moteio-button-popup').remove();
+	    if(color) {
+		  	popup.css('color', color);
+		  }
 
-    $('body').append(popup);
+	    $('.moteio-button-popup').remove();
 
-    popup.show().delay(800).fadeOut('normal', function(){
-    	$(this).remove();
-    });
+	    $('body').append(popup);
+
+	    popup.show().delay(800).fadeOut('normal', function(){
+	    	$(this).remove();
+	    });
+
+  	}
 
   }
 
@@ -113,6 +117,7 @@ window.MoteioReceiver = function() {
   };
 
   self.goHome = function() {
+  	self.inputDisplay('home');
     window.location = self.remote_location + "/homebase";
   }
 

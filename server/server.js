@@ -75,15 +75,21 @@ app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   mongoose.connect(constructDBURL(config.db));
 
-  clog = function(message) {
-    if(typeof message !== "object") {
-      message = '[debug]' + message;
-      console.log(message);
-    }
-    client.log('98f15fa9-3aa8-46d1-8df9-f451c9579b32', message)
+  clog = function(data) {
+
+    var usage = process.memoryUsage();
+
+    for (var attrname in usage) { data[attrname] = usage[attrname]; }
+
+    data.config_id = config.id;
+    data.config_mode = "development";
+
+    console.log(data);
+    client.log('98f15fa9-3aa8-46d1-8df9-f451c9579b32', data);
+
   }
 
-  clog('[server][boot][dev]');
+  clog({subject: "server", action: "boot"});
 
 });
 
@@ -117,47 +123,72 @@ app.configure('production', function(){
 
   mongoose.connect(constructDBURL(config.db));
 
-  clog = function(message) {
-    if(typeof message !== "object") {
-      message = '[' + config.id + ']' + message;
-      console.log(message)
-    }
-    client.log('8b6aee86-0628-4277-8786-87a057aa191d', message)
+  clog = function(data) {
+
+    var usage = process.memoryUsage();
+
+    for (var attrname in usage) { data[attrname] = usage[attrname]; }
+
+    data.config_id = config.id;
+    data.config_mode = "production";
+
+    client.log('8b6aee86-0628-4277-8786-87a057aa191d', data)
   }
 
-  clog('[server][boot][prod]');
+  clog({subject: "server", action: "boot"});
 
 });
 
-var stats = null;
-setInterval(function(){
-  stats = process.memoryUsage();
-  stats.id = config.id;
-  clog(stats);
-}, 5000);
-
 process.on('uncaughtException', function(err) {
+  err.source = "uncaughtException";
   clog(err);
 });
 
 var db = mongoose.connection;
-db.on('error', function(error){
-  clog('[mongo][error]');
-  console.log(error);
+db.on('error', function(err){
+  err.source = 'mongoose';
+  clog(err);
 });
 db.once('open', function callback () {
-  clog('[mongo][connection][success]');
+  clog({subject: 'mongo', message: 'connection-success'})
 });
 
 var pub = redis.createClient(config.redis.port, config.redis.host);
 var sub = redis.createClient(config.redis.port, config.redis.host);
 var store = redis.createClient(config.redis.port, config.redis.host);
-pub.on('error', function(err){clog('[redis][pub][error]' + err)});
-sub.on('error', function(err){clog('[redis][sub][error]' + err)});
-store.on('error', function(err){clog('[redis][store][error]' + err)});
-pub.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][pub][success]")});
-sub.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][sub][success]")});
-store.auth(config.redis.pass, function(err){if(err){console.log(err);}clog("[redis][auth][store][success]")});
+pub.on('error', function(err){
+  err.source = 'redis-pub';
+  clog(err);
+});
+sub.on('error', function(err){
+  err.source = 'redis-sub';
+  clog(err);
+});
+store.on('error', function(err){
+  err.source = 'redis-store';
+  clog(err);
+});
+pub.auth(config.redis.pass, function(err){
+  if(err){
+    err.source = 'redis-pub';
+    clog(err);
+  }
+  clog({subject: 'redis-pub', 'message': 'auth-success'});
+});
+sub.auth(config.redis.pass, function(err){
+  if(err){
+    err.source = 'redis-sub';
+    clog(err);
+  }
+  clog({subject: 'redis-sub', 'message': 'auth-success'});
+});
+store.auth(config.redis.pass, function(err){
+  if(err){
+    err.source = 'redis-store';
+    clog(err);
+  }
+  clog({subject: 'redis-store', 'message': 'auth-success'});
+});
 
 var sessionStore = new MongoStore(config.db);
 
@@ -250,7 +281,7 @@ app.post('/admin/email', function(req, res) {
 
           sendgrid.send(email, function(success, message) {
             if (!success) {
-              clog('Email sent to ' + all_users[i].username);
+              clog({subject: 'email', action: 'sent', user: all_users[i].username});
             }
           });
 
@@ -282,11 +313,11 @@ app.post('/admin/email', function(req, res) {
 
         sendgrid.send(email, function(success, message) {
           if (!success) {
-            clog(message);
+            clog({subject: 'email', action: 'error', error: message});
           }
         });
 
-        clog('Sending test email to ' + req.body.test_email);
+        clog({subject: 'email', action: 'testSend', address: req.body.test_email});
 
       }
 
@@ -320,8 +351,7 @@ app.get('/admin/beta', function(req, res) {
                 user.beta = true;
                 user.save(function(){
 
-                    clog('saved')
-                    clog(user)
+                    clog({subject: 'user', action: 'grantedAccess', user: user});
                     sendgrid.send({
                       to: user.username,
                       from: 'hello@mote.io',
@@ -347,6 +377,7 @@ app.get('/admin/beta', function(req, res) {
                       '--------------------'
                     }, function(success, message) {
                       if (!success) {
+                        message.source = "enableBeta";
                         clog(message);
                       }
                     });
@@ -400,6 +431,7 @@ app.post('/register', function(req, res) {
               '--------------------'
             }, function(success, message) {
               if (!success) {
+                message.source = 'register';
                 clog(message);
               }
             });
@@ -651,9 +683,6 @@ if(process.env.NODE_ENV == "production") {
   server.listen(config.port);
 }
 
-
-clog('[listening][port: ' + config.port + ']');
-
 io.configure(function () {
 
   // io.set('polling duration', 30);
@@ -673,6 +702,14 @@ io.configure(function () {
     }
   }));
 
+  io.set('transports', [
+      'websocket'
+    , 'flashsocket'
+    , 'htmlfile'
+    , 'xhr-polling'
+    , 'jsonp-polling'
+  ]);
+
   var RedisStore = require('socket.io/lib/stores/redis');
   io.set('store', new RedisStore({
     redis: redis,
@@ -687,7 +724,7 @@ io.sockets.on('connection', function (socket) {
 
   var username = socket.handshake.user._id;
 
-  clog('[user._id]' + username);
+  clog({subject: 'user', action: 'connection', username: username});
 
   //console.log(io.sockets.manager.namespaces['/' + username])
   if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
@@ -698,20 +735,20 @@ io.sockets.on('connection', function (socket) {
 
 var createRoom = function(roomName) {
 
-  clog('[bouncer][create room][' + roomName + ']');
+  clog({subject: 'bouncer', action: 'createRoom', room: roomName});
 
   io
     .of('/' + roomName)
     .authorization(function (handshakeData, callback) {
 
-      clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][try]');
+      clog({subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
 
       // addittional auth to make sure we are correct user
       if(String(roomName) === String(handshakeData.user._id)) {
-        clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][success]');
+        clog({success: true, subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
         callback(null, true);
       } else {
-        clog('[' + handshakeData.user.username + '][authorization][' + roomName + '][fail]');
+        clog({success: false, subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
         callback(null, false);
       }
 
@@ -720,61 +757,61 @@ var createRoom = function(roomName) {
 
       var address = socket.handshake.address;
 
-      clog('[' + socket.handshake.user.username + '][connection][' + address.address + ':' + address.port + ']');
+      clog({subject: 'user', username: socket.handshake.user.username, action: 'connection', address: address.address, port: address.port});
       socket.broadcast.emit('new-connection');
 
       // socket refers to client
       socket.on('get-config', function(data, holla){
-        clog('[' + socket.handshake.user.username + '][get-config]')
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'get-config'});
         socket.broadcast.emit('get-config');
       });
       socket.on('update-config', function(data) {
-        clog('[' + socket.handshake.user.username + '][update-config]')
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'update-config'});
         clog('[sending out config]')
         socket.broadcast.emit('update-config', data);
       });
       socket.on('notify', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][notify]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'notify'});
         socket.broadcast.emit('notify', data);
         holla();
       });
       socket.on('art', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][art]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'art'});
         socket.broadcast.emit('art', data);
         holla();
       });
       socket.on('update-button', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][update-buton]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'update-button'});
         socket.broadcast.emit('update-button', data);
         holla();
       });
       socket.on('go-home', function(data, holla){
-        clog('[' + socket.handshake.user.username + '][go-home]')
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'go-home'});
         socket.broadcast.emit('go-home');
       });
       socket.on('input', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][input]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'input'});
         console.log('got input')
         console.log(data)
         socket.broadcast.emit('input', data);
         holla();
       });
       socket.on('select', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][select]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'select'});
         socket.broadcast.emit('select', data);
         holla();
       });
       socket.on('search', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][search][' + data.value + ']');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'search'});
         socket.broadcast.emit('search', data);
         holla();
       });
       socket.on('activate', function (data, holla) {
-        clog('[' + socket.handshake.user.username + '][activate]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'activate'});
         socket.broadcast.emit('deactivate');
       });
       socket.on('disconnect', function () {
-        clog('[' + socket.handshake.user.username + '][disconnect]');
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'disconnect'});
       });
 
     });

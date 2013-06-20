@@ -33,6 +33,7 @@ exec(function(){
     window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Hype Machine',
+      display_input: true,
       update: function(force) {
 
         if(typeof force == "undefined") {
@@ -71,8 +72,7 @@ exec(function(){
         {
           type: 'search',
           action: function(query) {
-            $('#q').val(query);
-            $('#g').click();
+            $('#q').val(query).submit();
             setTimeout(function(){
               location.reload();
             }, 2000);
@@ -273,6 +273,7 @@ exec(function(){
       {
         api_version: '0.1',
         app_name: 'Rdio',
+        display_input: true,
         update: function(force) {
           if($('.play_pause').hasClass('playing')) {
             window.moteioRec.updateButton('play', 'pause', null, force);
@@ -372,6 +373,7 @@ exec(function(){
       {
         api_version: '0.1',
         app_name: 'Pandora',
+        display_input: true,
         update: function(force) {
 
           var thisArtist = $('.playerBarSong').text(),
@@ -450,6 +452,7 @@ exec(function(){
       {
         api_version: '0.1',
         app_name: 'Vimeo',
+        display_input: true,
         update: function(force) {
           if($('.play_pause_button').hasClass('playing')) {
             window.moteioRec.updateButton('play', 'pause', null, force);
