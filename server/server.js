@@ -26,6 +26,7 @@ var
 
 var loggly = require('loggly');
 var config = {
+  json: true,
   subdomain: "moteioo",
     auth: {
       username: "moteio",
@@ -75,9 +76,11 @@ app.configure('development', function(){
   mongoose.connect(constructDBURL(config.db));
 
   clog = function(message) {
-    message = '[debug]' + message;
-    console.log(message);
-    client.log('ea1f366a-a2bd-49c3-a279-e575db80420b', message)
+    if(typeof message !== "object") {
+      message = '[debug]' + message;
+      console.log(message);
+    }
+    client.log('98f15fa9-3aa8-46d1-8df9-f451c9579b32', message)
   }
 
   clog('[server][boot][dev]');
@@ -115,13 +118,26 @@ app.configure('production', function(){
   mongoose.connect(constructDBURL(config.db));
 
   clog = function(message) {
-    message = '[' + config.id + ']' + message;
-    console.log(message)
+    if(typeof message !== "object") {
+      message = '[' + config.id + ']' + message;
+      console.log(message)
+    }
     client.log('8b6aee86-0628-4277-8786-87a057aa191d', message)
   }
 
   clog('[server][boot][prod]');
 
+});
+
+var stats = null;
+setInterval(function(){
+  stats = process.memoryUsage();
+  stats.id = config.id;
+  clog(stats);
+}, 5000);
+
+process.on('uncaughtException', function(err) {
+  clog(err);
 });
 
 var db = mongoose.connection;
