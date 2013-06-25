@@ -40,6 +40,15 @@ var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
 
 var app = express();
 
+var mongo_options = {
+  server: {
+    socketOptions: { keepAlive: 1 }
+  },
+  replset: {
+    socketOptions: { keepAlive: 1 }
+  }
+}
+
 var constructDBURL = function(db) {
   var dbUrl = 'mongodb://';
   if(db.username) {
@@ -73,7 +82,7 @@ app.configure('development', function(){
   };
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  mongoose.connect(constructDBURL(config.db));
+  mongoose.connect(constructDBURL(config.db), mongo_options);
 
   clog = function(data) {
 
@@ -121,7 +130,7 @@ app.configure('production', function(){
   app.use(express.errorHandler());
   //app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-  mongoose.connect(constructDBURL(config.db));
+  mongoose.connect(constructDBURL(config.db), mongo_options);
 
   clog = function(data) {
 
