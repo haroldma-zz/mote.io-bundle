@@ -432,6 +432,14 @@ app.post('/register', function(req, res) {
         if (err) {
             res.render('register', { user : null, err: err, page: 'start' });
         } else {
+
+            clog({
+              subject: 'user',
+              action: 'register',
+              success: true,
+              username: req.body.username
+            });
+
             sendgrid.send({
               to: req.body.username,
               from: 'hello@mote.io',
@@ -492,6 +500,13 @@ app.get('/get/login', function(req, res) {
 
         if(req.user.beta) {
 
+            clog({
+              subject: 'user',
+              action: 'getgetlogin',
+              success: true,
+              username: req.user.username
+            });
+
             res.jsonp({
                 valid: true,
                 user: {
@@ -510,6 +525,13 @@ app.get('/get/login', function(req, res) {
         }
 
     } else {
+
+        clog({
+          subject: 'user',
+          action: 'getgetlogin',
+          success: false
+        });
+
         res.jsonp({
             valid: false
         });
@@ -644,17 +666,32 @@ app.get('/post/login', passport.authenticate('local'), function(req, res) {
                 }
             });
 
+            clog({
+              username: req.user.username,
+              subject: 'user',
+              action: 'getpostlogin',
+              success: true
+            });
+
         } else{
             res.jsonp({
                 valid: false,
                 reason: 'Account has not been approved for beta yet!'
-            })
+            });
         }
     } else {
         res.jsonp({
             valid: false,
             reason: 'Invalid login!'
         });
+
+        clog({
+          username: req.user.username,
+          subject: 'user',
+          action: 'getpostlogin',
+          success: false
+        });
+
     }
 
 });
@@ -784,6 +821,10 @@ var createRoom = function(roomName) {
       socket.on('get-config', function(data, holla){
         clog({subject: 'user', username: socket.handshake.user.username, action: 'get-config'});
         socket.broadcast.emit('get-config');
+      });
+      socket.on('got-config', function(data, holla){
+        clog({subject: 'user', username: socket.handshake.user.username, action: 'got-config'});
+        socket.broadcast.emit('got-config');
       });
       socket.on('update-config', function(data) {
         clog({subject: 'user', username: socket.handshake.user.username, action: 'update-config'});

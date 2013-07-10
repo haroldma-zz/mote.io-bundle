@@ -11,13 +11,40 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  //self.remote_location = 'https://localhost:3000'
-  self.remote_location = 'https://mote.io';
+  self.remote_location = 'https://localhost:3000'
+  //self.remote_location = 'https://mote.io';
 
   self.channel = null;
 
   self.params = {};
   self.debug = true;
+
+  self.statusTextDisplay = function(message, href) {
+
+  	var href = href || null,
+  		message = message || null;
+
+  	$('#moteio-status').show();
+
+  	if (href) {
+  		$('#moteio-status').attr('href', href);
+  	} else {
+  		$('#moteio-status').removeAttr('href');
+  	}
+
+  	if(message) {
+  		$('#moteio-status-text').hide(function(){
+  			$('#moteio-status-text').html(message).fadeIn();
+  		});
+  	} else {
+  		$('moteio-status-text').hide();
+  	}
+
+  }
+
+  self.messageDisplay = function(message) {
+  	$('#moteio-messages').prepend($('<div class="moteio-message">' + message + '</div>').fadeIn().delay(3000).fadeOut());
+  }
 
   self.inputDisplay = function(icon, color) {
 
@@ -130,6 +157,9 @@ window.MoteioReceiver = function() {
 
     self.channel.on('connect', function () {
 
+    	// self.messageDisplay('Socket connection established.');
+    	self.statusTextDisplay('Log in to the Mote.io mobile phone app!');
+
     	if(typeof self.params.update !== "undefined") {
 				setInterval(function(){
 					self.params.update();
@@ -141,6 +171,7 @@ window.MoteioReceiver = function() {
       self.channel.emit('activate', function(){
         self.clog('got response')
       });
+
       self.channel.emit('update-config', self.params);
 
       self.channel.emit('start', null, function (key) {
@@ -151,6 +182,7 @@ window.MoteioReceiver = function() {
     });
 
     self.channel.on('new-connection', function(data){
+
     	if(typeof self.params.update !== "undefined") {
 				setInterval(function(){
 					self.params.update(true);
@@ -170,17 +202,25 @@ window.MoteioReceiver = function() {
 
     });
 
-    self.channel.on('go-home', function(){
-      self.goHome();
-    });
+    self.channel.on('got-config', function(){
 
-    self.channel.on('input', function (data) {
+    	self.statusTextDisplay('Ready to go!');
+    	setTimeout(function(){
+    		$('#moteio-status').fadeOut();
+    	}, 2000);
 
       if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
         self.clog('go home')
         self.goHome();
       }
 
+    });
+
+    self.channel.on('go-home', function(){
+      self.goHome();
+    });
+
+    self.channel.on('input', function (data) {
       self.clog('Got Button Input')
       self.triggerInput(data);
     });
@@ -315,10 +355,13 @@ window.MoteioReceiver = function() {
         self.clog('got login response')
         if(data.valid) {
 
+        	// self.messageDisplay('Logged in as <strong>' + data.user.username + '</strong>');
           self.listen(data.user._id);
 
         } else {
 
+        	// self.messageDisplay('Not logged in!');
+        	self.statusTextDisplay('Log in to control this site with Mote.io!', self.remote_location + '/login');
           $('.moteio-state-signed-in').show();
           $('.moteio-state-not-signed-in').hide();
 
@@ -330,9 +373,22 @@ window.MoteioReceiver = function() {
   self.init = function(params) {
 
     $(document).ready(function() {
+
       self.start();
+
       $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
+
+      $('body').append($('<div id="moteio-notice">\
+      	<div id="moteio-messages">\
+      	</div>\
+      	<a id="moteio-status">\
+      		<img id="moteio-round-logo" height="30" width="30" src="' + self.remote_location + '/images/144.png">\
+      		<span id="moteio-status-text">\
+      			<img id="moteio-loadio" src="' + self.remote_location + '/images/loading-searching.gif">\
+      		</span>\
+      	</a>\
+      </div>'));
 
       $(window).on("focus", function() {
 
@@ -356,4 +412,3 @@ window.MoteioReceiver = function() {
 
 window.moteioRec = new window.MoteioReceiver();
 window.moteioRec.init(window.moteioConfig);
-
