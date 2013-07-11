@@ -11,8 +11,8 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'https://localhost:3000'
-  //self.remote_location = 'https://mote.io';
+  //self.remote_location = 'https://localhost:3000'
+  self.remote_location = 'https://mote.io';
 
   self.channel = null;
 
@@ -158,7 +158,7 @@ window.MoteioReceiver = function() {
     self.channel.on('connect', function () {
 
     	// self.messageDisplay('Socket connection established.');
-    	self.statusTextDisplay('Log in to the Mote.io mobile phone app!');
+    	self.statusTextDisplay('Log in to the Mote.io mobile phone app!', 'https://mote.io/start');
 
     	if(typeof self.params.update !== "undefined") {
 				setInterval(function(){
@@ -192,9 +192,6 @@ window.MoteioReceiver = function() {
 
     self.channel.on('get-config', function(data, holla){
 
-      $('.moteio-state-not-signed-in').hide();
-      $('.moteio-state-signed-in').show();
-
       // // console.log('sending out config')
       // // console.log(self.params)
 
@@ -203,6 +200,9 @@ window.MoteioReceiver = function() {
     });
 
     self.channel.on('got-config', function(){
+
+    	$('.moteio-state-not-signed-in').hide();
+    	$('.moteio-state-signed-in').show();
 
     	self.statusTextDisplay('Ready to go!');
     	setTimeout(function(){
@@ -362,8 +362,6 @@ window.MoteioReceiver = function() {
 
         	// self.messageDisplay('Not logged in!');
         	self.statusTextDisplay('Log in to control this site with Mote.io!', self.remote_location + '/login');
-          $('.moteio-state-signed-in').show();
-          $('.moteio-state-not-signed-in').hide();
 
         }
       }

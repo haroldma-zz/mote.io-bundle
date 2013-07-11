@@ -34,12 +34,10 @@ html.not-ie(lang='en').moteio-container
               ul.nav
                 li(class=(page=='home') && "active")
                   a(href='/') Home
-                li(class=(page=='start') && "active")
-                  a(href='/start') Get Started
                 li(class=(page=='community') && "active")
                   a(href='/community') Community
-                li(class=(page=='developers') && "active")
-                  a(href='/developers') Developers
+                li(class=(page=='start') && "active")
+                  a.homebase-link(href='/start') Launch Homebase
       block content
       footer
         .container
