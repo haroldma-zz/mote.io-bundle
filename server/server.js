@@ -496,6 +496,7 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 });
 
 app.get('/get/login', function(req, res) {
+
     if(req.user) {
 
         if(req.user.beta) {
@@ -755,6 +756,7 @@ io.configure(function () {
       accept(null, false);             // second param takes boolean on whether or not to allow handshake
     },
     success: function(data, accept) {
+      console.log('new connection authorized')
       accept(null, true);
     }
   }));
@@ -779,102 +781,86 @@ io.configure(function () {
 
 io.sockets.on('connection', function (socket) {
 
-  var username = socket.handshake.user._id;
+  var username = socket.handshake.user.username || null,
+    userid = socket.handshake.user._id || null,
+    address = socket.handshake.address || null;
 
-  clog({subject: 'user', action: 'connection', username: username});
+  console.log('clients in room')
+  console.log(io.sockets.clients(userid));
 
-  //console.log(io.sockets.manager.namespaces['/' + username])
-  if(typeof io.sockets.manager.namespaces['/' + username] == "undefined") {
-    createRoom(username);
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + username)
+  console.log(socket.handshake);
+
+  clog({subject: 'user', action: 'connection', username: username, userid: userid});
+
+  if(username){
+
+   clog({success: true, subject: 'user', action: 'authorization', username: username});
+
+   clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
+
+   socket.join(userid);
+
+   socket.broadcast.to(userid).emit('new-connection');
+
+   // socket refers to client
+   socket.on('get-config', function(data, holla){
+     clog({subject: 'user', username: username, userid: userid, action: 'get-config'});
+     socket.broadcast.to(userid).emit('get-config');
+   });
+   socket.on('got-config', function(data, holla){
+     clog({subject: 'user', username: username, userid: userid, action: 'got-config'});
+     socket.broadcast.to(userid).emit('got-config');
+   });
+   socket.on('update-config', function(data) {
+     clog({subject: 'user', username: username, userid: userid, action: 'update-config'});
+     clog('[sending out config]')
+     socket.broadcast.to(userid).emit('update-config', data);
+   });
+   socket.on('notify', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'notify'});
+     socket.broadcast.to(userid).emit('notify', data);
+     holla();
+   });
+   socket.on('art', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'art'});
+     socket.broadcast.to(userid).emit('art', data);
+     holla();
+   });
+   socket.on('update-button', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'update-button'});
+     socket.broadcast.to(userid).emit('update-button', data);
+     holla();
+   });
+   socket.on('go-home', function(data, holla){
+     clog({subject: 'user', username: username, userid: userid, action: 'go-home'});
+     socket.broadcast.to(userid).emit('go-home');
+   });
+   socket.on('input', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'input'});
+     console.log('got input')
+     console.log(data)
+     socket.broadcast.to(userid).emit('input', data);
+     holla();
+   });
+   socket.on('select', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'select'});
+     socket.broadcast.to(userid).emit('select', data);
+     holla();
+   });
+   socket.on('search', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'search'});
+     socket.broadcast.to(userid).emit('search', data);
+     holla();
+   });
+   socket.on('activate', function (data, holla) {
+     clog({subject: 'user', username: username, userid: userid, action: 'activate'});
+     socket.broadcast.to(userid).emit('deactivate');
+   });
+   socket.on('disconnect', function () {
+     clog({subject: 'user', username: username, userid: userid, action: 'disconnect'});
+   });
+
   }
 
 });
-
-var createRoom = function(roomName) {
-
-  clog({subject: 'bouncer', action: 'createRoom', room: roomName});
-
-  io
-    .of('/' + roomName)
-    .authorization(function (handshakeData, callback) {
-
-      clog({subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
-
-      // addittional auth to make sure we are correct user
-      if(String(roomName) === String(handshakeData.user._id)) {
-        clog({success: true, subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
-        callback(null, true);
-      } else {
-        clog({success: false, subject: 'user', action: 'authorization', room: roomName, username: handshakeData.user.username});
-        callback(null, false);
-      }
-
-    })
-    .on('connection', function (socket) {
-
-      var address = socket.handshake.address;
-
-      clog({subject: 'user', username: socket.handshake.user.username, action: 'connection', address: address.address, port: address.port});
-      socket.broadcast.emit('new-connection');
-
-      // socket refers to client
-      socket.on('get-config', function(data, holla){
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'get-config'});
-        socket.broadcast.emit('get-config');
-      });
-      socket.on('got-config', function(data, holla){
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'got-config'});
-        socket.broadcast.emit('got-config');
-      });
-      socket.on('update-config', function(data) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'update-config'});
-        clog('[sending out config]')
-        socket.broadcast.emit('update-config', data);
-      });
-      socket.on('notify', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'notify'});
-        socket.broadcast.emit('notify', data);
-        holla();
-      });
-      socket.on('art', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'art'});
-        socket.broadcast.emit('art', data);
-        holla();
-      });
-      socket.on('update-button', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'update-button'});
-        socket.broadcast.emit('update-button', data);
-        holla();
-      });
-      socket.on('go-home', function(data, holla){
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'go-home'});
-        socket.broadcast.emit('go-home');
-      });
-      socket.on('input', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'input'});
-        console.log('got input')
-        console.log(data)
-        socket.broadcast.emit('input', data);
-        holla();
-      });
-      socket.on('select', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'select'});
-        socket.broadcast.emit('select', data);
-        holla();
-      });
-      socket.on('search', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'search'});
-        socket.broadcast.emit('search', data);
-        holla();
-      });
-      socket.on('activate', function (data, holla) {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'activate'});
-        socket.broadcast.emit('deactivate');
-      });
-      socket.on('disconnect', function () {
-        clog({subject: 'user', username: socket.handshake.user.username, action: 'disconnect'});
-      });
-
-    });
-
-};

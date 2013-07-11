@@ -149,10 +149,10 @@ window.MoteioReceiver = function() {
   }
 
   // Listen to channel uid
-  self.listen = function(roomName) {
+  self.listen = function() {
 
     self.clog('trying to listen')
-    self.channel = io.connect(self.remote_location + '/' + roomName, {'force new connection': true});
+    self.channel = io.connect(self.remote_location, {'force new connection': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
     self.channel.on('connect', function () {
@@ -356,7 +356,7 @@ window.MoteioReceiver = function() {
         if(data.valid) {
 
         	// self.messageDisplay('Logged in as <strong>' + data.user.username + '</strong>');
-          self.listen(data.user._id);
+          self.listen();
 
         } else {
 
