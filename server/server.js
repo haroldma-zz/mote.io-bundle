@@ -380,13 +380,9 @@ app.get('/admin/beta', function(req, res) {
                       'Welcome to mote.io.' +
                       '<br/>' +
                       '<br/>' +
-                      'You\'re account has been approved for beta! Get started here:' +
+                      'The beta is over! Get started with Mote.io here:' +
                       '<br/>' +
                       'http://mote.io/start' +
-                      '<br/>' +
-                      '<br/>' +
-                      'And you can download the Android APK here:' +
-                      'http://mote.io/downloads/Mote.io.apk' +
                       '<br/>' +
                       '<br/>' +
                       'Thanks for testing! Follow me on twitter for more updates about mote.io:' +
@@ -411,10 +407,6 @@ app.get('/admin/beta', function(req, res) {
     }
 });
 
-app.get('/beta', function(req, res) {
-    res.render('beta', {user: req.user, page: 'start' });
-});
-
 app.get('/register', function(req, res) {
     res.render('register', {user: req.user, page: 'start' });
 });
@@ -427,7 +419,7 @@ app.post('/register', function(req, res) {
         return res.render('register', { user : null, err: err, page: 'start' });
     }
 
-    Account.register(new Account({ username : req.body.username, beta: false }), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, beta: true }), req.body.password, function(err, account) {
 
         if (err) {
             res.render('register', { user : null, err: err, page: 'start' });
@@ -448,8 +440,12 @@ app.post('/register', function(req, res) {
               'Welcome to the wonderful world of mote.io.' +
               '<br/>' +
               '<br/>' +
-              'You\'re on the beta list! New accounts are provisioned daily, expect access soon.' +
+              'You\'re account is all set up and ready to go!' +
               '<br/>' +
+              '<br/>' +
+              'Click this link to get started with Mote.io:' +
+              '<br/>' +
+              '<a href="https://mote.io/start">https://mote.io/start</a>' +
               '<br/>' +
               'Follow me on twitter for more updates about mote.io:' +
               '<br/>' +
@@ -464,7 +460,7 @@ app.post('/register', function(req, res) {
               }
             });
 
-            res.redirect('/beta');
+            res.redirect('/start');
 
         }
 
@@ -810,14 +806,6 @@ io.configure(function () {
       accept(null, true);
     }
   }));
-
-  io.set('transports', [
-      'websocket'
-    , 'flashsocket'
-    , 'htmlfile'
-    , 'xhr-polling'
-    , 'jsonp-polling'
-  ]);
 
   var RedisStore = require('socket.io/lib/stores/redis');
   io.set('store', new RedisStore({
