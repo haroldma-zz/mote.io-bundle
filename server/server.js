@@ -838,6 +838,8 @@ io.sockets.on('connection', function (socket) {
    clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
 
    socket.join(userid);
+   console.log('room name is')
+   console.log(userid)
 
    socket.broadcast.to(userid).emit('new-connection');
 
