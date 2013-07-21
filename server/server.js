@@ -1,5 +1,8 @@
-/*jslint node: true, maxerr: 50, indent: 2 */
+  /*jslint node: true, maxerr: 50, indent: 2 */
 "use strict";
+
+require('nodefly').profile(
+    '8cd1e6b02b449a3cb474a4265cb368e5', 'mote.io');
 
 var
   path = require('path'),
@@ -20,7 +23,6 @@ var
   Account = require('./models/account'),
   check = require('validator').check,
   sanitize = require('validator').sanitize,
-  redis = require('socket.io/node_modules/redis'),
   marked = require('marked'),
   clog = null;
 
@@ -67,11 +69,6 @@ app.configure('development', function(){
       port: '27017',
       host: 'localhost'
     },
-    redis: {
-      pass: 'zAnmp7ashaltfv8CRDdJw7xx3T8xoheq0X5y9pAdO31sQeih4LphinmB3zRttWNz',
-      host: 'proxy2.openredis.com',
-      port: 12135
-    },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: 3000,
     key: fs.readFileSync(__dirname + '/self.key').toString(),
@@ -113,11 +110,6 @@ app.configure('production', function(){
       password: 'honeywell',
       collection: 'sessions'
     },
-    redis: {
-      pass: 'zAnmp7ashaltfv8CRDdJw7xx3T8xoheq0X5y9pAdO31sQeih4LphinmB3zRttWNz',
-      host: '54.243.253.145',
-      port: 12135
-    },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: process.env.PORT,
     key: null,
@@ -147,14 +139,6 @@ app.configure('production', function(){
   clog({subject: "server", action: "boot"});
 
 });
-
-process.on('uncaughtException', function(err) {
-  console.log('Caught exception: ' + err);
-  err.source = "uncaught-exception";
-  err.type = 'error';
-  clog(err);
-});
-
 var db = mongoose.connection;
 db.on('error', function(err){
   err.source = 'mongoose';
@@ -163,49 +147,6 @@ db.on('error', function(err){
 });
 db.once('open', function callback () {
   clog({subject: 'mongo', message: 'connection-success'})
-});
-
-var pub = redis.createClient(config.redis.port, config.redis.host);
-var sub = redis.createClient(config.redis.port, config.redis.host);
-var store = redis.createClient(config.redis.port, config.redis.host);
-pub.on('error', function(err){
-  err.source = 'redis-pub';
-  err.type = 'error';
-  clog(err);
-});
-sub.on('error', function(err){
-  err.source = 'redis-sub';
-  err.type = 'error';
-  clog(err);
-});
-store.on('error', function(err){
-  err.source = 'redis-store';
-  err.type = 'error';
-  clog(err);
-});
-pub.auth(config.redis.pass, function(err){
-  if(err){
-    err.source = 'redis-pub';
-    err.type = 'error';
-    clog(err);
-  }
-  clog({subject: 'redis-pub', 'message': 'auth-success'});
-});
-sub.auth(config.redis.pass, function(err){
-  if(err){
-    err.source = 'redis-sub';
-    err.type = 'error';
-    clog(err);
-  }
-  clog({subject: 'redis-sub', 'message': 'auth-success'});
-});
-store.auth(config.redis.pass, function(err){
-  if(err){
-    err.source = 'redis-store';
-    err.type = 'error';
-    clog(err);
-  }
-  clog({subject: 'redis-store', 'message': 'auth-success'});
 });
 
 var sessionStore = new MongoStore(config.db);
@@ -805,14 +746,6 @@ io.configure(function () {
       console.log('new connection authorized')
       accept(null, true);
     }
-  }));
-
-  var RedisStore = require('socket.io/lib/stores/redis');
-  io.set('store', new RedisStore({
-    redis: redis,
-    redisPub: pub,
-    redisSub: sub,
-    redisClient: store
   }));
 
 });
