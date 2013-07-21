@@ -21,6 +21,7 @@ var
   MongoStore = require('connect-mongo')(express),
   config = {},
   Account = require('./models/account'),
+  Server = require('./models/server'),
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   marked = require('marked'),
@@ -139,6 +140,7 @@ app.configure('production', function(){
   clog({subject: "server", action: "boot"});
 
 });
+
 var db = mongoose.connection;
 db.on('error', function(err){
   err.source = 'mongoose';
@@ -218,6 +220,54 @@ app.get('/admin/email', function(req, res) {
   } else {
     res.redirect('/');
   }
+});
+
+app.post('/webhook', function(req, res) {
+
+  console.log(req.body.type);
+  console.log(req.body.project)
+
+  for(var key in req.body.project.envVars) {
+
+    if(req.body.project.envVars[key].name == "WEBHOOK_PASSWORD" && req.body.project.envVars[key].value == "=2,_&5%#8]{@>oW") {
+
+      console.log('WEBHOOK AUTHED!!!!!!')
+      Server.find().remove()
+
+      for(var i in req.body.project.pus) {
+
+        var server = new Server(req.body.project.pus[i]);
+        server.save(function (err) {
+          if (err) return clog(err);
+          clog({action: 'server-updated'});
+        });
+
+      }
+
+    }
+  }
+
+  res.json(req.body);
+
+});
+
+app.get('/admin/servers', function(req, res) {
+
+  if(req.user && req.user.username == "ian@meetjennings.com") {
+
+    Server.find({}, function (err, all_servers) {
+
+      res.render('admin-servers.jade', {
+        err: null,
+        user: req.user,
+        page: 'admin',
+        server_list: all_servers
+      });
+
+    });
+
+  }
+
 });
 
 app.post('/admin/email', function(req, res) {
@@ -360,7 +410,7 @@ app.post('/register', function(req, res) {
         return res.render('register', { user : null, err: err, page: 'start' });
     }
 
-    Account.register(new Account({ username : req.body.username, beta: true }), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
 
         if (err) {
             res.render('register', { user : null, err: err, page: 'start' });
@@ -432,6 +482,32 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 
 });
 
+// convert userid to server
+var bouncer = function(user, holla) {
+
+  var
+    random = user.random || 0,
+    firstDigit = (random + "").charAt(0),
+    value = null;
+
+  if (!firstDigit) {
+    firstDigit++;
+  }
+
+  Server.find({}, function (err, all_servers) {
+
+    console.log(all_servers)
+    console.log(firstDigit)
+
+    value = Math.ceil(firstDigit / all_servers.length);
+
+    console.log(value)
+    holla(all_servers[value]);
+
+  });
+
+}
+
 app.get('/get/login', function(req, res) {
 
     if(req.user) {
@@ -445,12 +521,17 @@ app.get('/get/login', function(req, res) {
               username: req.user.username
             });
 
-            res.jsonp({
-                valid: true,
-                user: {
-                    username: req.user.username,
-                    _id: req.user._id
-                }
+            bouncer(req.user, function(server) {
+
+              res.jsonp({
+                  valid: true,
+                  user: {
+                      username: req.user.username,
+                      _id: req.user._id,
+                      server_id: server.id
+                  }
+              });
+
             });
 
         } else {
@@ -475,6 +556,126 @@ app.get('/get/login', function(req, res) {
         });
     }
 
+});
+
+app.get('/post/login', function(req, res, next) {
+
+    passport.authenticate('local', function(err, user, info) {
+
+      if (err) {
+
+        console.log(err);
+
+        return res.jsonp({
+          valid: false,
+          reason: err
+        });
+
+        clog({
+          subject: 'user',
+          action: 'getpostlogin',
+          success: false,
+          reason: err
+        });
+
+      }
+
+      if (!user) {
+
+        console.log(info)
+
+        clog({
+          subject: 'user',
+          action: 'getpostlogin',
+          success: false,
+          reason: info.message
+        });
+
+        return res.jsonp({
+          valid: false,
+          reason: info.message
+        });
+
+      }
+
+      req.logIn(user, function(err) {
+
+        if (err) {
+          console.log(err);
+
+          clog({
+            username: user.username,
+            subject: 'user',
+            action: 'getpostlogin',
+            success: false,
+            reason: err
+          });
+
+          return res.jsonp({
+            valid: false,
+            reason: err
+          });
+        }
+
+        if(user.beta) {
+
+          bouncer(user, function(server) {
+
+            res.jsonp({
+              valid: true,
+              user: {
+                  username: user.username,
+                  _id: user._id,
+                  server_id: server.id
+              }
+            });
+
+            clog({
+              username: user.username,
+              subject: 'user',
+              action: 'getpostlogin',
+              success: true
+            });
+
+          });
+
+        } else{
+
+          res.jsonp({
+              valid: false,
+              reason: 'Account has not been approved for beta yet!'
+          });
+
+        }
+
+      });
+
+    })(req, res, next);
+
+});
+
+app.get('/post/logout', function(req, res) {
+
+    if(req.user) {
+
+      // console.log(io.sockets.manager.namespaces);
+
+      req.logout();
+      res.jsonp({
+          valid: true,
+      })
+    } else {
+      res.jsonp({
+          valid: false,
+          reason: 'Not even logged in!'
+      });
+    }
+
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
 });
 
 app.get('/reset', function(req, res) {
@@ -593,120 +794,6 @@ app.post('/reset/confirm', function(req, res) {
 
 });
 
-app.get('/post/login', function(req, res, next) {
-
-    passport.authenticate('local', function(err, user, info) {
-
-      if (err) {
-
-        console.log(err);
-
-        return res.jsonp({
-          valid: false,
-          reason: err
-        });
-
-        clog({
-          subject: 'user',
-          action: 'getpostlogin',
-          success: false,
-          reason: err
-        });
-
-      }
-
-      if (!user) {
-
-        console.log(info)
-
-        clog({
-          subject: 'user',
-          action: 'getpostlogin',
-          success: false,
-          reason: info.message
-        });
-
-        return res.jsonp({
-          valid: false,
-          reason: info.message
-        });
-
-      }
-
-      req.logIn(user, function(err) {
-
-        if (err) {
-          console.log(err);
-
-          clog({
-            username: user.username,
-            subject: 'user',
-            action: 'getpostlogin',
-            success: false,
-            reason: err
-          });
-
-          return res.jsonp({
-            valid: false,
-            reason: err
-          });
-        }
-
-        if(user.beta) {
-
-          res.jsonp({
-            valid: true,
-            user: {
-                username: user.username,
-                _id: user._id
-            }
-          });
-
-          clog({
-            username: user.username,
-            subject: 'user',
-            action: 'getpostlogin',
-            success: true
-          });
-
-        } else{
-
-          res.jsonp({
-              valid: false,
-              reason: 'Account has not been approved for beta yet!'
-          });
-
-        }
-
-
-      });
-    })(req, res, next);
-
-});
-
-app.get('/post/logout', function(req, res) {
-
-    if(req.user) {
-
-      // console.log(io.sockets.manager.namespaces);
-
-      req.logout();
-      res.jsonp({
-          valid: true,
-      })
-    } else {
-      res.jsonp({
-          valid: false,
-          reason: 'Not even logged in!'
-      });
-    }
-
-});
-
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
 
 if(process.env.NODE_ENV == "production") {
 

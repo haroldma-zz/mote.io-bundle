@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  #content.container.text-page
+
+    ul.nav.nav-tabs
+      li
+        a(href='/admin') User Admin
+      li
+        a(href='/admin/email') Email Blast
+      li.active
+        a(href='/admin/servers') Servers
+
+    .heading
+      h1 Servers
+      hr
+
+    table.table-striped.table
+      thead
+        tr
+          th #
+          th id
+          th status
+      tbody
+      each server, i in server_list
+        tr
+          td=i
+          td=server.id
+          td=server.status
