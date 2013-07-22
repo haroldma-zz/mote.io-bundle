@@ -16,7 +16,6 @@ var
   mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   jade = require('jade'),
-  passportSocketIo = require("passport.socketio"),
   passportLocalMongoose = require('passport-local-mongoose'),
   MongoStore = require('connect-mongo')(express),
   config = {},
@@ -25,7 +24,14 @@ var
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   marked = require('marked'),
-  clog = null;
+  clog = null,
+  Pusher = require('pusher');
+
+var pusher = new Pusher({
+  appId: '49972',
+  key: '9c3e18d7beee023a1f8c',
+  secret: 'ddb58eb74853d85bd4a5'
+});
 
 var loggly = require('loggly');
 var config = {
@@ -36,6 +42,9 @@ var config = {
       password: "CUTh&5R7B:BVe@i"
     }
   };
+
+
+
 var client = loggly.createClient(config);
 
 var SendGrid = require('sendgrid').SendGrid;
@@ -248,6 +257,31 @@ app.post('/webhook', function(req, res) {
   }
 
   res.json(req.body);
+
+});
+
+app.get('/pusher/auth', function( req, res ) {
+
+  if(req.user) {
+
+    console.log(req)
+    console.log(res)
+
+    var socketId = req.query.socket_id;
+    var channel = req.query.channel_name;
+
+    if(req.query.channel_name == 'private-' + req.user._id) {
+
+      var auth = pusher.auth( socketId, channel );
+      return res.jsonp(auth);
+
+    } else {
+      return res.jsonp(401);
+    }
+
+  } else {
+    return res.jsonp(401);
+  }
 
 });
 
@@ -482,32 +516,6 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 
 });
 
-// convert userid to server
-var bouncer = function(user, holla) {
-
-  var
-    random = user.random || 0,
-    firstDigit = (random + "").charAt(0),
-    value = null;
-
-  if (!firstDigit) {
-    firstDigit++;
-  }
-
-  Server.find({}, function (err, all_servers) {
-
-    console.log(all_servers)
-    console.log(firstDigit)
-
-    value = Math.ceil(firstDigit / all_servers.length);
-
-    console.log(value)
-    holla(all_servers[value]);
-
-  });
-
-}
-
 app.get('/get/login', function(req, res) {
 
     if(req.user) {
@@ -521,18 +529,15 @@ app.get('/get/login', function(req, res) {
               username: req.user.username
             });
 
-            bouncer(req.user, function(server) {
 
-              res.jsonp({
-                  valid: true,
-                  user: {
-                      username: req.user.username,
-                      _id: req.user._id,
-                      server_id: server.id
-                  }
-              });
-
+            res.jsonp({
+                valid: true,
+                user: {
+                    username: req.user.username,
+                    _id: req.user._id
+                }
             });
+
 
         } else {
 
@@ -619,24 +624,20 @@ app.get('/post/login', function(req, res, next) {
 
         if(user.beta) {
 
-          bouncer(user, function(server) {
+          res.jsonp({
+            valid: true,
+            user: {
+                username: user.username,
+                _id: user._id,
+                server_id: server.id
+            }
+          });
 
-            res.jsonp({
-              valid: true,
-              user: {
-                  username: user.username,
-                  _id: user._id,
-                  server_id: server.id
-              }
-            });
-
-            clog({
-              username: user.username,
-              subject: 'user',
-              action: 'getpostlogin',
-              success: true
-            });
-
+          clog({
+            username: user.username,
+            subject: 'user',
+            action: 'getpostlogin',
+            success: true
           });
 
         } else{
@@ -798,7 +799,6 @@ app.post('/reset/confirm', function(req, res) {
 if(process.env.NODE_ENV == "production") {
 
   var server = http.createServer(app);
-  var io = require('socket.io').listen(server);
   server.listen(config.port);
 
 } else {
@@ -811,116 +811,6 @@ if(process.env.NODE_ENV == "production") {
   }
 
   var server = https.createServer(options, app);
-  var io = require('socket.io').listen(server);
   server.listen(config.port);
 }
 
-io.configure(function () {
-
-  // io.set('polling duration', 30);
-  // io.set('log level', 1);
-
-  io.set("authorization", passportSocketIo.authorize({
-    key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
-    secret: 'N+&%B/.E<b&J95l', //the session secret to parse the cookie
-    store:   sessionStore,     //the session store that express uses
-    fail: function(data, accept) {     // *optional* callbacks on success or fail
-      console.log('failure')
-      console.log(data)
-      accept(null, false);             // second param takes boolean on whether or not to allow handshake
-    },
-    success: function(data, accept) {
-      console.log('new connection authorized')
-      accept(null, true);
-    }
-  }));
-
-});
-
-io.sockets.on('connection', function (socket) {
-
-  var username = socket.handshake.user.username || null,
-    userid = socket.handshake.user._id || null,
-    address = socket.handshake.address || null;
-
-  console.log('clients in room')
-  console.log(io.sockets.clients(userid));
-
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + username)
-  console.log(socket.handshake);
-
-  clog({subject: 'user', action: 'connection', username: username, userid: userid});
-
-  if(username){
-
-   clog({success: true, subject: 'user', action: 'authorization', username: username});
-
-   clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
-
-   socket.join(userid);
-   console.log('room name is')
-   console.log(userid)
-
-   socket.broadcast.to(userid).emit('new-connection');
-
-   // socket refers to client
-   socket.on('get-config', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'get-config'});
-     socket.broadcast.to(userid).emit('get-config');
-   });
-   socket.on('got-config', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'got-config'});
-     socket.broadcast.to(userid).emit('got-config');
-   });
-   socket.on('update-config', function(data) {
-     clog({subject: 'user', username: username, userid: userid, action: 'update-config'});
-     clog('[sending out config]')
-     socket.broadcast.to(userid).emit('update-config', data);
-   });
-   socket.on('notify', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'notify'});
-     socket.broadcast.to(userid).emit('notify', data);
-     holla();
-   });
-   socket.on('art', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'art'});
-     socket.broadcast.to(userid).emit('art', data);
-     holla();
-   });
-   socket.on('update-button', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'update-button'});
-     socket.broadcast.to(userid).emit('update-button', data);
-     holla();
-   });
-   socket.on('go-home', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'go-home'});
-     socket.broadcast.to(userid).emit('go-home');
-   });
-   socket.on('input', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'input'});
-     console.log('got input')
-     console.log(data)
-     socket.broadcast.to(userid).emit('input', data);
-     holla();
-   });
-   socket.on('select', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'select'});
-     socket.broadcast.to(userid).emit('select', data);
-     holla();
-   });
-   socket.on('search', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'search'});
-     socket.broadcast.to(userid).emit('search', data);
-     holla();
-   });
-   socket.on('activate', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'activate'});
-     socket.broadcast.to(userid).emit('deactivate');
-   });
-   socket.on('disconnect', function () {
-     clog({subject: 'user', username: username, userid: userid, action: 'disconnect'});
-   });
-
-  }
-
-});

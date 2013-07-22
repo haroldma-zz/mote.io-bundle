@@ -33,7 +33,8 @@
     "validator": "0.4.28",
     "sendgrid": "0.2.6",
     "marked": "0.2.8",
-    "nodefly": "stable"
+    "nodefly": "stable",
+    "pusher": "0.1.3"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",
