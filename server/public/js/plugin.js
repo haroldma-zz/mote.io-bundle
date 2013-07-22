@@ -1993,6 +1993,10 @@ window.MoteioReceiver = function() {
   self.params = {};
   self.debug = true;
 
+  // Notify the server of stuff.
+  self.lastNotify = {};
+  self.lastImage = null;
+
   self.statusTextDisplay = function(message, href) {
 
   	var href = href || null,
@@ -2006,9 +2010,9 @@ window.MoteioReceiver = function() {
   		$('#moteio-status').removeAttr('href');
   	}
 
-  	if(message) {
+  	if(message && $('#moteio-status-text').text() !== message) {
   		$('#moteio-status-text').hide(function(){
-  			$('#moteio-status-text').html(message).fadeIn();
+  			$('#moteio-status-text').html(message).show();
   		});
   	} else {
   		$('moteio-status-text').hide();
@@ -2017,7 +2021,7 @@ window.MoteioReceiver = function() {
   }
 
   self.messageDisplay = function(message) {
-  	$('#moteio-messages').prepend($('<div class="moteio-message">' + message + '</div>').fadeIn().delay(3000).fadeOut());
+  	$('#moteio-messages').prepend($('<div class="moteio-message">' + message + '</div>').show().delay(3000).hide());
   }
 
   self.inputDisplay = function(icon, color) {
@@ -2036,7 +2040,7 @@ window.MoteioReceiver = function() {
 
 	    $('body').append(popup);
 
-	    popup.show().delay(800).fadeOut('normal', function(){
+	    popup.show().delay(800).hide('normal', function(){
 	    	$(this).remove();
 	    });
 
@@ -2122,25 +2126,28 @@ window.MoteioReceiver = function() {
     window.location = self.remote_location + "/homebase";
   }
 
+  self.pusher = null;
+
   // Listen to channel uid
   self.listen = function(username) {
 
-  	var pusher = new Pusher('9c3e18d7beee023a1f8c', {
+  	self.pusher = new Pusher('9c3e18d7beee023a1f8c', {
   		encrypted: true,
   		authTransport: 'jsonp',
       authEndpoint: self.remote_location + '/pusher/auth'
   	});
 
   	self.channel_name = 'private-' + username;
-    self.channel = pusher.subscribe(self.channel_name);
+    self.channel = self.pusher.subscribe(self.channel_name);
 
-    pusher.connection.bind('connecting', function() {
+    self.pusher.connection.bind('connecting', function() {
 	  	self.statusTextDisplay('Connecting...', 'https://mote.io/start');
     });
 
-    pusher.connection.bind('connected', function() {
+    self.pusher.connection.bind('connected', function() {
 
 	  	// self.messageDisplay('Socket connection established.');
+
 	  	self.statusTextDisplay('Log in to the Mote.io mobile phone app!', 'https://mote.io/start');
 
 	  	if(typeof self.params.update !== "undefined") {
@@ -2151,7 +2158,8 @@ window.MoteioReceiver = function() {
 
 	  	self.channel.bind('pusher:subscription_succeeded', function() {
 
-	  		self.channel.trigger('client-activate', {});
+	  		// turn the other plugins off
+	  		self.channel.trigger('client-deactivate', {});
 
 	  		self.channel.trigger('client-update-config', self.params);
 
@@ -2177,7 +2185,7 @@ window.MoteioReceiver = function() {
 
       self.channel.trigger('client-update-config', self.params);
 
-      self.notify(self.lastNotify.line1, self.lastNotify.line2. self.lastImage, true);
+      self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
     });
 
@@ -2188,7 +2196,7 @@ window.MoteioReceiver = function() {
 
     	self.statusTextDisplay('Ready to go!');
     	setTimeout(function(){
-    		$('#moteio-status').fadeOut();
+    		$('#moteio-status').hide();
     	}, 2000);
 
       if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
@@ -2226,8 +2234,6 @@ window.MoteioReceiver = function() {
 
   };
 
-  // Notify the server of stuff.
-  self.lastNotify = {}
   self.notify = function(line1, line2, image, force) {
 
   	// console.log('image found is')
@@ -2313,7 +2319,7 @@ window.MoteioReceiver = function() {
   self.stop = function () {
     if (self.channel) {
       self.clog('connected to a channel, disconnecting, ');
-      self.channel.disconnect();
+      self.pusher.disconnect();
       self.channel = null;
     } else {
       self.clog('not connected to any channels yet');
@@ -2321,6 +2327,9 @@ window.MoteioReceiver = function() {
   };
 
   self.start = function () {
+
+  	self.statusTextDisplay('Starting...');
+
     self.clog('!!! STARTING UP');
     $.ajax({
       type: 'get',
@@ -2364,18 +2373,6 @@ window.MoteioReceiver = function() {
       	</a>\
       </div>'));
 
-      $(window).on("focus", function() {
-
-        // activate this channel if it's not already active
-        if (!self.channel) {
-          self.start();
-          // this will set is_active
-        } else {
-          //// console.log('CHANNEL EXISTS, DONT START')
-        }
-
-      });
-
       self.params = params;
 
     });
@@ -2386,3 +2383,6 @@ window.MoteioReceiver = function() {
 
 window.moteioRec = new window.MoteioReceiver();
 window.moteioRec.init(window.moteioConfig);
+window.addEventListener("focus", function(event) {
+	window.moteioRec.start();
+}, false);
