@@ -2126,12 +2126,17 @@ window.MoteioReceiver = function() {
   self.listen = function(username) {
 
   	var pusher = new Pusher('9c3e18d7beee023a1f8c', {
+  		encrypted: true,
   		authTransport: 'jsonp',
       authEndpoint: self.remote_location + '/pusher/auth'
   	});
 
   	self.channel_name = 'private-' + username;
     self.channel = pusher.subscribe(self.channel_name);
+
+    pusher.connection.bind('connecting', function() {
+	  	self.statusTextDisplay('Connecting...', 'https://mote.io/start');
+    });
 
     pusher.connection.bind('connected', function() {
 
@@ -2171,6 +2176,8 @@ window.MoteioReceiver = function() {
       // // console.log(self.params)
 
       self.channel.trigger('client-update-config', self.params);
+
+      self.notify(self.lastNotify.line1, self.lastNotify.line2. self.lastImage, true);
 
     });
 
@@ -2240,21 +2247,16 @@ window.MoteioReceiver = function() {
   			 self.lastImage !== image) {
   			// console.log('this is different than last')
 				if(self.channel) {
-				  self.channel.trigger('client-notify', data, function(){
-				    // self.clog('cb');
-				  });
+				  self.channel.trigger('client-notify', data);
 				}
   		}
   	} else {
   		// console.log('just update')
   		// otherwise just update
   		if(self.channel) {
-  		  self.channel.trigger('client-notify', data, function(){
-  		    // self.clog('cb');
-  		  });
+  		  self.channel.trigger('client-notify', data);
   		}
   	}
-
 
     self.lastNotify.line1 = line1;
     self.lastNotify.line2 = line2;

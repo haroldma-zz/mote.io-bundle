@@ -659,8 +659,6 @@ app.get('/post/logout', function(req, res) {
 
     if(req.user) {
 
-      // console.log(io.sockets.manager.namespaces);
-
       req.logout();
       res.jsonp({
           valid: true,
@@ -794,7 +792,6 @@ app.post('/reset/confirm', function(req, res) {
   });
 
 });
-
 
 if(process.env.NODE_ENV == "production") {
 
