@@ -1387,17 +1387,16 @@ Ian Custom
 }
 .share .streaming {
 	position: relative;
-	vertical-align: middle;
 }
 .share .streaming .overlay {
 	position: absolute;
 	z-index: 10;
-	background-color: white;
-	width: 90%;
-	height: 90%;
-	left: 5%;
-	top: 5%;
-	opacity: .9;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	opacity: .8;
 }
 .share .streaming .thumb {
 	display: inline-block;
@@ -1413,6 +1412,8 @@ Ian Custom
 .share .streaming .text {
 	position: absolute;
 	z-index: 11;
+	color: #ccc;
+	vertical-align: middle;
 	width: 80%;
 	height: 80%;
 	left: 10%;
@@ -1426,6 +1427,10 @@ Ian Custom
 	margin-top: 5%;
 }
 
+.share .screenshot {
+	min-height: 700px;
+}
+
 .share .download .btn {
 	line-height: 60px;
 	padding: 0px 100px;
@@ -1433,17 +1438,26 @@ Ian Custom
 
 .share .line1, .share .line2, .share .remote {
 	font-weight: bold;
+	color: #fff;
 }
 @media only screen and (max-width: 760px) {
   .hide-on-mobile { display: none; }
   .show-on-mobile { display: block; }
   .share .streaming .text {
   	position: static;
+  	font-size: 18px;
   }
   .overlay {
   	display: none;
   }
   .share .download .btn {
   	margin-bottom: 10%;
+  }
+
+  .share .streaming .text {
+  	color: #444;
+  }
+  .share .line1, .share .line2, .share .remote {
+  	color: #000;
   }
 }
