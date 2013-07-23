@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+	#content.container.text-page.share
+
+		.streaming
+			.overlay
+			.text
+				div.streaming I'm controlling &#8203;
+				img.thumb(src=query.image)
+				span.track.line1=query.line1
+				span.track.divider &#8203; - &#8203;
+				span.track.line2=query.line2
+				| &#8203; with the &#8203;
+				span.remote=query.remote
+				| &#8203; remote for &#8203;
+				a(href='https://mote.io') Mote.io &#8203;
+				div.download
+					a.btn.btn-large.btn-primary Get Mote.io for Android
+			.screenshot
+				img(src=query.screenshot)

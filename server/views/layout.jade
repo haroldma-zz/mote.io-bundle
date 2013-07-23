@@ -16,8 +16,17 @@ html.not-ie(lang='en').moteio-container
 
     script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
+
+    meta(property='fb:app_id', content='163150470537618')
+    if page=='share'
+      meta(property='og:type', content='moteio:share')
+      meta(property='og:url', content='https://mote.io/share?line1=' + query.line1 + '&line2=' + query.line2 + '&image=' + query.image + '&url=' + query.url +'&remote=' + query.remote)
+      meta(property='og:title', content="I'm controlling " + query.line1 + ' - ' + query.line2 + ' with the ' + query.remote + ' remote on Mote.io')
+      meta(property='og:image', content=query.image)
+
     script
       !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.8.3.min.js"%3E%3C/script%3E'))
+
   body
     header#header
       .navbar
@@ -30,7 +39,7 @@ html.not-ie(lang='en').moteio-container
             a.brand(href='/')
               b Mote
               | .io
-            .nav-collapse
+            .nav-collapse(style=(page=='share') && "display: none")
               ul.nav
                 li(class=(page=='home') && "active")
                   a(href='/') Home

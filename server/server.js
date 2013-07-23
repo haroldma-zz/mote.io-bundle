@@ -25,7 +25,9 @@ var
   sanitize = require('validator').sanitize,
   marked = require('marked'),
   clog = null,
-  Pusher = require('pusher');
+  Pusher = require('pusher'),
+  sanitizer = require('sanitizer'),
+  url2png = require('url2png')('P51EDCE959A5A5', 'S6FD465FD83E04');
 
 var pusher = new Pusher({
   appId: '49972',
@@ -42,8 +44,6 @@ var config = {
       password: "CUTh&5R7B:BVe@i"
     }
   };
-
-
 
 var client = loggly.createClient(config);
 
@@ -669,6 +669,24 @@ app.get('/post/logout', function(req, res) {
           reason: 'Not even logged in!'
       });
     }
+
+});
+
+app.get('/share', function(req, res) {
+
+  var query = {};
+
+  query.line1 = sanitizer.sanitize(req.query.line1) || false;
+  query.line2 = sanitizer.sanitize(req.query.line2) || false;
+  query.image = sanitizer.sanitize(req.query.image) || false;
+  query.url = sanitizer.sanitize(req.query.url) || false;
+  query.remote = sanitizer.sanitize(req.query.remote) || false;
+
+  query.screenshot = url2png.buildURL(query.url, {});
+
+  clog(query);
+
+  res.render('share', { page: 'share', query: query});
 
 });
 

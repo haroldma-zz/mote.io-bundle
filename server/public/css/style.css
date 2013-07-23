@@ -210,6 +210,7 @@ footer input[type=submit].btn {
 }
 .navbar .container {
 	width: 940px;
+	height: 72px;
 	padding-bottom:0px;
 	border-bottom:0px solid #eee;
 	margin-bottom:0px;
@@ -1389,4 +1390,53 @@ Ian Custom
 }
 .mobile-download {
 	margin: 80px 0px;
+}
+.share .streaming {
+	position: relative;
+	vertical-align: middle;
+}
+.share .streaming .overlay {
+	position: absolute;
+	z-index: 10;
+	background-color: white;
+	width: 90%;
+	height: 90%;
+	left: 5%;
+	top: 5%;
+	opacity: .9;
+}
+.share .streaming .thumb {
+	display: inline-block;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	bottom: 6px;
+	margin-right: 2%;
+	width: 60px;
+	height: 60px;
+}
+.share .streaming .text {
+	position: absolute;
+	z-index: 11;
+	width: 80%;
+	height: 80%;
+	left: 10%;
+	top: 10%;
+	text-transform: uppercase;
+	font-size: 62px;
+	line-height: 1.1em;
+}
+
+.share .download {
+	margin-top: 5%;
+}
+
+.share .download .btn {
+	line-height: 60px;
+	padding: 0px 100px;
+}
+
+.share .line1, .share .line2, .share .remote {
+	font-weight: bold;
 }
