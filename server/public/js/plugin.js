@@ -2145,6 +2145,10 @@ window.MoteioReceiver = function() {
     });
 
     self.pusher.connection.bind('connected', function() {
+    	self.statusTextDisplay('Log in to control this site with Mote.io!', self.remote_location + '/login');
+    });
+
+    self.channel.bind('pusher:subscription_succeeded', function() {
 
 	  	// self.messageDisplay('Socket connection established.');
 
@@ -2156,23 +2160,8 @@ window.MoteioReceiver = function() {
 				}, 1000);
 	  	}
 
-	  	self.channel.bind('pusher:subscription_succeeded', function() {
+	  	self.channel.trigger('client-update-config', self.params);
 
-	  		console.log('succes')
-
-	  		self.channel.trigger('client-update-config', self.params);
-
-	  	});
-
-    });
-
-    self.channel.bind('client-new-connection', function(data){
-
-    	if(typeof self.params.update !== "undefined") {
-				setInterval(function(){
-					self.params.update(true);
-				}, 1000);
-    	}
     });
 
     self.channel.bind('client-get-config', function(data, holla){
@@ -2358,7 +2347,7 @@ window.MoteioReceiver = function() {
 
       self.start();
 
-      $('.mote io-state-not-installed').hide();
+      $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
 
       $('body').append($('<div id="moteio-notice">\

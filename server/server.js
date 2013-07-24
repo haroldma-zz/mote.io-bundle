@@ -233,9 +233,6 @@ app.get('/admin/email', function(req, res) {
 
 app.post('/webhook', function(req, res) {
 
-  console.log(req.body.type);
-  console.log(req.body.project)
-
   for(var key in req.body.project.envVars) {
 
     if(req.body.project.envVars[key].name == "WEBHOOK_PASSWORD" && req.body.project.envVars[key].value == "=2,_&5%#8]{@>oW") {
@@ -263,9 +260,6 @@ app.post('/webhook', function(req, res) {
 app.get('/pusher/auth', function( req, res ) {
 
   if(req.user) {
-
-    console.log(req)
-    console.log(res)
 
     var socketId = req.query.socket_id;
     var channel = req.query.channel_name;
@@ -587,8 +581,6 @@ app.get('/post/login', function(req, res, next) {
       }
 
       if (!user) {
-
-        console.log(info)
 
         clog({
           subject: 'user',
