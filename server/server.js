@@ -472,6 +472,7 @@ app.post('/register', function(req, res) {
               '<br/>' +
               '<a href="https://mote.io/start">https://mote.io/start</a>' +
               '<br/>' +
+              '<br/>' +
               'Follow me on twitter for more updates about mote.io:' +
               '<br/>' +
               'http://twitter.com/sw1tch' +

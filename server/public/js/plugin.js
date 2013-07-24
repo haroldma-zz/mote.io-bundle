@@ -2158,12 +2158,9 @@ window.MoteioReceiver = function() {
 
 	  	self.channel.bind('pusher:subscription_succeeded', function() {
 
-	  		// turn the other plugins off
-	  		self.channel.trigger('client-deactivate', {});
+	  		console.log('succes')
 
 	  		self.channel.trigger('client-update-config', self.params);
-
-	  		self.channel.trigger('client-start', {});
 
 	  	});
 
@@ -2198,7 +2195,6 @@ window.MoteioReceiver = function() {
     		$('#moteio-status').hide();
     	}, 2000);
 
-    	alert('foobar')
     	self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
       if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
@@ -2362,7 +2358,7 @@ window.MoteioReceiver = function() {
 
       self.start();
 
-      $('.moteio-state-not-installed').hide();
+      $('.mote io-state-not-installed').hide();
       $('.moteio-state-installed').show();
 
       $('body').append($('<div id="moteio-notice">\
@@ -2386,6 +2382,3 @@ window.MoteioReceiver = function() {
 
 window.moteioRec = new window.MoteioReceiver();
 window.moteioRec.init(window.moteioConfig);
-window.addEventListener("focus", function(event) {
-	window.moteioRec.start();
-}, false);
