@@ -2180,12 +2180,10 @@ window.MoteioReceiver = function() {
 
     self.channel.bind('client-get-config', function(data, holla){
 
-      // // console.log('sending out config')
-      // // console.log(self.params)
+      console.log('sending out config')
+     	console.log(self.params)
 
       self.channel.trigger('client-update-config', self.params);
-
-      self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
     });
 
@@ -2195,9 +2193,13 @@ window.MoteioReceiver = function() {
     	$('.moteio-state-signed-in').show();
 
     	self.statusTextDisplay('Ready to go!');
+
     	setTimeout(function(){
     		$('#moteio-status').hide();
     	}, 2000);
+
+    	alert('foobar')
+    	self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
       if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
         self.clog('go home')
