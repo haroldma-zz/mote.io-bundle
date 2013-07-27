@@ -279,6 +279,31 @@ app.get('/pusher/auth', function( req, res ) {
 
 });
 
+app.post('/pusher/auth', function( req, res ) {
+
+  if(req.user) {
+
+    console.log(req)
+    console.log(res)
+
+    var socketId = req.body.socket_id;
+    var channel = req.body.channel_name;
+
+    if(req.body.channel_name == 'private-' + req.user._id) {
+
+      var auth = pusher.auth( socketId, channel );
+      return res.jsonp(auth);
+
+    } else {
+      return res.jsonp(401);
+    }
+
+  } else {
+    return res.jsonp(401);
+  }
+
+});
+
 app.get('/admin/servers', function(req, res) {
 
   if(req.user && req.user.username == "ian@meetjennings.com") {
