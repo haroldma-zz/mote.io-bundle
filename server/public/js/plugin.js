@@ -153,11 +153,10 @@ window.MoteioReceiver = function() {
 
     self.clog('trying to listen')
 
-    self.remote_location =
     self.channel = io.connect(self.remote_location, {'force new connection': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
-    self.channel.addHeader("mod-servo", server_id);
+    // self.channel.addHeader("mod-servo", server_id);
 
     self.channel.on('connect', function () {
 
