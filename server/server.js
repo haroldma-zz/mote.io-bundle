@@ -25,7 +25,8 @@ var
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   marked = require('marked'),
-  clog = null;
+  clog = null,
+  request = require('request');
 
 var loggly = require('loggly');
 var config = {
@@ -139,6 +140,14 @@ app.configure('production', function(){
 
   clog({subject: "server", action: "boot"});
 
+});
+
+request('https://loadio-8581.onmodulus.net?server_notice=online&server=' + config.id + '&key=udL6Qn<fK!3IMqP5<GAR6m9naW3DTvOQUiKnW1E6br7Z65I3R8C5Km140vMEBN3x2I3ad1Yc1gBOWGR', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body)
+  } else {
+    console.log(error)
+  }
 });
 
 var db = mongoose.connection;
