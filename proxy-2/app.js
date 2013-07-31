@@ -109,7 +109,16 @@ app.get('/post/login', function(req, res, next) {
 
   });
 
-  res.send(200);
+  console.log('request')
+
+  req.headers.host = 'moteio-7506.onmodulus.net';
+  proxy.proxyRequest(req, res, {
+    target: {
+      host: 'moteio-7506.onmodulus.net',
+      port: 80
+    }
+  });
+
 
 });
 
