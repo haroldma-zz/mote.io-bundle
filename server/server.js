@@ -25,8 +25,7 @@ var
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   marked = require('marked'),
-  clog = null,
-  request = require('request');
+  clog = null;
 
 var loggly = require('loggly');
 var config = {
@@ -41,6 +40,8 @@ var client = loggly.createClient(config);
 
 var SendGrid = require('sendgrid').SendGrid;
 var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
+
+var app = express();
 
 var mongo_options = {
   server: {
@@ -138,14 +139,6 @@ app.configure('production', function(){
 
   clog({subject: "server", action: "boot"});
 
-});
-
-request('https://loadio-8581.onmodulus.net?server_notice=online&server=' + config.id + '&key=udL6Qn<fK!3IMqP5<GAR6m9naW3DTvOQUiKnW1E6br7Z65I3R8C5Km140vMEBN3x2I3ad1Yc1gBOWGR', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body)
-  } else {
-    console.log(error)
-  }
 });
 
 var db = mongoose.connection;
@@ -357,6 +350,8 @@ app.post('/admin/email', function(req, res) {
 app.get('/admin/beta', function(req, res) {
     if(req.user.username == "ian@meetjennings.com") {
 
+        clog(req.query.user)
+
         Account.findById(req.query.user, function(err,user){
             if(err) {
                 err.type = 'error';
@@ -471,37 +466,82 @@ app.get('/login', function(req, res) {
     }
 });
 
-app.post('/login', function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) {
-      res.render('login', {page: 'start', err: info});
+app.post('/login', passport.authenticate('local'), function(req, res) {
+
+    if(req.user) {
+
+        if(req.user.beta) {
+            res.redirect('/start');
+        } else {
+            res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
+        }
+
+    } else {
+        res.render('login', {page: 'start', err: 'Invalid login!'});
     }
-    // Generate a JSON response reflecting authentication status
-    if (! user) {
-      res.render('login', {page: 'start', err: 'Invalid login!'});
-    }
-    res.redirect('/start');
-  })(req, res, next);
+
 });
+
+// convert userid to server
+var bouncer = function(user, holla) {
+
+  var
+    random = user.random || 0,
+    firstDigit = (random + "").charAt(0),
+    value = null;
+
+  if (!firstDigit) {
+    firstDigit++;
+  }
+
+  Server.find({}, function (err, all_servers) {
+
+    console.log(all_servers)
+    console.log(firstDigit)
+
+    value = Math.ceil(firstDigit / all_servers.length);
+
+    console.log(value)
+    holla(all_servers[value]);
+
+  });
+
+}
 
 app.get('/get/login', function(req, res) {
 
     if(req.user) {
 
-      clog({
-        subject: 'user',
-        action: 'getgetlogin',
-        success: true,
-        username: req.user.username
-      });
+        if(req.user.beta) {
 
-      res.jsonp({
-          valid: true,
-          user: {
-              username: req.user.username,
-              _id: req.user._id
-          }
-      });
+            clog({
+              subject: 'user',
+              action: 'getgetlogin',
+              success: true,
+              username: req.user.username
+            });
+
+            bouncer(req.user, function(server) {
+
+              res.jsonp({
+                  valid: true,
+                  user: {
+                      username: req.user.username,
+                      _id: req.user._id,
+                      server_id: server.id
+                  }
+              });
+
+            });
+
+        } else {
+
+          return res.jsonp({
+              valid: false,
+              reason: 'Account has not been approved for beta yet!'
+          })
+
+        }
 
     } else {
 
@@ -579,19 +619,24 @@ app.get('/post/login', function(req, res, next) {
 
         if(user.beta) {
 
-          res.jsonp({
-            valid: true,
-            user: {
-                username: user.username,
-                _id: user._id,
-            }
-          });
+          bouncer(user, function(server) {
 
-          clog({
-            username: user.username,
-            subject: 'user',
-            action: 'getpostlogin',
-            success: true
+            res.jsonp({
+              valid: true,
+              user: {
+                  username: user.username,
+                  _id: user._id,
+                  server_id: server.id
+              }
+            });
+
+            clog({
+              username: user.username,
+              subject: 'user',
+              action: 'getpostlogin',
+              success: true
+            });
+
           });
 
         } else{
