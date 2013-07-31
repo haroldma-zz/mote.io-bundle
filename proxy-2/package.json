@@ -1,0 +1,17 @@
+{
+  "name": "Modulus-Depends",
+  "version": "0.1.0",
+  "description": "A simple example of the minimal code required to build an simple HTML5 game.",
+  "author": "Modulus <support@onmodulus.com>",
+  "dependencies": {
+    "express": "2.5.x",
+    "http-proxy": "0.10.3",
+    "mongoose": "3.6.15",
+    "passport-local-mongoose": "0.2.4",
+    "nodefly": "0.1.46",
+    "express": "3.x"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}
