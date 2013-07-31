@@ -42,8 +42,6 @@ var client = loggly.createClient(config);
 var SendGrid = require('sendgrid').SendGrid;
 var sendgrid = new SendGrid('sw1tch', '0K1:a7P68G-i95;');
 
-var app = express();
-
 var mongo_options = {
   server: {
     socketOptions: { keepAlive: 1 }
