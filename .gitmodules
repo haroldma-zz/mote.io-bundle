@@ -1,3 +1,0 @@
-[submodule "app/assets/www"]
-	path = app/assets/www
-	url = git@github.com:ianjennings/mote.io-app.git
