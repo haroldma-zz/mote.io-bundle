@@ -1,0 +1,95 @@
+	<script>
+			/*
+
+	var pubnub_setup = {
+    channel       : 'my_mobile_app',
+    publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
+    subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
+    'force new connection': true,
+    origin : 'pubsub.pubnub.com',
+    ssl: true
+    error   : function(data) { console.log(data) }  // CONNECTION BACK ONLINE!
+	};
+
+	var addVideo = function() {
+
+		var socket = io.connect( 'https://pubsub.pubnub.com', pubnub_setup);
+
+		socket.on( 'connect', function() {
+			console.log('Connection Established! Ready to send/receive data!');
+			socket.send('my message here');
+			socket.send(1234567);
+			socket.send([1,2,3,4,5]);
+			socket.send({ apples : 'bananas' });
+		});
+
+	}
+
+	var url = 'https://dh15atwfs066y.cloudfront.net/socket.io.min.js';
+	var headID = document.getElementsByTagName("head")[0];
+	var script = document.createElement('script');
+	script.type='text/javascript';
+	script.src=url;
+
+	//for nonIE browsers
+	script.onload=function(){
+    addVideo();
+  }
+
+	//for IE Browsers
+	ieLoadBugFix(script, function(){
+	  addVideo();}
+	);
+
+	function ieLoadBugFix(scriptElement, callback){
+
+	if (scriptElement.readyState=='loaded' || scriptElement.readyState=='completed') {
+	  callback();
+	} else {
+	  setTimeout(function() {ieLoadBugFix(scriptElement, callback); }, 100);
+	}
+
+	}
+
+	headID.appendChild(script);
+
+  $(document).ready(function() {
+
+  	socket.on( 'message', function(message) {
+  	    console.log(message);
+  	} );
+
+  	socket.on( 'disconnect', function() {
+  	    console.log('my connection dropped');
+  	} );
+
+  	// Extra event in Socket.IO provided by PubNub
+  	socket.on( 'reconnect', function() {
+  	    console.log('my connection has been restored!');
+  	} );
+  });
+
+var pubnub_setup = {
+	    channel: 'my_mobile_app',
+
+	    'force new connection': true,
+	    ssl: true
+		};
+
+// 4.) Set Transport to HTTPS
+var chat = io.connect( 'https://pubsub.pubnub.com/chat', pubnub_setup );
+
+chat.on( 'join', function(user) {
+  console.log( 'user joined:', user );
+} );
+chat.on( 'leave', function(user) {
+  console.log( 'user left:', user );
+} );
+*/
+</script>
+
+<script src= ></script>
+<script>(function(){
+
+
+})();</script>
