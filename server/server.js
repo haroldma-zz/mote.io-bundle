@@ -155,6 +155,8 @@ var sessionStore = new MongoStore(config.db);
 
 app.configure(function() {
 
+  app.enable('trust proxy');
+
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('view options', { layout: false });
@@ -466,47 +468,89 @@ app.get('/login', function(req, res) {
     }
 });
 
-app.post('/login', passport.authenticate('local'), function(req, res) {
+app.post('/login', function(req, res, next) {
 
+  passport.authenticate('local', function(err, user, info) {
+
+    if (err) {
+
+      clog({
+        subject: 'user',
+        action: 'getpostlogin',
+        success: false,
+        reason: err
+      });
+
+      res.render('login', { page: 'start', err: err});
+
+    }
+
+    if (!user) {
+
+      console.log(info)
+
+      clog({
+        subject: 'user',
+        action: 'getpostlogin',
+        success: false,
+        reason: info.message
+      });
+
+      res.render('login', { page: 'start', err: info.message});
+
+    }
+
+    req.logIn(user, function(err) {
+
+      if (err) {
+        console.log(err);
+
+        clog({
+          username: user.username,
+          subject: 'user',
+          action: 'getpostlogin',
+          success: false,
+          reason: err
+        });
+
+        res.render('login', { page: 'start', err: err});
+
+      }
+
+      if(user.beta) {
+
+        res.redirect('/start');
+
+        clog({
+          username: user.username,
+          subject: 'user',
+          action: 'getpostlogin',
+          success: true
+        });
+
+      } else{
+
+        res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
+
+      }
+
+    });
+
+  })(req, res, next);
+
+
+  /*
     if(req.user) {
 
         if(req.user.beta) {
-            res.redirect('/start');
         } else {
-            res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
         }
 
     } else {
         res.render('login', {page: 'start', err: 'Invalid login!'});
     }
-
+*/
 });
-
-// convert userid to server
-var bouncer = function(user, holla) {
-
-  var
-    random = user.random || 0,
-    firstDigit = (random + "").charAt(0),
-    value = null;
-
-  if (!firstDigit) {
-    firstDigit++;
-  }
-
-  Server.find({}, function (err, all_servers) {
-
-    console.log(all_servers)
-    console.log(firstDigit)
-
-    value = Math.ceil(firstDigit / all_servers.length);
-
-    console.log(value)
-    holla(all_servers[value]);
-
-  });
-
-}
 
 app.get('/get/login', function(req, res) {
 
@@ -521,17 +565,12 @@ app.get('/get/login', function(req, res) {
               username: req.user.username
             });
 
-            bouncer(req.user, function(server) {
-
-              res.jsonp({
-                  valid: true,
-                  user: {
-                      username: req.user.username,
-                      _id: req.user._id,
-                      server_id: server.id
-                  }
-              });
-
+            res.jsonp({
+                valid: true,
+                user: {
+                    username: req.user.username,
+                    _id: req.user._id
+                }
             });
 
         } else {
@@ -560,97 +599,92 @@ app.get('/get/login', function(req, res) {
 
 app.get('/post/login', function(req, res, next) {
 
-    passport.authenticate('local', function(err, user, info) {
+  passport.authenticate('local', function(err, user, info) {
 
-      if (err) {
+    if (err) {
 
-        console.log(err);
+      console.log(err);
 
-        return res.jsonp({
-          valid: false,
-          reason: err
-        });
-
-        clog({
-          subject: 'user',
-          action: 'getpostlogin',
-          success: false,
-          reason: err
-        });
-
-      }
-
-      if (!user) {
-
-        console.log(info)
-
-        clog({
-          subject: 'user',
-          action: 'getpostlogin',
-          success: false,
-          reason: info.message
-        });
-
-        return res.jsonp({
-          valid: false,
-          reason: info.message
-        });
-
-      }
-
-      req.logIn(user, function(err) {
-
-        if (err) {
-          console.log(err);
-
-          clog({
-            username: user.username,
-            subject: 'user',
-            action: 'getpostlogin',
-            success: false,
-            reason: err
-          });
-
-          return res.jsonp({
-            valid: false,
-            reason: err
-          });
-        }
-
-        if(user.beta) {
-
-          bouncer(user, function(server) {
-
-            res.jsonp({
-              valid: true,
-              user: {
-                  username: user.username,
-                  _id: user._id,
-                  server_id: server.id
-              }
-            });
-
-            clog({
-              username: user.username,
-              subject: 'user',
-              action: 'getpostlogin',
-              success: true
-            });
-
-          });
-
-        } else{
-
-          res.jsonp({
-              valid: false,
-              reason: 'Account has not been approved for beta yet!'
-          });
-
-        }
-
+      return res.jsonp({
+        valid: false,
+        reason: err
       });
 
-    })(req, res, next);
+      clog({
+        subject: 'user',
+        action: 'getpostlogin',
+        success: false,
+        reason: err
+      });
+
+    }
+
+    if (!user) {
+
+      console.log(info)
+
+      clog({
+        subject: 'user',
+        action: 'getpostlogin',
+        success: false,
+        reason: info.message
+      });
+
+      return res.jsonp({
+        valid: false,
+        reason: info.message
+      });
+
+    }
+
+    req.logIn(user, function(err) {
+
+      if (err) {
+        console.log(err);
+
+        clog({
+          username: user.username,
+          subject: 'user',
+          action: 'getpostlogin',
+          success: false,
+          reason: err
+        });
+
+        return res.jsonp({
+          valid: false,
+          reason: err
+        });
+      }
+
+      if(user.beta) {
+
+        res.jsonp({
+          valid: true,
+          user: {
+              username: user.username,
+              _id: user._id
+          }
+        });
+
+        clog({
+          username: user.username,
+          subject: 'user',
+          action: 'getpostlogin',
+          success: true
+        });
+
+      } else{
+
+        res.jsonp({
+            valid: false,
+            reason: 'Account has not been approved for beta yet!'
+        });
+
+      }
+
+    });
+
+  })(req, res, next);
 
 });
 

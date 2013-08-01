@@ -14,9 +14,7 @@ var
   http = require('http'),
   httpProxy = require('http-proxy'),
   fs = require('fs'),
-  express = require('express'),
-  config = {},
-  proxy = new httpProxy.RoutingProxy()
+  config = {};
 
 var loggly = require('loggly');
 var config = {
@@ -30,19 +28,7 @@ var config = {
 
 var client = loggly.createClient(config);
 
-var app = express();
-
-app.configure(function() {
-
-  app.use(express.errorHandler());
-
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-
-  app.use(express.cookieParser());
-  app.use(app.router);
-
-});
+/*
 
 app.get('/get/private/servers', function(req, res, next){
 
@@ -67,6 +53,7 @@ app.get('/get/private/servers', function(req, res, next){
 
 });
 
+/*
 app.get('/post/login', function(req, res, next) {
 
   // when the user authenticates (if the path is login)
@@ -104,38 +91,53 @@ app.get('/post/login', function(req, res, next) {
         req.headers['mod-servo'] = server;
       }
 
-
     }
 
   });
 
-  console.log('request')
-
-  req.headers.host = 'moteio-7506.onmodulus.net';
-  proxy.proxyRequest(req, res, {
-    target: {
-      host: 'moteio-7506.onmodulus.net',
-      port: 80
-    }
-  });
-
+  //res.send(200);
+  next();
 
 });
+*/
 
-app.get('*', function(req, res) {
-
-  console.log('request')
-
-  req.headers.host = 'moteio-7506.onmodulus.net';
+  /*
   proxy.proxyRequest(req, res, {
     target: {
-      host: 'moteio-7506.onmodulus.net',
-      port: 80
+      host: 'localhost',
+      port: 3000,
+      https: true
     }
   });
+*/
 
-})
 
-var server = http.createServer(app);
+var http = require('http'),
+    httpProxy = require('http-proxy');
+
+//
+// Create an instance of node-http-proxy
+//
+var proxy = new httpProxy.HttpProxy({
+  target: {
+    host: 'moteio-7506.onmodulus.net',
+    port: 80
+  }
+});
+
+var server = http.createServer(function (req, res) {
+  //
+  // Proxy normal HTTP requests
+  //
+  req.headers.host = 'moteio-7506.onmodulus.net';
+  proxy.proxyRequest(req, res);
+});
+
+server.on('upgrade', function(req, socket, head) {
+  //
+  // Proxy websocket requests too
+  //
+  proxy.proxyWebSocketRequest(req, socket, head);
+});
+
 server.listen(3002);
-

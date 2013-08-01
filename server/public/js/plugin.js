@@ -11,13 +11,26 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  //self.remote_location = 'https://localhost:3000'
-  self.remote_location = 'https://mote.io:443';
+  // self.remote_location = 'https://localhost:3000';
+  self.remote_location = 'http://localhost:3002';
+  // self.remote_location = 'https://mote.io:443';
 
   self.channel = null;
 
   self.params = {};
   self.debug = true;
+
+
+  self.strencode = function( data ) {
+    return data;
+    //return unescape( encodeURIComponent( data  ) );
+  }
+
+  self.strdecode = function( data ) {
+    console.log(data)
+    //return decodeURIComponent( escape ( data ) ) ;
+  	return data;
+  }
 
   self.statusTextDisplay = function(message, href) {
 
@@ -175,7 +188,7 @@ window.MoteioReceiver = function() {
         self.clog('got response')
       });
 
-      self.channel.emit('update-config', self.params);
+      self.channel.emit('update-config', self.strencode(self.params));
 
       self.channel.emit('start', null, function (key) {
         self.clog('started');
@@ -186,6 +199,8 @@ window.MoteioReceiver = function() {
 
     self.channel.on('new-connection', function(data){
 
+    	data = strdecode(data);
+
     	if(typeof self.params.update !== "undefined") {
 				setInterval(function(){
 					self.params.update(true);
@@ -195,10 +210,12 @@ window.MoteioReceiver = function() {
 
     self.channel.on('get-config', function(data, holla){
 
+    	data = strdecode(data);
+
       // // console.log('sending out config')
       // // console.log(self.params)
 
-      self.channel.emit('update-config', self.params);
+      self.channel.emit('update-config', self.strencode(self.params));
 
     });
 
@@ -224,11 +241,15 @@ window.MoteioReceiver = function() {
     });
 
     self.channel.on('input', function (data) {
+
+    	data = strdecode(data);
+
       self.clog('Got Button Input')
       self.triggerInput(data);
     });
 
     self.channel.on('select', function (data) {
+    	data = strdecode(data);
       self.clog('Got Select Input');
       self.clog('self.params.blocks[data.block_id].data[data._id].action()')
       self.clog(self.params.blocks[data.block_id].data[data._id].action());
@@ -236,6 +257,7 @@ window.MoteioReceiver = function() {
     });
 
     self.channel.on('search', function (data) {
+    	data = strdecode(data);
       self.clog('Got Search Input');
       self.params.blocks[data.block_id].action(data.query);
     });
@@ -268,7 +290,7 @@ window.MoteioReceiver = function() {
   			 self.lastImage !== image) {
   			// console.log('this is different than last')
 				if(self.channel) {
-				  self.channel.emit('notify', data, function(){
+				  self.channel.emit('notify', self.strencode(data), function(){
 				    // self.clog('cb');
 				  });
 				}
@@ -277,7 +299,7 @@ window.MoteioReceiver = function() {
   		// console.log('just update')
   		// otherwise just update
   		if(self.channel) {
-  		  self.channel.emit('notify', data, function(){
+  		  self.channel.emit('notify', self.strencode(data), function(){
   		    // self.clog('cb');
   		  });
   		}
@@ -327,7 +349,7 @@ window.MoteioReceiver = function() {
 				    if (self.channel && worthUpdating) {
 				    	// console.log('worthUpdating')
 				    	// console.log(self.params.blocks[i].data[j])
-				      self.channel.emit('update-button', self.params.blocks[i].data[j], function() {
+				      self.channel.emit('update-button', self.strencode(self.params.blocks[i].data[j]), function() {
 				        // self.clog('cbb');
 				      });
 				    }

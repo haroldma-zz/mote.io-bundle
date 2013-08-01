@@ -7,8 +7,9 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
+var remote_location = "http://localhost:3002";
 //var remote_location = "https://localhost:3000";
-var remote_location = 'https://mote.io:443';
+//var remote_location = 'https://mote.io:443';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css",
