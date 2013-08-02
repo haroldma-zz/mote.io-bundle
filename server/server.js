@@ -27,7 +27,8 @@ var
   marked = require('marked'),
   clog = null,
   sanitizer = require('sanitizer'),
-  url2png = require('url2png')('P51EDCE959A5A5', 'S6FD465FD83E04')
+  url2png = require('url2png')('P51EDCE959A5A5', 'S6FD465FD83E04'),
+  crypto = require('crypto');
 
 var loggly = require('loggly');
 var config = {
@@ -62,6 +63,17 @@ var constructDBURL = function(db) {
   dbUrl += db.host+':'+ db.port;
   dbUrl += '/' + db.db;
   return dbUrl;
+}
+
+var encryptChannel = function(user) {
+
+  console.log(user)
+
+  return crypto.createHash('sha1')
+    .update(user.username)
+    .update('bed and banks') // a second salt
+    .update(config.secret)
+    .digest('hex');
 }
 
 app.configure('development', function(){
@@ -569,6 +581,7 @@ app.get('/get/login', function(req, res) {
 
             res.jsonp({
                 valid: true,
+                channel_name: encryptChannel(req.user),
                 user: {
                     username: req.user.username,
                     _id: req.user._id
@@ -662,6 +675,7 @@ app.get('/post/login', function(req, res, next) {
 
         res.jsonp({
           valid: true,
+          channel_name: encryptChannel(user),
           user: {
               username: user.username,
               _id: user._id

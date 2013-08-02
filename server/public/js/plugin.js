@@ -9,15 +9,16 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  // self.remote_location = 'https://localhost:3000';
-  // self.remote_location = 'http://localhost:3002';
-  self.remote_location = 'https://mote.io:443';
+  self.remote_location = 'https://localhost:3000';
+  // self.remote_location = 'https://mote.io:443';
 
   self.params = {};
   self.debug = true;
 
   self.channel_name = null;
   self.pubnub = null;
+
+  self.in_focus = true;
 
   self.strencode = function( data ) {
     return data;
@@ -159,10 +160,26 @@ window.MoteioReceiver = function() {
     window.location = self.remote_location + "/homebase";
   }
 
-  // Listen to channel uid
-  self.listen = function(server_id) {
+  self.sendRemote = function() {
 
-  	self.channel_name = server_id;
+  	self.pubnub.publish({
+  		channel : self.channel_name,
+  		message : {
+  			type: 'update-config',
+  			data: self.params
+  		}
+  	});
+
+  }
+
+  self.logout = function() {
+  	self.pubnub.unsubscribe({ channel : self.channel_name });
+  }
+
+  // Listen to channel uid
+  self.listen = function(channel_name) {
+
+  	self.channel_name = channel_name;
 
     self.pubnub.subscribe({
       channel : self.channel_name,
@@ -175,23 +192,25 @@ window.MoteioReceiver = function() {
 
   	    	if(typeof self.params.update !== "undefined") {
   					setInterval(function(){
-  						self.params.update(true);
+  						self.params.update(false);
   					}, 1000);
   	    	}
 
   	    }
 
+  	    // this is another
+  	    if(message.type == 'update-config') {
+  	    	if(!self.in_focus) {
+						self.clog('logging out because hidden')
+						self.logout();
+  	    	} else {
+  	    		self.clog('staying because not hidden')
+  	    	}
+  	    }
+
   	    if(message.type == 'get-config') {
 
-  	      self.pubnub.publish({
-  	      	channel : self.channel_name,
-  	      	message : {
-  	      		type: 'update-config',
-  	      		data: self.params
-  	      	}
-  	      });
-
-  	      self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
+  	    	self.sendRemote();
 
   	    }
 
@@ -204,6 +223,9 @@ window.MoteioReceiver = function() {
   	    	setTimeout(function(){
   	    		$('#moteio-status').fadeOut();
   	    	}, 2000);
+
+  	    	console.log('send remote')
+  	    	self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
   	      if((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
   	        self.clog('go home')
@@ -272,6 +294,8 @@ window.MoteioReceiver = function() {
   	// console.log(image		)
 
     // self.clog('notify')
+    self.lastNotify
+
     data = {
       line1: line1,
       line2: line2,
@@ -279,25 +303,16 @@ window.MoteioReceiver = function() {
       url: document.URL
     }
 
-  	if(typeof force == "undefined" || !force) {
-  		// do a check by default
-  		if(self.lastNotify.line1 !== line1 ||
-  			 self.lastNotify.line2 !== line2 ||
-  			 self.lastImage !== image) {
-  			// console.log('this is different than last')
+    if(typeof force == "undefined") {
+    	force = false;
+    }
 
-				self.pubnub.publish({
-					channel : self.channel_name,
-					message : {
-						type: 'notify',
-						data: data
-					}
-				});
+		// do a check by default
+		if((self.lastNotify.line1 !== line1 ||
+			 self.lastNotify.line2 !== line2 ||
+			 self.lastImage !== image) || force) {
 
-  		}
-  	} else {
-  		// console.log('just update')
-  		// otherwise just update
+			console.log('this is different than last')
 
 			self.pubnub.publish({
 				channel : self.channel_name,
@@ -307,8 +322,9 @@ window.MoteioReceiver = function() {
 				}
 			});
 
-  	}
+			console.log('sending notify')
 
+		}
 
     self.lastNotify.line1 = line1;
     self.lastNotify.line2 = line2;
@@ -386,7 +402,7 @@ window.MoteioReceiver = function() {
         if(data.valid) {
 
         	// self.messageDisplay('Logged in as <strong>' + data.user.username + '</strong>');
-          self.listen(data.user.username);
+          self.listen(data.channel_name);
 
         } else {
 
@@ -404,7 +420,9 @@ window.MoteioReceiver = function() {
 
 	  	self.pubnub = PUBNUB.init({
 				publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
-				subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba'
+				subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
+        origin        : 'pubsub.pubnub.com',
+        ssl           : true
 			});
 
 			self.pubnub.ready();
@@ -425,6 +443,16 @@ window.MoteioReceiver = function() {
       	</a>\
       </div>'));
 
+			$(window).focus(function() {
+				console.log('foucs')
+				self.in_focus = true;
+				self.start();
+			});
+
+			$(window).blur(function() {
+				console.log('blur')
+				self.in_focus = false;
+			});
 
       self.params = params;
 

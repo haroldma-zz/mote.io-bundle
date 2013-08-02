@@ -7,9 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-// var remote_location = "https://localhost:3000";
-// var remote_location = "http://localhost:3002";
- var remote_location = 'https://mote.io:443';
+ var remote_location = "https://localhost:3000";
+// var remote_location = 'https://mote.io:443';
 
 var extension_url = remote_location + "/js/plugin.js",
   css_url = remote_location + "/css/plugin.css",
@@ -38,10 +37,6 @@ exec(function(){
       display_input: true,
       update: function(force) {
 
-        if(typeof force == "undefined") {
-          force == false;
-        }
-
         if($('.haarp-active.section-track').length > 0) {
           active = $('.haarp-active.section-track');
         } else {
@@ -51,7 +46,8 @@ exec(function(){
         var thisArtist = $($('#player-nowplaying a')[3]).text(),
           thisSong = $($('#player-nowplaying a')[4]).text(),
           thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-          window.moteioRec.notify(thisArtist, thisSong, thisImage, force);
+
+        window.moteioRec.notify(thisArtist, thisSong, thisImage);
 
         // transfer button states
         if($('#playerPlay').hasClass('play')) {
