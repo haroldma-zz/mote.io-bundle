@@ -34,7 +34,9 @@
     "sendgrid": "0.2.6",
     "marked": "0.2.8",
     "nodefly": "stable",
-    "request": "2.25.0"
+    "request": "2.25.0",
+    "sanitizer": "0.0.15",
+    "url2png": "6.0.1"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",

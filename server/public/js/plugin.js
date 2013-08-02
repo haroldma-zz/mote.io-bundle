@@ -9,16 +9,15 @@ window.MoteioReceiver = function() {
 
   var self = this;
 
-  self.remote_location = 'https://localhost:3000';
+  // self.remote_location = 'https://localhost:3000';
   // self.remote_location = 'http://localhost:3002';
-  // self.remote_location = 'https://mote.io:443';
+  self.remote_location = 'https://mote.io:443';
 
   self.params = {};
   self.debug = true;
 
   self.channel_name = null;
   self.pubnub = null;
-
 
   self.strencode = function( data ) {
     return data;
@@ -276,7 +275,8 @@ window.MoteioReceiver = function() {
     data = {
       line1: line1,
       line2: line2,
-      image: image
+      image: image,
+      url: document.URL
     }
 
   	if(typeof force == "undefined" || !force) {

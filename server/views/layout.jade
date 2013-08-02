@@ -18,6 +18,48 @@ html.not-ie(lang='en').moteio-container
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
     script
       !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.8.3.min.js"%3E%3C/script%3E'))
+
+
+    meta(property='fb:app_id', content='163150470537618')
+    meta(property='og:image', content='https://mote.io/images/144-2x.png')
+    meta(property='twitter:image', content='https://mote.io/images/144-2x.png')
+
+    if page=='share'
+      meta(name='twitter:card', content='summary')
+      if query.line1 !== "undefined" && query.line2 !== "undefined" && query.remote !== "undefined"
+        meta(property='twitter:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='og:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='twitter:description', content="I'm controlling " + query.line1 + ' - ' + query.line2 + ' with the ' + query.remote + ' remote on Mote.io.')
+        meta(property='og:description', content="I'm controlling " + query.line1 + ' - ' + query.line2 + ' with the ' + query.remote + ' remote on Mote.io.')
+      else if query.line1 !== "undefined" && query.remote !== "undefined"
+        meta(property='twitter:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='og:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='twitter:description', content="I'm controlling " + query.line1 + ' with the ' + query.remote + ' remote on Mote.io.')
+        meta(property='og:description', content="I'm controlling " + query.line1 + ' with the ' + query.remote + ' remote on Mote.io.')
+      else if  query.remote !== "undefined"
+        meta(property='twitter:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='og:title', content="I'm controlling " + query.remote + ' with the Mote.io app!')
+        meta(property='og:description', content='Control your favorite web pages with mote.io.')
+        meta(property='twitter:description', content='Control your favorite web pages with mote.io.')
+      else
+        meta(property='twitter:title', content="I'm using Mote.io to control my favoirte websites with my phone!")
+        meta(property='og:title', content="I'm using Mote.io to control my favoirte websites with my phone!")
+        meta(property='og:description', content='Control your favorite web pages with mote.io.')
+        meta(property='twitter:description', content='Control your favorite web pages with mote.io.')
+    else
+      meta(property='og:title', content='Control your favorite web pages with mote.io.')
+      meta(property='og:description', content='Control your favorite web pages with mote.io.')
+
+      meta(name='twitter:card', content='summary')
+      meta(property='twitter:title', content="I'm using Mote.io to control my favoirte websites with my phone!")
+      meta(property='twitter:description', content="I'm using Mote.io to control my favoirte websites with my phone!")
+      // meta(name='twitter:app:id:iphone', content='306934135')
+      // meta(name='twitter:app:url:iphone', content='example://action/5149e249222f9e600a7540ef')
+      // meta(name='twitter:app:name:ipad', content='Example App')
+      // meta(name='twitter:app:url:ipad', content='example://action/5149e249222f9e600a7540ef')
+      // meta(name='twitter:app:id:googleplay', content='com.example.app')
+      // meta(name='twitter:app:url:googleplay', content='http://example.com/action/5149e249222f9e600a7540ef')
+
   body
     header#header
       .navbar

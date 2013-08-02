@@ -1390,3 +1390,74 @@ Ian Custom
 .mobile-download {
 	margin: 80px 0px;
 }
+.share .streaming {
+	position: relative;
+}
+.share .streaming .overlay {
+	position: absolute;
+	z-index: 10;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	opacity: .8;
+}
+.share .streaming .thumb {
+	display: inline-block;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	bottom: 6px;
+	margin-right: 2%;
+	width: 60px;
+	height: 60px;
+}
+.share .streaming .text {
+	position: absolute;
+	z-index: 11;
+	color: #ccc;
+	vertical-align: middle;
+	width: 80%;
+	height: 80%;
+	left: 10%;
+	top: 10%;
+	text-transform: uppercase;
+	font-size: 400%;
+	line-height: 1.2em;
+}
+
+.share .download {
+	margin-top: 5%;
+}
+
+.share .screenshot {
+	min-height: 700px;
+}
+
+.share .line1, .share .line2, .share .remote {
+	font-weight: bold;
+	color: #fff;
+}
+@media only screen and (max-width: 760px) {
+  .hide-on-mobile { display: none; }
+  .show-on-mobile { display: block; }
+  .share .streaming .text {
+  	position: static;
+  	font-size: 18px;
+  }
+  .overlay {
+  	display: none;
+  }
+  .share .download .btn {
+  	margin-bottom: 10%;
+  }
+
+  .share .streaming .text {
+  	color: #444;
+  }
+  .share .line1, .share .line2, .share .remote {
+  	color: #000;
+  }
+}

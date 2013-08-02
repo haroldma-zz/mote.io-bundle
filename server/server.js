@@ -25,7 +25,9 @@ var
   check = require('validator').check,
   sanitize = require('validator').sanitize,
   marked = require('marked'),
-  clog = null;
+  clog = null,
+  sanitizer = require('sanitizer'),
+  url2png = require('url2png')('P51EDCE959A5A5', 'S6FD465FD83E04')
 
 var loggly = require('loggly');
 var config = {
@@ -828,6 +830,23 @@ app.post('/reset/confirm', function(req, res) {
 
 });
 
+app.get('/share', function(req, res) {
+
+  var query = {};
+
+  query.line1 = sanitizer.sanitize(req.query.line1) || "undefined";
+  query.line2 = sanitizer.sanitize(req.query.line2) || "undefined";
+  query.image = sanitizer.sanitize(req.query.image) || "undefined";
+  query.url = sanitizer.sanitize(req.query.url) || "undefined";
+  query.remote = sanitizer.sanitize(req.query.remote) || "undefined";
+
+  query.screenshot = url2png.buildURL(decodeURIComponent(query.url), {});
+
+  clog(query);
+
+  res.render('share', { page: 'share', query: query});
+
+});
 
 if(process.env.NODE_ENV == "production") {
 
