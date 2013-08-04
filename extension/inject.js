@@ -62,7 +62,8 @@ exec(function(){
       },
       blocks: [
         {
-          type: 'notify'
+          type: 'notify',
+          share: true
         },
         {
           type: 'search',
@@ -279,7 +280,8 @@ exec(function(){
         },
         blocks: [
           {
-            type: 'notify'
+            type: 'notify',
+            share: true
           },
           {
             type: 'buttons',
@@ -333,6 +335,7 @@ exec(function(){
         blocks: [
           {
             type: 'notify',
+            share: false
           },
           {
             type: 'buttons',
@@ -398,7 +401,8 @@ exec(function(){
         },
         blocks: [
           {
-            type: 'notify'
+            type: 'notify',
+            share: true
           },
           {
             type: 'buttons',
@@ -463,7 +467,8 @@ exec(function(){
         },
         blocks: [
           {
-            type: 'notify'
+            type: 'notify',
+            share: true
           },
           {
             type: 'buttons',

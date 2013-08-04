@@ -5,12 +5,13 @@ if(!window.jQuery || !$){
   //@ sourceMappingURL=jquery.min.map
 }
 
+
+window.moteio_remote_location = 'https://localhost:3000';
+// window.moteio_remote_location  = 'https://mote.io:443';
+
 window.MoteioReceiver = function() {
 
   var self = this;
-
-  self.remote_location = 'https://localhost:3000';
-  // self.remote_location = 'https://mote.io:443';
 
   self.params = {};
   self.debug = true;
@@ -157,7 +158,7 @@ window.MoteioReceiver = function() {
 
   self.goHome = function() {
   	self.inputDisplay('home');
-    window.location = self.remote_location + "/homebase";
+    window.location = window.moteio_remote_location  + "/homebase";
   }
 
   self.sendRemote = function() {
@@ -395,7 +396,7 @@ window.MoteioReceiver = function() {
     self.clog('!!! STARTING UP');
     $.ajax({
       type: 'get',
-      url: self.remote_location + '/get/login/',
+      url: window.moteio_remote_location  + '/get/login/',
       dataType: 'jsonp',
       success: function(data) {
         self.clog('got login response')
@@ -407,7 +408,7 @@ window.MoteioReceiver = function() {
         } else {
 
         	// self.messageDisplay('Not logged in!');
-        	self.statusTextDisplay('Log in to control this site with Mote.io!', self.remote_location + '/login');
+        	self.statusTextDisplay('Log in to control this site with Mote.io!', window.moteio_remote_location  + '/login');
 
         }
       }
@@ -425,9 +426,9 @@ window.MoteioReceiver = function() {
       	<div id="moteio-messages">\
       	</div>\
       	<a id="moteio-status">\
-      		<img id="moteio-round-logo" height="30" width="30" src="' + self.remote_location + '/images/144.png">\
+      		<img id="moteio-round-logo" height="30" width="30" src="' + window.moteio_remote_location  + '/images/144.png">\
       		<span id="moteio-status-text">\
-      			<img id="moteio-loadio" src="' + self.remote_location + '/images/loading-searching.gif">\
+      			<img id="moteio-loadio" src="' + window.moteio_remote_location  + '/images/loading-searching.gif">\
       		</span>\
       	</a>\
       </div>'));
@@ -445,30 +446,15 @@ window.MoteioReceiver = function() {
 
       self.params = params;
 
-      function fireWhenReady() {
+    	self.pubnub = PUBNUB.init({
+  			publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
+  			subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
+        origin        : 'pubsub.pubnub.com',
+        ssl           : true
+  		});
 
-        if (typeof PUBNUB !== 'undefined') {
-
-        	console.log('ready!')
-
-    	  	self.pubnub = PUBNUB.init({
-    				publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
-    				subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
-            origin        : 'pubsub.pubnub.com',
-            ssl           : true
-    			});
-
-    			self.pubnub.ready();
-          self.start();
-        }
-        else {
-        	console.log('not ready yet')
-          setTimeout(fireWhenReady, 100);
-        }
-
-      }
-      fireWhenReady();
-
+  		self.pubnub.ready();
+      self.start();
 
     });
 
@@ -476,39 +462,44 @@ window.MoteioReceiver = function() {
 
 };
 
-window.moteioRec = new window.MoteioReceiver();
-
-var extension_url = css_url = window.moteioRec.remote_location + "/css/plugin.css",
-  font_url = window.moteioRec.remote_location + "/css/font-awesome/font-awesome.css",
+var extension_url = css_url = window.moteio_remote_location  + "/css/plugin.css",
+  font_url = window.moteio_remote_location  + "/css/font-awesome/font-awesome.css",
   pubnub_url = "https://cdn.pubnub.com/pubnub-3.5.3.min.js";
 
-function async_load(){
+var link = document.createElement("link");
+link.href = font_url;
+link.type = "text/css";
+link.rel = "stylesheet";
+document.getElementsByTagName("head")[0].appendChild(link);
 
-    var link = document.createElement("link");
-    link.href = font_url;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
+var link = document.createElement("link");
+link.href = css_url;
+link.type = "text/css";
+link.rel = "stylesheet";
+document.getElementsByTagName("head")[0].appendChild(link);
 
-    var link = document.createElement("link");
-    link.href = css_url;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
+var s = document.createElement('script');
+s.type = 'text/javascript';
+s.async = true;
+s.src = pubnub_url;
+var x = document.getElementsByTagName('script')[0];
+x.parentNode.insertBefore(s, x);
 
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = pubnub_url;
-    var x = document.getElementsByTagName('script')[0];
-    x.parentNode.insertBefore(s, x);
+function fireWhenReady() {
+
+  if (typeof PUBNUB !== 'undefined') {
+
+  	window.moteioRec = new window.MoteioReceiver();
+  	window.moteioRec.init(window.moteioConfig);
+
+  	console.log('ready!');
+
+  } else {
+
+  	console.log('not ready yet')
+    setTimeout(fireWhenReady, 100);
+
+  }
 
 }
-
-if (window.attachEvent) {
-    window.attachEvent('onload', async_load);
-} else {
-    window.addEventListener('load', async_load, false);
-}
-
-window.moteioRec.init(window.moteioConfig);
+fireWhenReady();
