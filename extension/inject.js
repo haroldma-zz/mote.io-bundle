@@ -7,13 +7,10 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
- var remote_location = "https://localhost:3000";
+var remote_location = "https://localhost:3000";
 // var remote_location = 'https://mote.io:443';
 
-var extension_url = remote_location + "/js/plugin.js",
-  css_url = remote_location + "/css/plugin.css",
-  font_url = remote_location + "/css/font-awesome/font-awesome.css",
-  pubnub_url = "https://cdn.pubnub.com/pubnub-3.5.3.min.js";
+var extension_url = remote_location + "/js/plugin.js";
 
 exec(function(){
 
@@ -548,25 +545,6 @@ exec(function(){
 });
 
 function async_load(){
-
-    var link = document.createElement("link");
-    link.href = font_url;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
-
-    var link = document.createElement("link");
-    link.href = css_url;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    document.getElementsByTagName("head")[0].appendChild(link);
-
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = pubnub_url;
-    var x = document.getElementsByTagName('script')[0];
-    x.parentNode.insertBefore(s, x);
 
     var s = document.createElement('script');
     s.type = 'text/javascript';

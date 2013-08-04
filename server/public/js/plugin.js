@@ -418,17 +418,6 @@ window.MoteioReceiver = function() {
 
     $(document).ready(function() {
 
-	  	self.pubnub = PUBNUB.init({
-				publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
-				subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
-        origin        : 'pubsub.pubnub.com',
-        ssl           : true
-			});
-
-			self.pubnub.ready();
-
-      self.start();
-
       $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
 
@@ -456,6 +445,31 @@ window.MoteioReceiver = function() {
 
       self.params = params;
 
+      function fireWhenReady() {
+
+        if (typeof PUBNUB !== 'undefined') {
+
+        	console.log('ready!')
+
+    	  	self.pubnub = PUBNUB.init({
+    				publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
+    				subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
+            origin        : 'pubsub.pubnub.com',
+            ssl           : true
+    			});
+
+    			self.pubnub.ready();
+          self.start();
+        }
+        else {
+        	console.log('not ready yet')
+          setTimeout(fireWhenReady, 100);
+        }
+
+      }
+      fireWhenReady();
+
+
     });
 
   };
@@ -463,4 +477,38 @@ window.MoteioReceiver = function() {
 };
 
 window.moteioRec = new window.MoteioReceiver();
+
+var extension_url = css_url = window.moteioRec.remote_location + "/css/plugin.css",
+  font_url = window.moteioRec.remote_location + "/css/font-awesome/font-awesome.css",
+  pubnub_url = "https://cdn.pubnub.com/pubnub-3.5.3.min.js";
+
+function async_load(){
+
+    var link = document.createElement("link");
+    link.href = font_url;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    document.getElementsByTagName("head")[0].appendChild(link);
+
+    var link = document.createElement("link");
+    link.href = css_url;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    document.getElementsByTagName("head")[0].appendChild(link);
+
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = pubnub_url;
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+
+}
+
+if (window.attachEvent) {
+    window.attachEvent('onload', async_load);
+} else {
+    window.addEventListener('load', async_load, false);
+}
+
 window.moteioRec.init(window.moteioConfig);
