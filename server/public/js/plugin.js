@@ -178,16 +178,13 @@ window.MoteioReceiver = function() {
 
   }
 
-  self.logout = function() {
-
-  }
-
   // Listen to channel uid
   self.listen = function() {
 
     self.clog('trying to listen')
     console.log(self.remote_location)
-    self.channel = io.connect(window.moteio_remote_location, {'force new connection': true});
+
+    self.channel = io.connect(window.moteio_remote_location, {'force new connection': true, 'secure': true});
     // https://github.com/LearnBoost/socket.io-client/issues/251
 
     self.channel.on('connect', function () {
@@ -213,7 +210,7 @@ window.MoteioReceiver = function() {
 
     	if(!self.in_focus) {
 				console.log('logging out because hidden')
-				self.logout();
+				self.stop();
     	} else {
     		console.log('staying logged in because not hidden')
     	}
@@ -233,6 +230,7 @@ window.MoteioReceiver = function() {
     	$('#moteio-notice').removeClass('small');
 
     	self.statusTextDisplay('Synced with phone!', 'https://mote.io/start');
+
     	setTimeout(function(){
 	    	$('#moteio-notice').hide();
     	}, 2000);
@@ -298,10 +296,15 @@ window.MoteioReceiver = function() {
 
 			console.log('this is different than last')
 
-			self.channel.emit('forward', {
-				type: 'notify',
-				data: data
-			});
+
+			if(self.channel) {
+
+				self.channel.emit('forward', {
+					type: 'notify',
+					data: data
+				});
+
+			}
 
 		}
 
@@ -345,7 +348,7 @@ window.MoteioReceiver = function() {
 
   					}
 
-				    if (worthUpdating) {
+				    if (worthUpdating && self.channel) {
 
 				      self.channel.emit('forward', {
 			      		type: 'update-button',
@@ -365,6 +368,13 @@ window.MoteioReceiver = function() {
   }
 
   self.stop = function () {
+  	if (self.channel) {
+  	  self.clog('connected to a channel, disconnecting, ');
+  	  self.channel.disconnect();
+  	  self.channel = null;
+  	} else {
+  	  self.clog('not connected to any channels yet');
+  	}
   };
 
   self.start = function () {
@@ -412,18 +422,6 @@ window.MoteioReceiver = function() {
       	</div>\
       </div>'));
 
-			$(window).focus(function() {
-				console.log('foucs')
-				self.in_focus = true;
-				$('#moteio-notice').fadeIn();
-				self.start();
-			});
-
-			$(window).blur(function() {
-				console.log('blur')
-				self.in_focus = false;
-			});
-
 			$('.moteio-hide').click(function(){
 				$('#moteio-notice').addClass('small');
 				self.set('moteio-hide', true);
@@ -437,6 +435,18 @@ window.MoteioReceiver = function() {
 			if(self.get('moteio-hide')) {
 				$('#moteio-notice').addClass('small');
 			}
+
+			$(window).focus(function() {
+				console.log('foucs')
+				window.moteioRec.in_focus = true;
+				$('#moteio-notice').fadeIn();
+				window.moteioRec.start();
+			});
+
+			$(window).blur(function() {
+				console.log('blur')
+				window.moteioRec.in_focus = false;
+			});
 
       self.params = params;
 
@@ -467,3 +477,4 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 window.moteioRec = new window.MoteioReceiver();
 window.moteioRec.init(window.moteioConfig);
+

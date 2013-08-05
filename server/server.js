@@ -885,7 +885,7 @@ if(process.env.NODE_ENV == "production") {
 io.configure(function () {
 
   // io.set('polling duration', 30);
-  // io.set('log level', 1);
+  io.set('log level', 1);
 
   io.set("authorization", passportSocketIo.authorize({
     key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
@@ -915,12 +915,6 @@ io.sockets.on('connection', function (socket) {
     userid = socket.handshake.user._id || null,
     address = socket.handshake.address || null;
 
-  console.log('clients in room')
-  console.log(io.sockets.clients(userid));
-
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + username)
-  console.log(socket.handshake);
-
   clog({subject: 'user', action: 'connection', username: username, userid: userid});
 
   if(username){
@@ -934,14 +928,12 @@ io.sockets.on('connection', function (socket) {
     console.log('room name is')
     console.log(userid)
 
-    io.sockets.in(userid).emit(message.type, message.data);
-
     pubnub.subscribe({
       channel  : userid,
       callback : function(message) {
 
         console.log('GOT MESSAGE')
-        console.log(message)
+        // console.log(message)
 
         clog({subject: 'user', username: username, userid: userid, action: message.type});
         io.sockets.in(userid).emit(message.type, message.data);
