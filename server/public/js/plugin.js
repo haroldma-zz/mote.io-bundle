@@ -40,6 +40,9 @@ window.MoteioReceiver = function() {
   	var href = href || null,
   		message = message || null;
 
+  	console.log('showing status')
+  	console.log(message)
+
   	$('#moteio-status').show();
 
   	if (href) {
@@ -152,7 +155,7 @@ window.MoteioReceiver = function() {
       default:
         message.push('Notice: ');
         message.push(description);
-        // console.log(message.join(' '));
+        console.log(message.join(' '));
         break;
       }
     }
@@ -205,10 +208,10 @@ window.MoteioReceiver = function() {
   	    // this is another
   	    if(message.type == 'update-config') {
   	    	if(!self.in_focus) {
-						self.clog('logging out because hidden')
+						console.log('logging out because hidden')
 						self.logout();
   	    	} else {
-  	    		self.clog('staying because not hidden')
+  	    		console.log('staying logged in because not hidden')
   	    	}
   	    }
 
@@ -264,6 +267,9 @@ window.MoteioReceiver = function() {
    	    }
 
       },
+	    reconnect  : function() {        // CONNECTION RESTORED.
+	        alert("And we're Back!")
+	    },
       connect : function(){
 
 	    	// self.messageDisplay('Socket connection established.');
@@ -277,13 +283,7 @@ window.MoteioReceiver = function() {
 
 	      self.clog('connected');
 
-				self.pubnub.publish({
-					channel : self.channel_name,
-					message : {
-						type: 'update-config',
-						data: self.params
-					}
-				});
+				self.sendRemote();
 
       }
 
@@ -397,7 +397,9 @@ window.MoteioReceiver = function() {
   };
 
   self.start = function () {
+
     self.clog('!!! STARTING UP');
+
     $.ajax({
       type: 'get',
       url: window.moteio_remote_location  + '/get/login/',
@@ -417,6 +419,7 @@ window.MoteioReceiver = function() {
         }
       }
     });
+
   }
 
   self.init = function(params) {
