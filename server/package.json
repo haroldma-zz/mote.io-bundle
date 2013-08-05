@@ -36,7 +36,8 @@
     "nodefly": "stable",
     "request": "2.25.0",
     "sanitizer": "0.0.15",
-    "url2png": "6.0.1"
+    "url2png": "6.0.1",
+    "pubnub": "3.5.3"
   },
   "devDependencies": {},
   "subdomain": "sw1tch-moteio",

@@ -581,7 +581,7 @@ app.get('/get/login', function(req, res) {
 
             res.jsonp({
                 valid: true,
-                channel_name: encryptChannel(req.user),
+                channel_name: req.user._id,
                 user: {
                     username: req.user.username,
                     _id: req.user._id
@@ -675,7 +675,7 @@ app.get('/post/login', function(req, res, next) {
 
         res.jsonp({
           valid: true,
-          channel_name: encryptChannel(user),
+          channel_name: user._id,
           user: {
               username: user.username,
               _id: user._id
@@ -904,6 +904,11 @@ io.configure(function () {
 
 });
 
+var pubnub = require("pubnub").init({
+  publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
+  subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba'
+});
+
 io.sockets.on('connection', function (socket) {
 
   var username = socket.handshake.user.username || null,
@@ -920,73 +925,43 @@ io.sockets.on('connection', function (socket) {
 
   if(username){
 
-   clog({success: true, subject: 'user', action: 'authorization', username: username});
+    clog({success: true, subject: 'user', action: 'authorization', username: username});
 
-   clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
+    clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
 
-   socket.join(userid);
-   console.log('room name is')
-   console.log(userid)
+    socket.join(userid);
 
-   socket.broadcast.to(userid).emit('new-connection');
+    console.log('room name is')
+    console.log(userid)
 
-   // socket refers to client
-   socket.on('get-config', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'get-config'});
-     socket.broadcast.to(userid).emit('get-config');
-   });
-   socket.on('got-config', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'got-config'});
-     socket.broadcast.to(userid).emit('got-config');
-   });
-   socket.on('update-config', function(data) {
-     clog({subject: 'user', username: username, userid: userid, action: 'update-config'});
-     clog('[sending out config]')
-     socket.broadcast.to(userid).emit('update-config', data);
-   });
-   socket.on('notify', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'notify'});
-     socket.broadcast.to(userid).emit('notify', data);
-     holla();
-   });
-   socket.on('art', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'art'});
-     socket.broadcast.to(userid).emit('art', data);
-     holla();
-   });
-   socket.on('update-button', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'update-button'});
-     socket.broadcast.to(userid).emit('update-button', data);
-     holla();
-   });
-   socket.on('go-home', function(data, holla){
-     clog({subject: 'user', username: username, userid: userid, action: 'go-home'});
-     socket.broadcast.to(userid).emit('go-home');
-   });
-   socket.on('input', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'input'});
-     console.log('got input')
-     console.log(data)
-     socket.broadcast.to(userid).emit('input', data);
-     holla();
-   });
-   socket.on('select', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'select'});
-     socket.broadcast.to(userid).emit('select', data);
-     holla();
-   });
-   socket.on('search', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'search'});
-     socket.broadcast.to(userid).emit('search', data);
-     holla();
-   });
-   socket.on('activate', function (data, holla) {
-     clog({subject: 'user', username: username, userid: userid, action: 'activate'});
-     socket.broadcast.to(userid).emit('deactivate');
-   });
-   socket.on('disconnect', function () {
-     clog({subject: 'user', username: username, userid: userid, action: 'disconnect'});
-   });
+    io.sockets.in(userid).emit(message.type, message.data);
+
+    pubnub.subscribe({
+      channel  : userid,
+      callback : function(message) {
+
+        console.log('GOT MESSAGE')
+        console.log(message)
+
+        clog({subject: 'user', username: username, userid: userid, action: message.type});
+        io.sockets.in(userid).emit(message.type, message.data);
+
+      }
+
+    });
+
+    socket.on('forward', function(data, holla){
+
+      pubnub.publish({
+        channel : userid,
+        message : data
+      });
+
+      if(typeof holla !== "undefined") {
+        holla();
+      }
+
+    });
 
   }
 
