@@ -5,7 +5,6 @@ if(!window.jQuery || !$){
   //@ sourceMappingURL=jquery.min.map
 }
 
-
 window.moteio_remote_location = 'https://localhost:3000';
 // window.moteio_remote_location  = 'https://mote.io:443';
 
@@ -21,15 +20,19 @@ window.MoteioReceiver = function() {
 
   self.in_focus = true;
 
-  self.strencode = function( data ) {
-    return data;
-    //return unescape( encodeURIComponent( data  ) );
+  self.set = function(key, data) {
+    // Put the object into storage
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
   }
-
-  self.strdecode = function( data ) {
-    console.log(data)
-    //return decodeURIComponent( escape ( data ) ) ;
-  	return data;
+  self.get = function(key) {
+    // Retrieve the object from storage
+    var retrievedObject = localStorage.getItem(key);
+    if(typeof retrievedObject !== "undefined") {
+      return JSON.parse(retrievedObject);
+    } else {
+      return false;
+    }
   }
 
   self.statusTextDisplay = function(message, href) {
@@ -40,14 +43,14 @@ window.MoteioReceiver = function() {
   	$('#moteio-status').show();
 
   	if (href) {
-  		$('#moteio-status').attr('href', href);
+  		$('#moteio-status-text').attr('href', href);
   	} else {
-  		$('#moteio-status').removeAttr('href');
+  		$('#moteio-status-text').removeAttr('href');
   	}
 
   	if(message) {
   		$('#moteio-status-text').hide(function(){
-  			$('#moteio-status-text').html(message).fadeIn();
+  			$('#moteio-status-text').html(message).show();
   		});
   	} else {
   		$('moteio-status-text').hide();
@@ -219,10 +222,11 @@ window.MoteioReceiver = function() {
 
   	    	$('.moteio-state-not-signed-in').hide();
   	    	$('.moteio-state-signed-in').show();
+  	    	$('#moteio-notice').removeClass('small');
 
-  	    	self.statusTextDisplay('Ready to go!');
+  	    	self.statusTextDisplay('Synced with phone!', 'https://mote.io/start');
   	    	setTimeout(function(){
-  	    		$('#moteio-status').fadeOut();
+	  	    	$('#moteio-notice').hide();
   	    	}, 2000);
 
   	    	console.log('send remote')
@@ -422,20 +426,22 @@ window.MoteioReceiver = function() {
       $('.moteio-state-not-installed').hide();
       $('.moteio-state-installed').show();
 
-      $('body').append($('<div id="moteio-notice">\
+      $('body').append($('<div id="moteio-notice" class="moteio-container">\
       	<div id="moteio-messages">\
       	</div>\
-      	<a id="moteio-status">\
+      	<div id="moteio-status">\
       		<img id="moteio-round-logo" height="30" width="30" src="' + window.moteio_remote_location  + '/images/144.png">\
-      		<span id="moteio-status-text">\
+      		<a id="moteio-status-text">\
       			<img id="moteio-loadio" src="' + window.moteio_remote_location  + '/images/loading-searching.gif">\
-      		</span>\
-      	</a>\
+      		</a>\
+      		<div class="moteio-hide"><span class="icon-remove"></span></div> \
+      	</div>\
       </div>'));
 
 			$(window).focus(function() {
 				console.log('foucs')
 				self.in_focus = true;
+				$('#moteio-notice').fadeIn();
 				self.start();
 			});
 
@@ -443,6 +449,20 @@ window.MoteioReceiver = function() {
 				console.log('blur')
 				self.in_focus = false;
 			});
+
+			$('.moteio-hide').click(function(){
+				$('#moteio-notice').addClass('small');
+				self.set('moteio-hide', true);
+			});
+
+			$('#moteio-round-logo').click(function(){
+				$('#moteio-notice').removeClass('small');
+				self.set('moteio-hide', false);
+			});
+
+			if(self.get('moteio-hide')) {
+				$('#moteio-notice').addClass('small');
+			}
 
       self.params = params;
 

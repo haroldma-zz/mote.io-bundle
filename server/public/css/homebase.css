@@ -1002,6 +1002,7 @@ ul.icons {
 
 body, html {
   width: 100%;
+  margin: 0px;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .content {
