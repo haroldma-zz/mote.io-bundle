@@ -19,7 +19,7 @@ window.MoteioReceiver = function() {
   self.channel_name = null;
   self.pubnub = null;
 
-  self.in_focus = true;
+  self.id = new Date().getTime() + Math.floor((Math.random()*100)+1);
 
   self.set = function(key, data) {
     // Put the object into storage
@@ -174,7 +174,8 @@ window.MoteioReceiver = function() {
       channel: self.channel_name,
       message: {
         type: 'update-config',
-        data: self.params
+        data: self.params,
+        id: self.id
       }
     });
 
@@ -198,28 +199,20 @@ window.MoteioReceiver = function() {
         console.log(message);
         data = message.data;
 
-        if (message.type == 'new-connection') {
-
-          if (typeof self.params.update !== "undefined") {
-            setInterval(function() {
-              self.params.update(false);
-            }, 1000);
-          }
-
-        }
-
         // this is another
         if (message.type == 'update-config') {
-          if (!self.in_focus) {
-            console.log('logging out because hidden')
-            self.logout();
+
+          if (self.id == message.id) {
+            console.log('don\'t kill myself!');
           } else {
-            console.log('staying logged in because not hidden')
+          	console.log('this isn\'t from me, farewell cruel world.');
+            self.logout();
           }
         }
 
         if (message.type == 'get-config') {
 
+        	console.log('send remote')
           self.sendRemote();
 
         }
@@ -235,7 +228,7 @@ window.MoteioReceiver = function() {
             $('#moteio-notice').hide();
           }, 2000);
 
-          console.log('send remote')
+          console.log('send notify')
           self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
 
           if ((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
@@ -441,14 +434,8 @@ window.MoteioReceiver = function() {
 
       $(window).focus(function() {
         console.log('foucs')
-        self.in_focus = true;
         $('#moteio-notice').fadeIn();
         self.start();
-      });
-
-      $(window).blur(function() {
-        console.log('blur')
-        self.in_focus = false;
       });
 
       $('.moteio-hide').click(function() {

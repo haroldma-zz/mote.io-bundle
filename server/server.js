@@ -16,7 +16,6 @@ var
   mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   jade = require('jade'),
-  passportSocketIo = require("passport.socketio"),
   passportLocalMongoose = require('passport-local-mongoose'),
   MongoStore = require('connect-mongo')(express),
   config = {},
@@ -865,7 +864,6 @@ app.get('/share', function(req, res) {
 if(process.env.NODE_ENV == "production") {
 
   var server = http.createServer(app);
-  var io = require('socket.io').listen(server);
   server.listen(config.port);
 
 } else {
@@ -878,91 +876,5 @@ if(process.env.NODE_ENV == "production") {
   }
 
   var server = https.createServer(options, app);
-  var io = require('socket.io').listen(server);
   server.listen(config.port);
 }
-
-io.configure(function () {
-
-  // io.set('polling duration', 30);
-  io.set('log level', 1);
-
-  io.set("authorization", passportSocketIo.authorize({
-    key:    'connect.sid',       //the cookie where express (or connect) stores its session id.
-    secret: 'N+&%B/.E<b&J95l', //the session secret to parse the cookie
-    store:   sessionStore,     //the session store that express uses
-    fail: function(data, accept) {     // *optional* callbacks on success or fail
-      console.log('failure')
-      console.log(data)
-      accept(null, false);             // second param takes boolean on whether or not to allow handshake
-    },
-    success: function(data, accept) {
-      console.log('new connection authorized')
-      accept(null, true);
-    }
-  }));
-
-});
-
-var pubnub = require("pubnub").init({
-  publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
-  subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba'
-});
-
-pubnub.subscribe({
-  channel  : 'proxy',
-  callback : function(message) {
-    console.log('GOT MESSAGE');
-    console.log('sending to ' + message.proxy.userid);
-
-    io.sockets.in(message.proxy.userid).emit(message.type, message.data);
-
-    pubnub.publish({
-      channel : 'proxy',
-      message : data
-    });
-
-  }
-
-});
-
-io.sockets.on('connection', function (socket) {
-
-  var username = socket.handshake.user.username || null,
-    userid = socket.handshake.user._id || null,
-    address = socket.handshake.address || null;
-
-  clog({subject: 'user', action: 'connection', username: username, userid: userid});
-
-  if(username){
-
-    clog({success: true, subject: 'user', action: 'authorization', username: username});
-
-    clog({subject: 'user', username: username, userid: userid, action: 'connection', address: address.address, port: address.port});
-
-    socket.join(userid);
-
-    console.log('room name is')
-    console.log(userid)
-
-    console.log('subscribing')
-    socket.on('forward', function(data, holla){
-
-      data.proxy = {
-        userid: userid
-      }
-
-      pubnub.publish({
-        channel : 'proxy',
-        message : data
-      });
-
-      if(typeof holla !== "undefined") {
-        holla();
-      }
-
-    });
-
-  }
-
-});

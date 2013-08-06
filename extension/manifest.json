@@ -22,7 +22,6 @@
   },
   "web_accessible_resources": [
     "moteio.js",
-    "lib/socket.io.js",
     "lib/jquery.js",
     "lib/jquery.qrcode.min.js",
     "images/icon.png",
