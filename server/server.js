@@ -64,14 +64,15 @@ var constructDBURL = function(db) {
   return dbUrl;
 }
 
-var encryptChannel = function(user) {
+var encryptChannel = function(user_id) {
 
-  console.log(user)
+  console.log(user_id)
+  console.log(config.secret)
 
   return crypto.createHash('sha1')
-    .update(user.username)
+    .update(user_id.toString())
     .update('bed and banks') // a second salt
-    .update(config.secret)
+    .update(config.secret.toString())
     .digest('hex');
 }
 
@@ -580,7 +581,7 @@ app.get('/get/login', function(req, res) {
 
             res.jsonp({
                 valid: true,
-                channel_name: req.user._id,
+                channel_name: encryptChannel(req.user._id),
                 user: {
                     username: req.user.username,
                     _id: req.user._id
@@ -674,7 +675,7 @@ app.get('/post/login', function(req, res, next) {
 
         res.jsonp({
           valid: true,
-          channel_name: user._id,
+          channel_name: encryptChannel(user._id),
           user: {
               username: user.username,
               _id: user._id
