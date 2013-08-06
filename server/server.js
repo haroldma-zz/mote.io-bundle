@@ -909,6 +909,23 @@ var pubnub = require("pubnub").init({
   subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba'
 });
 
+pubnub.subscribe({
+  channel  : 'proxy',
+  callback : function(message) {
+    console.log('GOT MESSAGE');
+    console.log('sending to ' + message.proxy.userid);
+
+    io.sockets.in(message.proxy.userid).emit(message.type, message.data);
+
+    pubnub.publish({
+      channel : 'proxy',
+      message : data
+    });
+
+  }
+
+});
+
 io.sockets.on('connection', function (socket) {
 
   var username = socket.handshake.user.username || null,
@@ -929,30 +946,14 @@ io.sockets.on('connection', function (socket) {
     console.log(userid)
 
     console.log('subscribing')
-    pubnub.subscribe({
-      channel  : userid,
-      callback : function(message) {
-
-        console.log('GOT MESSAGE')
-        // console.log(message)
-
-        // clog({subject: 'user', username: username, userid: userid, action: message.type});
-        socket.emit(message.type, message.data);
-
-      }
-
-    });
-
-    socket.on('disconnect', function () {
-      // channel get's remade on client focus and other user's get disconnected
-      console.log('unsubscribe')
-      pubnub.unsubscribe({ channel : userid });
-    });
-
     socket.on('forward', function(data, holla){
 
+      data.proxy = {
+        userid: userid
+      }
+
       pubnub.publish({
-        channel : userid,
+        channel : 'proxy',
         message : data
       });
 

@@ -87,6 +87,8 @@ exec(function(){
             {
               press: function () {
                 $('#playerPlay').click();
+                console.log($('#playerPlay'))
+                console.log('play')
               },
               icon: 'play',
               hash: 'play'
