@@ -113,6 +113,7 @@ exec(function(){
         },
         {
           type: 'select',
+          title: 'Change Playlist',
           data: [
             {
               optgroup: 'Latest',
