@@ -206,17 +206,6 @@ window.MoteioReceiver = function() {
 
     });
 
-    self.channel.on('update-config', function(data) {
-
-    	if(!self.in_focus) {
-				console.log('logging out because hidden')
-				self.stop();
-    	} else {
-    		console.log('staying logged in because not hidden')
-    	}
-
-    });
-
     self.channel.on('get-config', function(data, holla){
 
 	    self.sendRemote();
@@ -379,6 +368,7 @@ window.MoteioReceiver = function() {
 
   self.start = function () {
 
+  	self.stop();
     self.clog('!!! STARTING UP');
 
     $.ajax({

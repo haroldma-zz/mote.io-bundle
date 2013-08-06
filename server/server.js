@@ -928,6 +928,7 @@ io.sockets.on('connection', function (socket) {
     console.log('room name is')
     console.log(userid)
 
+    console.log('subscribing')
     pubnub.subscribe({
       channel  : userid,
       callback : function(message) {
@@ -935,11 +936,17 @@ io.sockets.on('connection', function (socket) {
         console.log('GOT MESSAGE')
         // console.log(message)
 
-        clog({subject: 'user', username: username, userid: userid, action: message.type});
-        io.sockets.in(userid).emit(message.type, message.data);
+        // clog({subject: 'user', username: username, userid: userid, action: message.type});
+        socket.emit(message.type, message.data);
 
       }
 
+    });
+
+    socket.on('disconnect', function () {
+      // channel get's remade on client focus and other user's get disconnected
+      console.log('unsubscribe')
+      pubnub.unsubscribe({ channel : userid });
     });
 
     socket.on('forward', function(data, holla){
