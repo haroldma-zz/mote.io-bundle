@@ -32,6 +32,11 @@ exec(function(){
       api_version: '0.1',
       app_name: 'Hype Machine',
       display_input: true,
+      init: function() {
+        if(!$('#playerPlay').hasClass('pause')) {
+          $('#playerPlay').click();
+        }
+      },
       update: function(force) {
 
         if($('.haarp-active.section-track').length > 0) {
@@ -68,10 +73,8 @@ exec(function(){
         {
           type: 'search',
           action: function(query) {
-            $('#q').val(query).submit();
-            setTimeout(function(){
-              location.reload();
-            }, 2000);
+            console.log(query)
+            window.location = "/search/" + encodeURIComponent(query) + "/1/";
           }
         },
         {

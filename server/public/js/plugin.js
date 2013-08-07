@@ -52,8 +52,8 @@ window.MoteioReceiver = function() {
     }
 
     if (message) {
-      $('#moteio-status-text').hide(function() {
-        $('#moteio-status-text').html(message).show();
+      $('#moteio-status-text-message').hide(function() {
+        $('#moteio-status-text-message').html(message).show();
       });
     } else {
       $('moteio-status-text').hide();
@@ -272,12 +272,17 @@ window.MoteioReceiver = function() {
       },
       reconnect: function() {
         self.clog("Reconnected.");
+        self.sendRemote();
       },
       connect: function() {
 
       	self.clog('Connected');
 
         self.statusTextDisplay('Log in to the Mote.io mobile phone app!', 'https://mote.io/start');
+
+        if (typeof self.params.init !== "undefined") {
+	        self.params.init();
+        }
 
         if (typeof self.params.update !== "undefined") {
           setInterval(function() {
@@ -428,7 +433,7 @@ window.MoteioReceiver = function() {
       	<div id="moteio-status">\
       		<img id="moteio-round-logo" height="30" width="30" src="' + window.moteio_remote_location + '/images/144.png">\
       		<a id="moteio-status-text">\
-      			<img id="moteio-loadio" src="' + window.moteio_remote_location + '/images/loading-searching.gif">\
+      			<span id="moteio-status-text-message"><img id="moteio-loadio" src="' + window.moteio_remote_location + '/images/loading-searching.gif"></span>\
       		</a>\
       		<div class="moteio-hide"><span class="icon-remove"></span></div> \
       	</div>\
