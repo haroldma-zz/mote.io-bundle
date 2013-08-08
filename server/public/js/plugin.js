@@ -14,7 +14,7 @@ window.MoteioReceiver = function() {
   var self = this;
 
   self.params = {};
-  self.debug = true;
+  self.debug = false;
 
   self.channel_name = null;
   self.pubnub = null;

@@ -73,7 +73,6 @@ exec(function(){
         {
           type: 'search',
           action: function(query) {
-            console.log(query)
             window.location = "/search/" + encodeURIComponent(query) + "/1/";
           }
         },
@@ -90,8 +89,6 @@ exec(function(){
             {
               press: function () {
                 $('#playerPlay').click();
-                console.log($('#playerPlay'))
-                console.log('play')
               },
               icon: 'play',
               hash: 'play'
