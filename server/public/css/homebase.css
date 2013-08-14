@@ -1000,14 +1000,46 @@ ul.icons {
 .icon-folder-open-alt:before {
   content: "\f115"; }
 
-body, html {
-  width: 100%;
+* {
   margin: 0px;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  padding: 0px; }
 
-.content {
-  width: 992px;
-  margin: 0px auto; }
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after {
+  content: "";
+  content: none; }
+
+q:before, q:after {
+  content: "";
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+body, html {
+  margin: 0px;
+  width: 100%;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 #loading {
   position: absolute;
@@ -1036,58 +1068,61 @@ body, html {
     border-radius: 25px;
     background-color: white; }
 
-#homebase ul#apps {
-  list-style-type: none;
-  width: 992px;
-  margin-left: -20px;
-  margin-top: -20px; }
-  #homebase ul#apps li {
-    width: 470px;
-    height: 200px;
-    border-radius: 10px;
-    margin-left: 20px;
-    margin-top: 20px;
-    float: left;
-    display: block;
-    border: 3px solid white;
-    opacity: 0.8;
-    position: relative; }
-    #homebase ul#apps li.soon {
-      opacity: 0.1; }
-      #homebase ul#apps li.soon span {
-        width: 470px;
-        height: 200px;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        line-height: 200px;
-        text-align: center;
-        text-transform: uppercase;
-        font-size: 120px;
-        display: none; }
-    #homebase ul#apps li.selected {
-      border: 3px solid #357b95;
-      box-shadow: 0px 0px 50px #357b95;
-      opacity: 0.9; }
-    #homebase ul#apps li.active {
-      opacity: 1; }
-    #homebase ul#apps li a {
-      display: block;
+#homebase {
+  width: 972px;
+  margin: 0px auto;
+  margin-top: 20px; }
+  #homebase ul#apps {
+    -moz-padding-start: 0px;
+    -webkit-padding-start: 0px;
+    list-style-type: none;
+    margin-left: -20px;
+    margin-top: -20px; }
+    #homebase ul#apps li {
       width: 470px;
-      height: 206px; }
-    #homebase ul#apps li#hypem {
-      background-image: url(/images/sites/hypem.png); }
-    #homebase ul#apps li#grooveshark {
-      background-image: url(/images/sites/grooveshark.png); }
-    #homebase ul#apps li#pandora {
-      background-image: url(/images/sites/pandora.png); }
-    #homebase ul#apps li#rdio {
-      background-image: url(/images/sites/rdio.png); }
-    #homebase ul#apps li#vimeo {
-      background-image: url(/images/sites/vimeo.png); }
-    #homebase ul#apps li#shelby {
-      background-image: url(/images/sites/shelby.png); }
-    #homebase ul#apps li#tetris {
-      background-image: url(/images/sites/tetris.png); }
-    #homebase ul#apps li#docs {
-      background-image: url(/images/sites/docs.png); }
+      height: 200px;
+      border-radius: 10px;
+      margin-left: 20px;
+      margin-top: 20px;
+      float: left;
+      display: block;
+      border: 3px solid white;
+      opacity: 0.8;
+      position: relative; }
+      #homebase ul#apps li.soon {
+        opacity: 0.1; }
+        #homebase ul#apps li.soon span {
+          width: 470px;
+          height: 200px;
+          position: absolute;
+          left: 0px;
+          top: 0px;
+          line-height: 200px;
+          text-align: center;
+          text-transform: uppercase;
+          font-size: 120px;
+          display: none; }
+      #homebase ul#apps li.selected {
+        border: 3px solid #357b95;
+        box-shadow: 0px 0px 50px #357b95;
+        opacity: 0.9; }
+      #homebase ul#apps li.active {
+        opacity: 1; }
+      #homebase ul#apps li a {
+        display: block;
+        width: 470px;
+        height: 206px; }
+      #homebase ul#apps li#hypem {
+        background-image: url(/images/sites/hypem.png); }
+      #homebase ul#apps li#grooveshark {
+        background-image: url(/images/sites/grooveshark.png); }
+      #homebase ul#apps li#pandora {
+        background-image: url(/images/sites/pandora.png); }
+      #homebase ul#apps li#rdio {
+        background-image: url(/images/sites/rdio.png); }
+      #homebase ul#apps li#vimeo {
+        background-image: url(/images/sites/vimeo.png); }
+      #homebase ul#apps li#shelby {
+        background-image: url(/images/sites/shelby.png); }
+      #homebase ul#apps li#tetris {
+        background-image: url("/images/sites/tetris.png"); }

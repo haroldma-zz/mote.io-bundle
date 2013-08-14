@@ -67,7 +67,6 @@ var constructDBURL = function(db) {
 var encryptChannel = function(user_id) {
 
   console.log(user_id)
-  console.log(config.secret)
 
   return crypto.createHash('sha1')
     .update(user_id.toString())
@@ -201,47 +200,44 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 app.get('/', function (req, res) {
-    res.render('index', { user : req.user, page: 'home' });
+    return res.render('index', { user : req.user, page: 'home' });
 });
 
 app.get('/homebase', function(req, res) {
-    res.render('homebase', { user : req.user, page: 'home' });
+    return res.render('homebase', { user : req.user, page: 'home' });
 });
 
 app.get('/start', function(req, res) {
-    res.render('start', {user: req.user, page: 'start'});
+    return res.render('start', {user: req.user, page: 'start'});
 });
 
 app.get('/community', function(req, res) {
-    res.render('community', {user: req.user, page: 'community'});
+    return res.render('community', {user: req.user, page: 'community'});
 });
 
 app.get('/developers', function(req, res){
-    res.render('developers', {user: req.user, page: 'developers'});
+    return res.render('developers', {user: req.user, page: 'developers'});
 });
 
 app.get('/admin', function(req, res) {
   if(req.user && req.user.username == "ian@meetjennings.com") {
     Account.find({}, function (err, all_users) {
-      res.render('admin', {user: req.user, page: 'admin', user_list: all_users});
+      return res.render('admin', {user: req.user, page: 'admin', user_list: all_users});
     });
   } else {
-    res.redirect('/');
+    return res.redirect('/');
   }
 });
 
 app.get('/admin/email', function(req, res) {
   if(req.user && req.user.username == "ian@meetjennings.com") {
-    res.render('admin-email.jade', {user: req.user, page: 'admin', user_list: false, test_email: '', blast_title: '', blast_text: ''});
+    return res.render('admin-email.jade', {user: req.user, page: 'admin', user_list: false, test_email: '', blast_title: '', blast_text: ''});
   } else {
-    res.redirect('/');
+    return res.redirect('/');
   }
 });
 
 app.post('/webhook', function(req, res) {
-
-  console.log(req.body.type);
-  console.log(req.body.project)
 
   for(var key in req.body.project.envVars) {
 
@@ -263,7 +259,7 @@ app.post('/webhook', function(req, res) {
     }
   }
 
-  res.json(req.body);
+  return res.json(req.body);
 
 });
 
@@ -273,7 +269,7 @@ app.get('/admin/servers', function(req, res) {
 
     Server.find({}, function (err, all_servers) {
 
-      res.render('admin-servers.jade', {
+      return res.render('admin-servers.jade', {
         err: null,
         user: req.user,
         page: 'admin',
@@ -312,7 +308,7 @@ app.post('/admin/email', function(req, res) {
 
         }
 
-        res.render('admin-email.jade', {
+        return res.render('admin-email.jade', {
           err: null,
           user: req.user,
           page: 'admin',
@@ -346,7 +342,7 @@ app.post('/admin/email', function(req, res) {
 
       }
 
-      res.render('admin-email.jade', {
+      return res.render('admin-email.jade', {
         err: null,
         user: req.user,
         page: 'admin',
@@ -359,7 +355,7 @@ app.post('/admin/email', function(req, res) {
     }
 
   } else {
-    res.redirect('/');
+    return res.redirect('/');
   }
 });
 
@@ -373,7 +369,7 @@ app.get('/admin/beta', function(req, res) {
                 err.type = 'error';
                 err.source = 'admin-login';
                 clog(err)
-                res.redirect('/')
+                return res.redirect('/')
             } else {
                 user.beta = true;
                 user.save(function(){
@@ -405,17 +401,17 @@ app.get('/admin/beta', function(req, res) {
                       }
                     });
 
-                    res.redirect('/admin');
+                    return res.redirect('/admin');
                 })
             }
         });
     } else {
-        redirect('/');
+        return res.redirect('/');
     }
 });
 
 app.get('/register', function(req, res) {
-    res.render('register', {user: req.user, page: 'start' });
+    return res.render('register', {user: req.user, page: 'start' });
 });
 
 app.post('/register', function(req, res) {
@@ -429,7 +425,7 @@ app.post('/register', function(req, res) {
     Account.register(new Account({ username : req.body.username, beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
 
         if (err) {
-            res.render('register', { user : null, err: err, page: 'start' });
+            return res.render('register', { user : null, err: err, page: 'start' });
         } else {
 
             clog({
@@ -467,7 +463,7 @@ app.post('/register', function(req, res) {
               }
             });
 
-            res.redirect('/login');
+            return res.redirect('/login');
 
         }
 
@@ -476,9 +472,9 @@ app.post('/register', function(req, res) {
 
 app.get('/login', function(req, res) {
     if(req.user) {
-        res.redirect('/start');
+        return res.redirect('/start');
     } else {
-        res.render('login', { page: 'start'});
+        return res.render('login', { page: 'start'});
     }
 });
 
@@ -495,7 +491,7 @@ app.post('/login', function(req, res, next) {
         reason: err
       });
 
-      res.render('login', { page: 'start', err: err});
+      return res.render('login', { page: 'start', err: err});
 
     }
 
@@ -510,13 +506,14 @@ app.post('/login', function(req, res, next) {
         reason: info.message
       });
 
-      res.render('login', { page: 'start', err: info.message});
+      return res.render('login', { page: 'start', err: info.message});
 
     }
 
     req.logIn(user, function(err) {
 
       if (err) {
+
         console.log(err);
 
         clog({
@@ -527,13 +524,13 @@ app.post('/login', function(req, res, next) {
           reason: err
         });
 
-        res.render('login', { page: 'start', err: err});
+        return res.render('login', { page: 'start', err: err});
 
       }
 
       if(user.beta) {
 
-        res.redirect('/start');
+        return res.redirect('/start');
 
         clog({
           username: user.username,
@@ -544,7 +541,7 @@ app.post('/login', function(req, res, next) {
 
       } else{
 
-        res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
+        return res.render('login', { page: 'start', err: 'Account has not been approved for beta yet!' });
 
       }
 
@@ -579,7 +576,7 @@ app.get('/get/login', function(req, res) {
               username: req.user.username
             });
 
-            res.jsonp({
+            return res.jsonp({
                 valid: true,
                 channel_name: encryptChannel(req.user._id),
                 user: {
@@ -673,7 +670,7 @@ app.get('/post/login', function(req, res, next) {
 
       if(user.beta) {
 
-        res.jsonp({
+        return res.jsonp({
           valid: true,
           channel_name: encryptChannel(user._id),
           user: {
@@ -691,7 +688,7 @@ app.get('/post/login', function(req, res, next) {
 
       } else{
 
-        res.jsonp({
+        return res.jsonp({
             valid: false,
             reason: 'Account has not been approved for beta yet!'
         });
@@ -711,11 +708,11 @@ app.get('/post/logout', function(req, res) {
       // console.log(io.sockets.manager.namespaces);
 
       req.logout();
-      res.jsonp({
+      return res.jsonp({
           valid: true,
       })
     } else {
-      res.jsonp({
+      return res.jsonp({
           valid: false,
           reason: 'Not even logged in!'
       });
@@ -725,11 +722,11 @@ app.get('/post/logout', function(req, res) {
 
 app.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/');
+    return res.redirect('/');
 });
 
 app.get('/reset', function(req, res) {
-  res.render('reset', { page: 'start'});
+  return res.render('reset', { page: 'start'});
 });
 
 app.post('/reset', function(req, res) {
@@ -739,7 +736,7 @@ app.post('/reset', function(req, res) {
     Account.findOne({username: req.body.email}, function (err, the_user) {
 
       if (err) {
-        res.render('reset', { page: 'start', err: err });
+        return res.render('reset', { page: 'start', err: err });
       } else {
 
         if(the_user) {
@@ -764,16 +761,16 @@ app.post('/reset', function(req, res) {
                 '--------------------'
             }, function(success, message) {
               if (!success) {
-                res.render('reset', { page: 'start', err: 'Failed sending email.' });
+                return res.render('reset', { page: 'start', err: 'Failed sending email.' });
               } else {
-                res.render('reset', { page: 'start', alert: 'Reset email sent!' });
+                return res.render('reset', { page: 'start', alert: 'Reset email sent!' });
               }
             });
 
           });
 
         } else {
-          res.render('reset', { page: 'start', err: 'User does not exist.' });
+          return res.render('reset', { page: 'start', err: 'User does not exist.' });
         }
 
       }
@@ -789,17 +786,17 @@ app.get('/reset/confirm', function(req, res) {
   Account.findOne({username: req.query.username, reset: req.query.key}, function (err, the_user) {
 
     if(err) {
-      res.render('reset', { page: 'start', err: 'Error looking for user.' });
+      return res.render('reset', { page: 'start', err: 'Error looking for user.' });
     } else {
 
       if(the_user) {
         if(new Date().getTime() > the_user.reset_expires) {
-          res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
+          return res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
         } else {
-          res.render('confirm_password', {page: 'start', email: the_user.username, key: req.query.key, username: req.query.username});
+          return res.render('confirm_password', {page: 'start', email: the_user.username, key: req.query.key, username: req.query.username});
         }
       } else {
-        res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+        return res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
       }
 
     }
@@ -813,29 +810,29 @@ app.post('/reset/confirm', function(req, res) {
   Account.findOne({username: req.body.username, reset: req.body.key}, function (err, the_user) {
 
     if(err) {
-      res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+      return res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
     } else {
 
       if(the_user) {
 
         if(new Date().getTime() > the_user.reset_expires) {
-          res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
+          return res.render('reset', { page: 'start', err: 'Token has expired. Please try again.' });
         } else {
           the_user.setPassword(req.body.password, function(err) {
             the_user.reset = null;
             the_user.reset_expires = null;
             the_user.save(function (err) {
               if(err) {
-                res.render('reset', { page: 'start', err: 'Problem resetting password' });
+                return res.render('reset', { page: 'start', err: 'Problem resetting password' });
               } else {
-                res.render('login', { page: 'start', alert: 'Password reset!' });
+                return res.render('login', { page: 'start', alert: 'Password reset!' });
               }
             });
           });
         }
 
       } else {
-        res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
+        return res.render('reset', { page: 'start', err: 'Can not find user with that email or invalid key.' });
       }
 
     }
@@ -858,7 +855,7 @@ app.get('/share', function(req, res) {
 
   clog(query);
 
-  res.render('share', { page: 'share', query: query});
+  return res.render('share', { page: 'share', query: query});
 
 });
 
