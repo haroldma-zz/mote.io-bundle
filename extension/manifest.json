@@ -48,7 +48,8 @@
         "*://*.vimeo.com/couchmode*",
         "*://mote.io/start",
         "http://reedditapp.com/",
-        "http://www.pandora.com/*"
+        "http://www.pandora.com/*",
+        "http://grooveshark.com/*"
       ],
       "js": [
         "inject.js"

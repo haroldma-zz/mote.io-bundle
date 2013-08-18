@@ -14,8 +14,8 @@ var extension_url = remote_location + "/js/plugin.js";
 
 exec(function(){
 
-  //console.log(window.location.host)
-  //console.log(window.location.pathname)
+  console.log(window.location.host)
+  console.log(window.location.pathname)
 
   if(window.location.host == "hypem.com") {
 
@@ -217,53 +217,15 @@ exec(function(){
 
   } else if(window.location.host == "grooveshark.com") {
 
-    alert('boom')
-
-    function extractUrl(input) {
-      // remove quotes and wrapping url()
-      if (typeof input !== "undefined") {
-       return input.replace(/"/g,"").replace(/url\(|\)$/ig, "");
-      } else {
-       return;
-      }
-    }
-
     window.moteioConfig = {
       api_version: '0.1',
-      app_name: 'Hype Machine',
+      app_name: 'Grooveshark',
       display_input: true,
       init: function() {
-        if(!$('#playerPlay').hasClass('pause')) {
-          $('#playerPlay').click();
-        }
+        console.log('init');
       },
       update: function(force) {
-
-        if($('.haarp-active.section-track').length > 0) {
-          active = $('.haarp-active.section-track');
-        } else {
-          active = $($('.section-track')[0]);
-        }
-
-        var thisArtist = $($('#player-nowplaying a')[3]).text(),
-          thisSong = $($('#player-nowplaying a')[4]).text(),
-          thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
-
-        window.moteioRec.notify(thisArtist, thisSong, thisImage);
-
-        // transfer button states
-        if($('#playerPlay').hasClass('play')) {
-         window.moteioRec.updateButton('play', 'play', null, force);
-        }
-        if($('#playerPlay').hasClass('pause')) {
-         window.moteioRec.updateButton('play', 'pause', null, force);
-        }
-        if($('#playerFav').hasClass('fav-on')) {
-         window.moteioRec.updateButton('heart', null, '#ff0000', force);
-        } else {
-         window.moteioRec.updateButton('heart', null, '#434345', force);
-        }
-
+        console.log('update');
       },
       blocks: [
         {
@@ -311,105 +273,6 @@ exec(function(){
               icon: 'forward',
               hash: 'next'
             }
-          ]
-        },
-        {
-          type: 'select',
-          title: 'Change Playlist',
-          data: [
-            {
-              optgroup: 'Latest',
-              text: 'Latest',
-              action: function() {
-                window.location = "/latest";
-              }
-            },
-            {
-              optgroup: 'Latest',
-              text: 'Freshest',
-              action: function() {
-                window.location = "/latest/fresh";
-              }
-            },
-            {
-              optgroup: 'Latest',
-              text: 'Remixes Only',
-              action: function() {
-                window.location = "/latest/remix";
-              }
-            },
-            {
-              optgroup: 'Latest',
-              text: 'No Remixes',
-              action: function() {
-                window.location = "/latest/noremix";
-              }
-            },
-            {
-              optgroup: 'Latest',
-              text: 'Blogs in USA',
-              action: function() {
-                window.location = "/latest/us";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'Now',
-              action: function() {
-                window.location = "/popular";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'Last Week',
-              action: function() {
-                window.location = "/popular/lastweek";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'Remixes Only',
-              action: function() {
-                window.location = "/popular/remix";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'No Remixes',
-              action: function() {
-                window.location = "/popular/noremix";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'Artists',
-              action: function() {
-                window.location = "/popular/artists";
-              }
-            },
-            {
-              optgroup: 'Popular',
-              text: 'On Twitter',
-              action: function() {
-                window.location = "/popular/twitter";
-              }
-            }
-            /*,
-            {
-              optgroup: 'Me',
-              text: 'Feed',
-              action: function() {
-                $('#user-menu-feed-link').click();
-              }
-            },
-            {
-              optgroup: 'Me',
-              text: 'Favorites',
-              action: function() {
-                $('#menu-item-mytracks > a').click();
-              }
-            }
-            */
           ]
         }
       ]
