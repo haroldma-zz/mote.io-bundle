@@ -222,10 +222,47 @@ exec(function(){
       app_name: 'Grooveshark',
       display_input: true,
       init: function() {
-        console.log('init');
+
+        function fireWhenReady() {
+
+          console.log('checking')
+          console.log($('.play-button'))
+
+          if ($('.play-button').length) {
+
+            // wait until element exists then wait an additional second for the click handler to be bound
+            // this should actually test if the event exists, this is a lazy way out
+            setTimeout(function(){
+              $('.play-button').click();
+            }, 1000);
+
+          } else {
+
+            console.log('not there')
+            setTimeout(fireWhenReady, 100);
+
+          }
+
+        }
+        fireWhenReady();
+
       },
       update: function(force) {
-        console.log('update');
+
+        var thisArtist = $('.now-playing-link.artist').text(),
+          thisSong = $('.now-playing-link.song').text(),
+          thisImage = $('#now-playing-image').attr('src');
+
+        window.moteioRec.notify(thisArtist, thisSong, thisImage);
+
+        // transfer button states
+        if($('#play-pause').hasClass('playing')) {
+         window.moteioRec.updateButton('play', 'pause', null, force);
+        }
+        if($('#play-pause').hasClass('paused')) {
+         window.moteioRec.updateButton('play', 'play', null, force);
+        }
+
       },
       blocks: [
         {
@@ -235,7 +272,10 @@ exec(function(){
         {
           type: 'search',
           action: function(query) {
-            window.location = "/#!/search?q=" + encodeURIComponent(query);
+            if($('#play-pause').hasClass('playing')) {
+              $('#play-pause').click();
+            }
+            window.location = "http://grooveshark.com/search?q=" + encodeURIComponent(query);
           }
         },
         {
