@@ -235,7 +235,7 @@ exec(function(){
         {
           type: 'search',
           action: function(query) {
-            window.location = "/search/" + encodeURIComponent(query) + "/1/";
+            window.location = "/#!/search?q=" + encodeURIComponent(query);
           }
         },
         {
@@ -243,32 +243,21 @@ exec(function(){
           data: [
             {
               press: function () {
-                $('#playerPrev').click();
+                $('#play-prev').click();
               },
               icon: 'backward',
               hash: 'back'
             },
             {
               press: function () {
-                $('#playerPlay').click();
+                $('#play-pause').click();
               },
               icon: 'play',
               hash: 'play'
             },
             {
               press: function () {
-                if($('#overlay').is(':visible')) {
-                  $('#close').click();
-                } else {
-                  $('#playerFav').click();
-                }
-              },
-              icon: 'heart',
-              hash: 'heart'
-            },
-            {
-              press: function () {
-                $('#playerNext').click();
+                $('#play-next').click();
               },
               icon: 'forward',
               hash: 'next'

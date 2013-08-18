@@ -1,5 +1,5 @@
-//window.moteio_remote_location = 'https://localhost:3000';
-window.moteio_remote_location  = 'https://mote.io:443';
+window.moteio_remote_location = 'https://localhost:3000';
+//window.moteio_remote_location  = 'https://mote.io:443';
 window.MoteioReceiver = function() {
 
   var self = this;
@@ -162,7 +162,8 @@ window.MoteioReceiver = function() {
 
   self.sendRemote = function() {
 
-  	self.clog('Sending Remote')
+  	self.clog('Sending Remote');
+  	console.log(self.params);
 
     self.pubnub.publish({
       channel: self.channel_name,
@@ -267,17 +268,20 @@ window.MoteioReceiver = function() {
 
         self.statusTextDisplay('Log in to the Mote.io mobile phone app!', 'https://mote.io/start');
 
+        self.clog('Sending Remote')
+        self.sendRemote();
+
         if (typeof self.params.init !== "undefined") {
+        	self.clog('Calling init()')
 	        self.params.init();
         }
 
         if (typeof self.params.update !== "undefined") {
+        	self.clog('setInterval for update()')
           setInterval(function() {
             self.params.update();
           }, 1000);
         }
-
-        self.sendRemote();
 
       }
 
@@ -407,64 +411,61 @@ window.MoteioReceiver = function() {
 
   }
 
-  self.jQueryReady = function(params) {
+  self.jQueryReady = function() {
 
-  	window.jQ(document).ready(function() {
+	  window.jQ('.moteio-state-not-installed').hide();
+	  window.jQ('.moteio-state-installed').show();
 
-  	  window.jQ('.moteio-state-not-installed').hide();
-  	  window.jQ('.moteio-state-installed').show();
+	  window.jQ('body').append(window.jQ('<div id="moteio-notice" class="moteio-container">\
+	  	<div id="moteio-messages">\
+	  	</div>\
+	  	<div id="moteio-status">\
+	  		<img id="moteio-round-logo" height="30" width="30" src="' + window.moteio_remote_location + '/images/144.png">\
+	  		<a id="moteio-status-text">\
+	  			<span id="moteio-status-text-message"><img id="moteio-loadio" src="' + window.moteio_remote_location + '/images/loading-searching.gif"></span>\
+	  		</a>\
+	  		<div class="moteio-hide"><span class="icon-remove"></span></div> \
+	  	</div>\
+	  </div>'));
 
-  	  window.jQ('body').append(window.jQ('<div id="moteio-notice" class="moteio-container">\
-  	  	<div id="moteio-messages">\
-  	  	</div>\
-  	  	<div id="moteio-status">\
-  	  		<img id="moteio-round-logo" height="30" width="30" src="' + window.moteio_remote_location + '/images/144.png">\
-  	  		<a id="moteio-status-text">\
-  	  			<span id="moteio-status-text-message"><img id="moteio-loadio" src="' + window.moteio_remote_location + '/images/loading-searching.gif"></span>\
-  	  		</a>\
-  	  		<div class="moteio-hide"><span class="icon-remove"></span></div> \
-  	  	</div>\
-  	  </div>'));
+	  window.jQ(window).focus(function() {
+	    window.jQ('#moteio-notice').fadeIn();
+	    self.start();
+	  });
 
-  	  window.jQ(window).focus(function() {
-  	    window.jQ('#moteio-notice').fadeIn();
-  	    self.start();
-  	  });
+	  window.jQ('.moteio-hide').click(function() {
+	    window.jQ('#moteio-notice').addClass('small');
+	    self.set('moteio-hide', true);
+	  });
 
-  	  window.jQ('.moteio-hide').click(function() {
-  	    window.jQ('#moteio-notice').addClass('small');
-  	    self.set('moteio-hide', true);
-  	  });
+	  window.jQ('#moteio-round-logo').click(function() {
+	    window.jQ('#moteio-notice').removeClass('small');
+	    self.set('moteio-hide', false);
+	  });
 
-  	  window.jQ('#moteio-round-logo').click(function() {
-  	    window.jQ('#moteio-notice').removeClass('small');
-  	    self.set('moteio-hide', false);
-  	  });
+	  if (self.get('moteio-hide')) {
+	    window.jQ('#moteio-notice').addClass('small');
+	  }
 
-  	  if (self.get('moteio-hide')) {
-  	    window.jQ('#moteio-notice').addClass('small');
-  	  }
+	  self.pubnub = PUBNUB.init({
+	    publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
+	    subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
+	    origin: 'pubsub.pubnub.com',
+	    ssl: true
+	  });
 
-  	  self.params = params;
-
-  	  self.pubnub = PUBNUB.init({
-  	    publish_key: 'pub-2cc75d12-3c70-4599-babc-3e1d27fd1ad4',
-  	    subscribe_key: 'sub-cfb3b894-0a2a-11e0-a510-1d92d9e0ffba',
-  	    origin: 'pubsub.pubnub.com',
-  	    ssl: true
-  	  });
-
-  	  self.pubnub.ready();
-  	  self.start();
-
-  	});
+	  self.pubnub.ready();
+	  self.start();
 
   }
 
   self.init = function(params) {
 
+	  self.params = params;
+
 		var callback = function(params) {
-			window.moteioRec.jQueryReady(params);
+			console.log('firing callback')
+			window.moteioRec.jQueryReady();
 		}
 
 	  var script = document.createElement("script");
@@ -506,6 +507,8 @@ x.parentNode.insertBefore(s, x);
 function fireWhenReady() {
 
   if (typeof PUBNUB !== 'undefined') {
+
+  	console.log('PUBNUB is ready')
 
     window.moteioRec = new window.MoteioReceiver();
     window.moteioRec.init(window.moteioConfig);
