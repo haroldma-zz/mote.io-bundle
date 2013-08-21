@@ -69,17 +69,33 @@ html.not-ie(lang='en').moteio-container
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.brand(href='/')
-              b Mote
-              | .io
-            .nav-collapse
-              ul.nav
-                li(class=(page=='home') && "active")
-                  a(href='/') Home
-                li(class=(page=='community') && "active")
-                  a(href='/community') Community
-                li(class=(page=='start') && "active")
-                  a.homebase-link(href='/start') Launch Homebase
+            .row
+              .span4
+                a.brand(href='/')
+                  img(src='images/clean/144.png', style='height: 50px;', alt='')
+                  b Mote
+                  | .io
+              .span5
+                .nav-collapse
+                  ul.nav.ac
+                    li(class=(page=='home') && "active")
+                      a(href='/') Home
+                    li(class=(page=='faq') && "active")
+                      a(href='/faq') FAQ
+                    li(class=(page=='community') && "active")
+                      a(href='/community') Community
+                    li
+                      a(href='http://sw1tch.com') Blog
+              .span3.ar.action-items.hide-on-mobile
+                if (typeof user !== "undefined" && user)
+                  a.btn.btn-primary
+                    .icon-th-large
+                    | &nbsp; Launch Homebase
+                  a(href='/logout', alt='Log out').log-out.icon-signout
+                else
+                  a(href='/login') Log In
+                  | &nbsp; or &nbsp;
+                  a(href='/register').btn Sign Up
       block content
       footer
         .container

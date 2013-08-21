@@ -391,7 +391,7 @@ window.MoteioReceiver = function() {
 
     self.clog('!!! STARTING UP');
 
-    $.ajax({
+    window.jQ.ajax({
       type: 'get',
       url: window.moteio_remote_location + '/get/login/',
       dataType: 'jsonp',
@@ -406,6 +406,10 @@ window.MoteioReceiver = function() {
           self.statusTextDisplay('Log in to control this site with Mote.io!', window.moteio_remote_location + '/login');
 
         }
+      },
+      error: function(xhr, status) {
+      	alert('error logging in')
+      	console.log(status)
       }
     });
 

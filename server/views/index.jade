@@ -3,54 +3,41 @@ extends layout
 block content
   .homepage
     .container
-      .hero-unit
-        p.ac
-          | Don't Get Up.
-        #macbook_carousel
-          #phone
-            .site.homebase
-              img(src='images/phone/homebase.png')
-            .site.hypem
-              img(src='images/phone/hypem.png')
-            .site.rdio
-              img(src='images/phone/rdio.png')
-          #carousel.carousel.slide(rel='carousel')
-            .carousel-inner
-              .active.item.homebase
-                img(src='images/carousel/homebase.png', alt='')
-              .item.hypem
-                img(src='images/carousel/hypem.png', alt='')
-              .item.rdio
-                img(src='images/carousel/rdio.png', alt='')
-            a.carousel-control.left(href='#carousel', data-slide='prev') ‹
-            a.carousel-control.right(href='#carousel', data-slide='next') ›
       .row
-        .span8
+        .span6.leading
           h1.lead
             b Mote.io&nbsp;
             | lets you control websites like Grooveshark, Soundcloud, Pandora, Hype Machine, Vimeo, and more from your phone.
-        .span4
-          p.ac
-            if (user)
-              a.btn.btn-large.btn-primary(href='/start', title='')
-                b Get Started
-            else
-              a.btn.btn-large.btn-primary(href='/register', title='')
-                b Get Started
-          p.ac
-            | iOS Coming Soon!
-      hr
+          p
+            a.btn.btn-large(href='/start', title='', style='margin-right: 5px;', class=(!user) && 'btn-primary')
+              b Get Mote.io for iPhone
+            a.btn.btn-large(href='/start', title='', style='margin-left: 5px;', class=(!user) && 'btn-primary')
+              b Get Mote.io for Android
+        .span6
+          .hero-unit.hide-on-mobile
+            iframe(width='480', height='360', src='//www.youtube.com/embed/WzairZZQBdM', frameborder='0', allowfullscreen='allowfullscreen')
+            .background
+  .trifooter
+    .container
       .row
         .span4
-          h2 Sit Back & Relax
-          p
-            | Keep your butt on the couch. Seriously. Don't get up. Surf the web from a distance using your phone.
-        .span4
-          h2 Your Favorite Sites
+          img(src='images/clean/screen-1.png', alt='')
+          h3 Your favorite sites
           p
             | And more to come. 6 sites supported out of the box. Our free developer API means new remotes in the future!
         .span4
-          h2
-            | At Your Computer
+          img(src='images/clean/screen-7.png', alt='')
+          h3
+            | Your computer is a stereo
           p
             | Place your phone next to your keyboard and increase your APM with media hotkeys for your favorite websites.
+        .span4
+          img(src='images/clean/screen-15.png', alt='')
+          h3 Sit back & relax
+          p
+            | Keep your butt on the couch. Seriously. Don't get up. Surf the web from a distance using your phone.
+
+  .supported-sites
+    .container
+      .row
+        img(src='images/clean/sites.png', alt='')

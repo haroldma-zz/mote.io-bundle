@@ -23,7 +23,6 @@ body {
 	padding:0;
 	font-size:13px;
 	line-height:1.4em;
-	border-top:5px solid #E0E8EA;
 }
 h1 {
 	font-size: 30px;
@@ -50,11 +49,29 @@ h4 {
 .btn.btn-primary {
 	background-image:none;
 	box-shadow:none;
+		background-color: #0798C1;
+
 }
 .btn.btn-large {
 	font-size:16px;
 }
-
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
+	background-color: #0798C1;
+}
+a.log-out {
+	color: #ccc;
+	font-size: 20px;
+	top: 6px;
+	margin-left: 10px;
+	position: relative;
+}
+.action-items {
+	line-height: 70px;
+}
+.action-items .btn {
+	position: relative;
+	top: -3px;
+}
 /* --------------------------------------------------------	*/
 /*	Classes	*/
 /* --------------------------------------------------------	*/
@@ -207,6 +224,7 @@ footer input[type=submit].btn {
 
 .navbar {
 	margin:0;
+	border-bottom: 1px solid #efefef;
 }
 .navbar .container {
 	width: 940px;
@@ -220,13 +238,18 @@ footer input[type=submit].btn {
 	filter:none;
 	border:none;
 	padding:0;
-	box-shadow:inset 0 0 3px rgba(0,0,0,.2);
 }
 .navbar .brand {
 	font-weight:400;
 	font-size:28px;
+	padding: 0px;
 	color:#222;
-	padding-top:24px;
+	line-height: 68px;
+}
+.navbar .brand img {
+	position: relative;
+	top: -2px;
+	margin-right: 12px;
 }
 .navbar .brand b {
 	color:#191919;
@@ -240,7 +263,6 @@ footer input[type=submit].btn {
 
 
 .navbar .nav-collapse {
-	float:right;
 }
 
 .navbar .nav > li.active > a,
@@ -252,7 +274,7 @@ footer input[type=submit].btn {
 }
 .navbar .nav > li.active > a,
 .navbar .nav > li.active > a:hover {
-	background-image:url(../images/navbar-active-item.png);
+	font-weight: bold;
 	background-color:transparent;
 	box-shadow:none;
 	background-position:center bottom;
@@ -356,9 +378,6 @@ footer input[type=submit].btn {
 	/* --------------------------------------------------------	*/
 
 	@media (min-width: 979px) {
-		.homepage {
-			background:url(../images/homepage-background.png); padding-bottom:40px;
-		}
 	}
 	@media (max-width: 979px) and (min-width: 768px) {
 
@@ -1372,6 +1391,9 @@ Ian Custom
 #phone .site.rdio, #phone .site.hypem {
 	display: none;
 }
+#macbook_carousel {
+	display: none;
+}
 #macbook_carousel .carousel {
 	margin:0 auto;
 	padding:28px 0 0 0;
@@ -1439,6 +1461,53 @@ Ian Custom
 .share .line1, .share .line2, .share .remote {
 	font-weight: bold;
 	color: #fff;
+}
+
+
+.homepage {
+	background:url(../images/clean/screen-8.png); padding-bottom:40px;
+	background-size: 100%;
+	color: #fff;
+}
+.homepage .hero-unit {
+	position: relative;
+}
+.homepage .hero-unit iframe {
+	position: absolute;
+	top: 50px;
+	z-index: 2;
+	right: -30px;
+}
+.homepage .hero-unit .background {
+	background-color: white;
+	padding: 10px;
+	width: 480px;
+	height: 360px;
+	opacity: .5;
+	border-radius: 10px;
+	z-index: 1;
+}
+.navbar-inner {
+	height: 72px;
+}
+.trifooter {
+	background:url(../images/patterns/gplaypattern.png);
+	color: #434343;
+	padding-top: 60px;
+	padding-bottom: 60px;
+	border-bottom: 1px solid #434345;
+	border-top: 1px solid #434345;
+}
+.supported-sites {
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+.leading {
+	margin-top: 15%;
+}
+.leading .btn {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 @media only screen and (max-width: 760px) {
   .hide-on-mobile { display: none; }

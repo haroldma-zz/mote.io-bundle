@@ -18,7 +18,7 @@ block content
             a.show-hide-on-mobile click here.
 
         .hide-on-mobile
-          if (user)
+          if (typeof user !== "undefined" && user)
             .alert.alert-success
               | You are currently logged in as #{user.username}.&nbsp;
               a(href = '/logout') Logout.
@@ -53,12 +53,8 @@ block content
               h2 Sign into the mobile app.
               hr
               p
-                a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io') Get Mote.io for Android
-              p Then&nbsp;
-                a(href='/start') refresh this page.
-              hr
-              p Mote.io for iPhone coming soon
-
+                a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io', style="margin-right: 10px;") Get Mote.io for Android
+                a.btn(target="_blank", href='#') Get Mote.io for iPhone
       .span1
       .span3
         h4 Need Help?

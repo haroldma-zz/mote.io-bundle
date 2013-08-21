@@ -215,6 +215,10 @@ app.get('/community', function(req, res) {
     return res.render('community', {user: req.user, page: 'community'});
 });
 
+app.get('/faq', function(req, res) {
+    return res.render('faq', {user: req.user, page: 'faq'});
+});
+
 app.get('/developers', function(req, res){
     return res.render('developers', {user: req.user, page: 'developers'});
 });
@@ -474,7 +478,7 @@ app.get('/login', function(req, res) {
     if(req.user) {
         return res.redirect('/start');
     } else {
-        return res.render('login', { page: 'start'});
+        return res.render('login', { page: 'start', user: null});
     }
 });
 
