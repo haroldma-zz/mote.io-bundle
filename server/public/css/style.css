@@ -61,7 +61,7 @@ h4 {
 a.log-out {
 	color: #ccc;
 	font-size: 20px;
-	top: 6px;
+	top: 4px;
 	margin-left: 10px;
 	position: relative;
 }
@@ -224,7 +224,7 @@ footer input[type=submit].btn {
 
 .navbar {
 	margin:0;
-	border-bottom: 1px solid #efefef;
+	border-bottom: 1px solid #ccc;
 }
 .navbar .container {
 	width: 940px;
@@ -233,11 +233,13 @@ footer input[type=submit].btn {
 	margin-bottom:0px;
 }
 .navbar-inner {
+	height: 72px;
 	background:#f6f6f6!important;
 	background-image: none!important;
 	filter:none;
 	border:none;
 	padding:0;
+	border-bottom: 1px solid #fff;
 }
 .navbar .brand {
 	font-weight:400;
@@ -1487,9 +1489,6 @@ Ian Custom
 	border-radius: 10px;
 	z-index: 1;
 }
-.navbar-inner {
-	height: 72px;
-}
 .trifooter {
 	background:url(../images/patterns/gplaypattern.png);
 	color: #434343;
@@ -1502,12 +1501,25 @@ Ian Custom
 	padding-top: 60px;
 	padding-bottom: 60px;
 }
+.supported-sites .supported {
+	margin-top: 60px;
+}
+.lead {
+	text-shadow: 0px 0px 20px #000000;
+}
 .leading {
-	margin-top: 15%;
+	margin-top: 29%;
+	margin-bottom: 5%;
+}
+.leading a {
+	color: #fff;
 }
 .leading .btn {
 	padding-left: 10px;
 	padding-right: 10px;
+}
+#theVideo {
+	margin-bottom: 60px;
 }
 @media only screen and (max-width: 760px) {
   .hide-on-mobile { display: none; }

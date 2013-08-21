@@ -4,34 +4,33 @@ block content
   .homepage
     .container
       .row
-        .span6.leading
-          h1.lead
-            b Mote.io&nbsp;
-            | lets you control websites like Grooveshark, Soundcloud, Pandora, Hype Machine, Vimeo, and more from your phone.
+        .span2
+        .span8.ac.leading
           p
-            a.btn.btn-large(href='/start', title='', style='margin-right: 5px;', class=(!user) && 'btn-primary')
+            a(href='#theVideo')
+              span.icon-facetime-video
+              | &nbsp; Watch the video
+          h1.lead Turn your phone into a remote control for Grooveshark, Soundcloud, Pandora, Hype Machine, Vimeo, and more.
+          p
+            a.btn.btn-large.btn-primary(href='/start', title='', style='margin-right: 5px;')
               b Get Mote.io for iPhone
-            a.btn.btn-large(href='/start', title='', style='margin-left: 5px;', class=(!user) && 'btn-primary')
+            a.btn.btn-large.btn-primary(href='/start', title='', style='margin-left: 5px;')
               b Get Mote.io for Android
-        .span6
-          .hero-unit.hide-on-mobile
-            iframe(width='480', height='360', src='//www.youtube.com/embed/WzairZZQBdM', frameborder='0', allowfullscreen='allowfullscreen')
-            .background
   .trifooter
     .container
       .row
-        .span4
+        .span4.ac
           img(src='images/clean/screen-1.png', alt='')
           h3 Your favorite sites
           p
             | And more to come. 6 sites supported out of the box. Our free developer API means new remotes in the future!
-        .span4
+        .span4.ac
           img(src='images/clean/screen-7.png', alt='')
           h3
             | Your computer is a stereo
           p
             | Place your phone next to your keyboard and increase your APM with media hotkeys for your favorite websites.
-        .span4
+        .span4.ac
           img(src='images/clean/screen-15.png', alt='')
           h3 Sit back & relax
           p
@@ -39,5 +38,13 @@ block content
 
   .supported-sites
     .container
+      #theVideo.row
+        .span12
+          iframe(width='960', height='720', src='//www.youtube.com/embed/WzairZZQBdM?rel=0', frameborder='0', allowfullscreen='allowfullscreen')
       .row
-        img(src='images/clean/sites.png', alt='')
+        .span3
+        .span6.ac
+          p
+            img(src='/images/app-apple.png', style='margin-right: 10px; height: 60px;')
+            img(src='/images/app-droid.png', style='margin-right: 10px; height: 60px;')
+          img.supported(src='images/clean/sites.png', alt='')

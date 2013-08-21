@@ -2,13 +2,13 @@ extends layout
 
 block content
   #content.container.text-page
+
     .row
-      .span12
-        .heading
-          h1 Getting Started.
-          p It only takes a second to get started with Mote.io.
-    .row
+      .span2
       .span8
+
+        .heading
+          h1 Syncing with phone...
 
         .show-on-mobile
           p.text-center.mobile-download
@@ -20,8 +20,7 @@ block content
         .hide-on-mobile
           if (typeof user !== "undefined" && user)
             .alert.alert-success
-              | You are currently logged in as #{user.username}.&nbsp;
-              a(href = '/logout') Logout.
+              | You are currently logged in as #{user.username}.
           else
             .well.well-large
               h2 Sign in.
@@ -45,7 +44,6 @@ block content
               p
                 a.btn(target='_blank', href='https://chrome.google.com/webstore/detail/moteio/okkhbojknlfdoooeghbkplihbjajpecc') Get Mote.io Chrome Extension
 
-
           .moteio-state-signed-in
             .alert.alert-success App found.
           .moteio-state-not-signed-in
@@ -55,14 +53,7 @@ block content
               p
                 a.btn(target="_blank", href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io', style="margin-right: 10px;") Get Mote.io for Android
                 a.btn(target="_blank", href='#') Get Mote.io for iPhone
-      .span1
-      .span3
-        h4 Need Help?
-        p Tweet @sw1tch for support.
-        hr
-        h4 Want to keep your macbook awake?
-        p I reccomend&nbsp;
-          a(href='https://www.macupdate.com/app/mac/22211/insomniax') InsomniaX.
+
 
   script
     $(document).ready(function(){

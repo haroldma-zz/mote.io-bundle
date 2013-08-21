@@ -408,7 +408,7 @@ window.MoteioReceiver = function() {
         }
       },
       error: function(xhr, status) {
-      	alert('error logging in')
+      	console.log('error logging in')
       	console.log(status)
       }
     });
