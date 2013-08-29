@@ -66,11 +66,7 @@ a.log-out {
 	position: relative;
 }
 .action-items {
-	line-height: 57px;
-}
-.action-items .btn {
-	position: relative;
-	top: -3px;
+	line-height: 52px;
 }
 /* --------------------------------------------------------	*/
 /*	Classes	*/
@@ -237,12 +233,13 @@ footer input[type=submit].btn {
 	margin-bottom:0px;
 }
 .navbar-inner {
-	height: 60px;
-	background:#f6f6f6!important;
+	min-height: 60px;
+	background: #f6f6f6!important;
 	background-image: none!important;
-	filter:none;
-	border:none;
-	padding:0;
+	filter: none;
+	border: none;
+	padding: 0;
+	margin-bottom: 0px !important;
 	border-bottom: 1px solid #fff;
 }
 .navbar .brand {
@@ -1375,11 +1372,11 @@ Ian Custom
 	display: none;
 }
 .show-on-mobile { display: none; }
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 770px) {
   .show-on-mobile { display: block; }
 }
 .hide-on-mobile { display: block; }
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 770px) {
   .hide-on-mobile { display: none; }
 }
 #phone {
@@ -1530,6 +1527,28 @@ Ian Custom
 #theVideo {
 	margin-bottom: 60px;
 }
+.navigation {
+	line-height: 60px;
+	margin: 0px;
+	list-style-type: none;
+}
+.navigation li {
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.navigation li a {
+	color: #777;
+}
+.navigation li.active a {
+	font-weight: bold;
+}
+.navbar .btn {
+	margin-top: 0px;
+}
+.m-search [type=text] {
+	padding: .3em 1em .2em 2.2em !important;
+}
 @media only screen and (max-width: 760px) {
   .hide-on-mobile { display: none; }
   .show-on-mobile { display: block; }
@@ -1549,5 +1568,11 @@ Ian Custom
   }
   .share .line1, .share .line2, .share .remote {
   	color: #000;
+  }
+  .logos .span12 {
+  	margin-bottom: 0px;
+  }
+  .homepage {
+  	background-size: auto;
   }
 }

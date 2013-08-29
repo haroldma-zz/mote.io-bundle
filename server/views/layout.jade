@@ -57,27 +57,23 @@ html.not-ie(lang='en').moteio-container
       // meta(name='twitter:app:url:iphone', content='example://action/5149e249222f9e600a7540ef')
       // meta(name='twitter:app:name:ipad', content='Example App')
       // meta(name='twitter:app:url:ipad', content='example://action/5149e249222f9e600a7540ef')
-      // meta(name='twitter:app:id:googleplay', content='com.example.app')
-      // meta(name='twitter:app:url:googleplay', content='http://example.com/action/5149e249222f9e600a7540ef')
+      meta(name='twitter:app:id:googleplay', content='com.ianjennings.mote_io')
+      meta(name='twitter:app:url:googleplay', content='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io')
 
   body
     header#header
       .navbar
         .navbar-inner
           .container
-            a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
             .row
-              .span4
+              .span3
                 a.brand(href='/')
                   img(src='images/clean/144.png', style='height: 50px;', alt='')
                   b Mote
                   | .io
-              .span5
-                .nav-collapse(style=(page=='start') && "display: none")
-                  ul.nav.ac
+              .span5.hide-on-mobile
+                div(style=(page=='start') && "display: none")
+                  ul.navigation.ac
                     li(class=(page=='home') && "active")
                       a(href='/') Home
                     li(class=(page=='faq') && "active")
@@ -86,7 +82,7 @@ html.not-ie(lang='en').moteio-container
                       a(href='/community') Community
                     li
                       a(href='http://sw1tch.com') Blog
-              .span3.ar.action-items.hide-on-mobile
+              .span4.ar.action-items.hide-on-mobile
                 if (typeof user !== "undefined" && user)
                   a.btn.btn-primary(href='/start', style=(page=='start') && "display: none")
                     .icon-refresh
@@ -106,11 +102,11 @@ html.not-ie(lang='en').moteio-container
                 li
                   a(href='/') Home
                 li
-                  a(href='/start') Get Started
+                  a(href='/faq') FAQ
                 li
                   a(href='/community') Community
                 li
-                  a(href='/developers') Developers
+                  a(href='http://sw1tch.com') Blog
             .span3.social-networks
               h3 One man operation
               p Follow me here:

@@ -7,8 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-var remote_location = "https://localhost:3000";
-//var remote_location = 'https://mote.io:443';
+//var remote_location = "https://localhost:3000";
+var remote_location = 'https://mote.io:443';
 
 var extension_url = remote_location + "/js/plugin.js";
 
@@ -355,17 +355,17 @@ exec(function(){
               },
               {
                 press: function () {
-                  $('.skipControl__next').click();
-                },
-                icon: 'forward',
-                hash: 'next'
-              },
-              {
-                press: function () {
                   $('.sc-button-like').click();
                 },
                 icon: 'heart',
                 hash: 'heart'
+              },
+              {
+                press: function () {
+                  $('.skipControl__next').click();
+                },
+                icon: 'forward',
+                hash: 'next'
               }
             ]
           },
@@ -544,7 +544,7 @@ exec(function(){
           } else {
             window.moteioRec.updateButton('play', 'play', null, force);
           }
-          window.moteioRec.notify($('.playlist.streamContext.playing .soundTitle__username').text(), $('.playlist.streamContext.playing .soundTitle__title').text(), $('.playlist.streamContext.playing .image__full').attr('src'), force);
+          window.moteioRec.notify($('.soundTitle.playing .soundTitle__username').text(), $('.soundTitle.playing .soundTitle__title').text(), $('.streamContext.playing .image__full').attr('src'), force);
         },
         blocks: [
           {
@@ -576,17 +576,17 @@ exec(function(){
               },
               {
                 press: function () {
-                  $('.skipControl__next').click();
-                },
-                icon: 'forward',
-                hash: 'next'
-              },
-              {
-                press: function () {
                   $('.sc-button-like').click();
                 },
                 icon: 'heart',
                 hash: 'heart'
+              },
+              {
+                press: function () {
+                  $('.skipControl__next').click();
+                },
+                icon: 'forward',
+                hash: 'next'
               }
             ]
           },

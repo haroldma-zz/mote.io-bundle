@@ -1,6 +1,6 @@
 /*
-  Attention: This file is not an official part of twitter bootstrap, but it contains few overrides of media queries. 
-  The most important change (while keeping twitter bootstrap's responsive functionality) 
+  Attention: This file is not an official part of twitter bootstrap, but it contains few overrides of media queries.
+  The most important change (while keeping twitter bootstrap's responsive functionality)
   is that it restricts .container class of this template to be at most 960px wide.
 
   Comment the forst section to allow sizes wider than 960px.
@@ -276,7 +276,6 @@
   }
 
   .navbar-inner {
-    padding:0 0 10px 0px!important;
   }
 
   .btn.btn-navbar {
@@ -300,7 +299,6 @@
   }
 
   .navbar-inner {
-    padding:0 0 10px 0px!important;
   }
 
   .btn.btn-navbar {
