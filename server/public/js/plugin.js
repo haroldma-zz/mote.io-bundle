@@ -231,6 +231,18 @@ window.MoteioReceiver = function() {
             self.goHome();
           }
 
+          if (typeof self.params.init !== "undefined") {
+            self.clog('Calling init()')
+            self.params.init();
+          }
+
+          if (typeof self.params.update !== "undefined") {
+            self.clog('setInterval for update()')
+            setInterval(function() {
+              self.params.update();
+            }, 1000);
+          }
+
         }
 
         if (message.type == 'go-home') {
@@ -270,18 +282,6 @@ window.MoteioReceiver = function() {
 
         self.clog('Sending Remote')
         self.sendRemote();
-
-        if (typeof self.params.init !== "undefined") {
-        	self.clog('Calling init()')
-	        self.params.init();
-        }
-
-        if (typeof self.params.update !== "undefined") {
-        	self.clog('setInterval for update()')
-          setInterval(function() {
-            self.params.update();
-          }, 1000);
-        }
 
       }
 
