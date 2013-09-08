@@ -66,7 +66,7 @@ a.log-out {
 	position: relative;
 }
 .action-items {
-	line-height: 52px;
+	line-height: 59px;
 }
 /* --------------------------------------------------------	*/
 /*	Classes	*/
@@ -224,7 +224,7 @@ footer input[type=submit].btn {
 }
 .navbar {
 	margin:0;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid #777;
 }
 .navbar .container {
 	width: 940px;
@@ -1544,7 +1544,7 @@ Ian Custom
 	font-weight: bold;
 }
 .navbar .btn {
-	margin-top: 0px;
+	margin-top: -4px;
 }
 .m-search [type=text] {
 	padding: .3em 1em .2em 2.2em !important;
