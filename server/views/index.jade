@@ -10,11 +10,17 @@ block content
             a(href='#theVideo')
               span.icon-facetime-video
               | &nbsp; Watch the video
-          h1.lead Turn your phone into a remote control for Pandora, Grooveshark, Soundcloud, Hype Machine, Vimeo, and more.
-          p
+          h1.lead Turn your phone into a remote control for Pandora, Grooveshark, SoundCloud, Hype Machine, Vimeo, and more.
+          p.hide-on-mobile
+            a.btn.btn-large.btn-primary(href='https://itunes.apple.com/us/app/mote.io/id686305047?mt=8&uo=4', title='', style='margin-left: 5px;')
+              b Get Mote.io for iOS
             a.btn.btn-large.btn-primary(href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io', title='', style='margin-left: 5px;')
               b Get Mote.io for Android
-          p Mote.io for iPhone coming soon
+          p.show-on-mobile
+            a(href='https://itunes.apple.com/us/app/mote.io/id686305047?mt=8&uo=4')
+              img(src='/images/app-apple.png', style='margin-right: 10px; height: 40px;')
+            a(href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io')
+              img(src='/images/app-droid.png', style='margin-right: 10px; height: 40px;')
   .logos
     .container
       .row
@@ -27,18 +33,18 @@ block content
           img(src='images/clean/screen-1.png', alt='')
           h3 Your favorite sites
           p
-            | And more to come. 6 sites supported out of the box. The developer API means new remotes in the future!
+            | And more to come. 6 sites supported out of the box and more to come!
         .span4.ac
           img(src='images/clean/screen-7.png', alt='')
           h3
             | Your computer is a stereo
           p
-            | Place your phone next to your keyboard and increase your APM with media hotkeys for your favorite websites.
+            | Forget the turntable. Use Mote.io to take control of your music no matter where you are.
         .span4.ac
           img(src='images/clean/screen-15.png', alt='')
           h3 Sit back & relax
           p
-            | Keep your butt on the couch. Seriously. Don't get up. Surf the web from a distance using your phone.
+            | Keep your butt on the couch. Surf the web from a distance using your phone.
 
   .supported-sites
     .container
@@ -49,7 +55,8 @@ block content
         .span3
         .span6.ac
           p
-            // img(src='/images/app-apple.png', style='margin-right: 10px; height: 60px;')
+            a(href='https://itunes.apple.com/us/app/mote.io/id686305047?mt=8&uo=4')
+              img(src='/images/app-apple.png', style='margin-right: 10px; height: 60px;')
             a(href='https://play.google.com/store/apps/details?id=com.ianjennings.mote_io')
               img(src='/images/app-droid.png', style='margin-right: 10px; height: 60px;')
           img.supported(src='images/clean/sites.png', alt='')
