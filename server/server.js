@@ -444,15 +444,18 @@ app.post('/register', function(req, res) {
               from: 'hello@mote.io',
               subject: 'Welcome to the wonderful world of mote.io',
               html:
-              'Welcome to the wonderful world of mote.io.' +
-              '<br/>' +
-              '<br/>' +
               'You\'re account is all set up and ready to go!' +
               '<br/>' +
               '<br/>' +
               'Click this link to get started with Mote.io:' +
               '<br/>' +
               '<a href="https://mote.io/start">https://mote.io/start</a>' +
+              '<br/>' +
+              '<br/>' +
+              'If you\'re having trouble getting set up, check the FAQ:' +
+              '<br/>' +
+              '<a href="https://mote.io/faq">https://mote.io/faq</a>' +
+              '<br/>' +
               '<br/>' +
               'Follow me on twitter for more updates about mote.io:' +
               '<br/>' +
