@@ -419,6 +419,9 @@ app.get('/register', function(req, res) {
 });
 
 app.post('/register', function(req, res) {
+
+    req.body.username = req.body.username.toLowerCase();
+
     try {
         check(req.body.username, 'Please enter a valid email address.').len(6, 64).isEmail();
         check(req.body.password, 'Please enter a password between 3 and 64 characters.').len(3, 64);
@@ -426,7 +429,7 @@ app.post('/register', function(req, res) {
         return res.render('register', { user : null, err: err, page: 'start' });
     }
 
-    Account.register(new Account({ username : req.body.username.toLowerCase(), beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
 
         if (err) {
             return res.render('register', { user : null, err: err, page: 'start' });
@@ -487,6 +490,8 @@ app.get('/login', function(req, res) {
 
 app.post('/login', function(req, res, next) {
 
+  req.body.username = req.body.username.toLowerCase();
+
   passport.authenticate('local', function(err, user, info) {
 
     if (err) {
@@ -503,8 +508,6 @@ app.post('/login', function(req, res, next) {
     }
 
     if (!user) {
-
-      console.log(info)
 
       clog({
         subject: 'user',
@@ -574,32 +577,21 @@ app.get('/get/login', function(req, res) {
 
     if(req.user) {
 
-        if(req.user.beta) {
+      clog({
+        subject: 'user',
+        action: 'getgetlogin',
+        success: true,
+        username: req.user.username
+      });
 
-            clog({
-              subject: 'user',
-              action: 'getgetlogin',
-              success: true,
-              username: req.user.username
-            });
-
-            return res.jsonp({
-                valid: true,
-                channel_name: encryptChannel(req.user._id),
-                user: {
-                    username: req.user.username,
-                    _id: req.user._id
-                }
-            });
-
-        } else {
-
-          return res.jsonp({
-              valid: false,
-              reason: 'Account has not been approved for beta yet!'
-          })
-
-        }
+      return res.jsonp({
+          valid: true,
+          channel_name: encryptChannel(req.user._id),
+          user: {
+              username: req.user.username,
+              _id: req.user._id
+          }
+      });
 
     } else {
 
@@ -617,6 +609,8 @@ app.get('/get/login', function(req, res) {
 });
 
 app.get('/post/login', function(req, res, next) {
+
+  req.params.username = req.body.username.toLowerCase();
 
   passport.authenticate('local', function(err, user, info) {
 
@@ -675,32 +669,21 @@ app.get('/post/login', function(req, res, next) {
         });
       }
 
-      if(user.beta) {
+      return res.jsonp({
+        valid: true,
+        channel_name: encryptChannel(user._id),
+        user: {
+            username: user.username,
+            _id: user._id
+        }
+      });
 
-        return res.jsonp({
-          valid: true,
-          channel_name: encryptChannel(user._id),
-          user: {
-              username: user.username,
-              _id: user._id
-          }
-        });
-
-        clog({
-          username: user.username,
-          subject: 'user',
-          action: 'getpostlogin',
-          success: true
-        });
-
-      } else{
-
-        return res.jsonp({
-            valid: false,
-            reason: 'Account has not been approved for beta yet!'
-        });
-
-      }
+      clog({
+        username: user.username,
+        subject: 'user',
+        action: 'getpostlogin',
+        success: true
+      });
 
     });
 
