@@ -1,4 +1,4 @@
-  /*jslint node: true, maxerr: 50, indent: 2 */
+/*jslint node: true, maxerr: 50, indent: 2 */
 "use strict";
 
 require('nodefly').profile(
@@ -426,7 +426,7 @@ app.post('/register', function(req, res) {
         return res.render('register', { user : null, err: err, page: 'start' });
     }
 
-    Account.register(new Account({ username : req.body.username, beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username.toLowerCase(), beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
 
         if (err) {
             return res.render('register', { user : null, err: err, page: 'start' });
