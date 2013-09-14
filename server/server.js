@@ -610,7 +610,7 @@ app.get('/get/login', function(req, res) {
 
 app.get('/post/login', function(req, res, next) {
 
-  req.params.username = req.body.username.toLowerCase();
+  req.query.username = req.query.username.toLowerCase();
 
   passport.authenticate('local', function(err, user, info) {
 
