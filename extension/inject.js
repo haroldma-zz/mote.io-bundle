@@ -7,8 +7,8 @@ function exec(fn) {
    document.documentElement.removeChild(script); // clean up
 }
 
-//var remote_location = "https://localhost:3000";
-var remote_location = 'https://mote.io:443';
+var remote_location = "https://localhost:3000";
+//var remote_location = 'https://mote.io:443';
 
 var extension_url = remote_location + "/js/plugin.js";
 
@@ -31,6 +31,8 @@ exec(function(){
     window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Hype Machine',
+      action: 'listening',
+      twitter: 'hypem',
       display_input: true,
       init: function() {
         if(!$('#playerPlay').hasClass('pause')) {
@@ -47,9 +49,10 @@ exec(function(){
 
         var thisArtist = $($('#player-nowplaying a')[3]).text(),
           thisSong = $($('#player-nowplaying a')[4]).text(),
-          thisImage = extractUrl(active.find('.readpost > span').css('background-image'));
+          thisImage = extractUrl(active.find('.readpost > span').css('background-image')),
+          thisPerma = window.location.origin + active.find('a.track').attr('href');
 
-        window.moteioRec.notify(thisArtist, thisSong, thisImage);
+        window.moteioRec.notify(thisArtist, thisSong, thisImage, thisPerma);
 
         // transfer button states
         if($('#playerPlay').hasClass('play')) {
@@ -68,7 +71,7 @@ exec(function(){
       blocks: [
         {
           type: 'notify',
-          share: false
+          share: true
         },
         {
           type: 'search',

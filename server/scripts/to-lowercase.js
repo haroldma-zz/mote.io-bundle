@@ -1,4 +1,4 @@
-/*
+
 var
   passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy,
@@ -99,4 +99,3 @@ Account.find({}, function (err, all_users) {
 	}
 
 });
-*/

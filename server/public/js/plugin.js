@@ -1,5 +1,6 @@
-//window.moteio_remote_location = 'https://localhost:3000';
-window.moteio_remote_location  = 'https://mote.io:443';
+window.moteio_remote_location = 'https://localhost:3000';
+//window.moteio_remote_location  = 'https://mote.io:443';
+
 window.MoteioReceiver = function() {
 
   var self = this;
@@ -225,7 +226,7 @@ window.MoteioReceiver = function() {
 
           self.statusTextDisplay('Synced with phone!', 'https://mote.io/start');
 
-          self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, true);
+          self.notify(self.lastNotify.line1, self.lastNotify.line2, self.lastImage, self.lastPermalink, true);
 
           if ((window.location.host == "localhost:3000" || window.location.host == "mote.io") && window.location.pathname == "/start") {
             self.goHome();
@@ -291,13 +292,13 @@ window.MoteioReceiver = function() {
 
   // Notify the server of stuff.
   self.lastNotify = {}
-  self.notify = function(line1, line2, image, force) {
+  self.notify = function(line1, line2, image, permalink, force) {
 
     data = {
       line1: line1,
       line2: line2,
       image: image,
-      url: document.URL
+      permalink: permalink,
     }
 
     if (typeof force == "undefined") {
@@ -328,6 +329,7 @@ window.MoteioReceiver = function() {
     self.lastNotify.line1 = line1;
     self.lastNotify.line2 = line2;
     self.lastImage = image;
+    self.lastPermalink = permalink;
 
   };
 
