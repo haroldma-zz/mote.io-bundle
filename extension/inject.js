@@ -31,7 +31,7 @@ exec(function(){
     window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Hype Machine',
-      action: 'listening',
+      action: 'listening to',
       twitter: 'hypem',
       display_input: true,
       init: function() {
@@ -223,6 +223,8 @@ exec(function(){
     window.moteioConfig = {
       api_version: '0.1',
       app_name: 'Grooveshark',
+      action: 'listening to',
+      twitter: 'grooveshark',
       display_input: true,
       init: function() {
 
@@ -250,9 +252,10 @@ exec(function(){
 
         var thisArtist = $('.now-playing-link.artist').text(),
           thisSong = $('.now-playing-link.song').text(),
-          thisImage = $('#now-playing-image').attr('src');
+          thisImage = $('#now-playing-image').attr('src'),
+          thisPerma = window.location.origin + $('.now-playing-link.artist').attr('href');
 
-        window.moteioRec.notify(thisArtist, thisSong, thisImage);
+        window.moteioRec.notify(thisArtist, thisSong, thisImage, thisPerma, force);
 
         // transfer button states
         if($('#play-pause').hasClass('playing')) {
@@ -266,7 +269,7 @@ exec(function(){
       blocks: [
         {
           type: 'notify',
-          share: false
+          share: true
         },
         {
           type: 'search',
@@ -1026,6 +1029,8 @@ exec(function(){
       {
         api_version: '0.1',
         app_name: 'Vimeo',
+        action: 'watching',
+        twitter: 'vimeo',
         display_input: true,
         update: function(force) {
           if($('.play_pause_button').hasClass('playing')) {
@@ -1038,12 +1043,17 @@ exec(function(){
           } else {
            window.moteioRec.updateButton('heart', null, '#434345', force);
           }
-          window.moteioRec.notify($('.info').find('hgroup h1').text(), $('.info').find('hgroup h2').text(), $('.info').find('img').prop('src'), force);
+          window.moteioRec.notify(
+            $('.info').find('hgroup h1').text(),
+            $($('.info').find('hgroup h2 a')[0]).text(),
+            $('.info').find('img').prop('src'),
+            window.location.href,
+            force);
         },
         blocks: [
           {
             type: 'notify',
-            share: false
+            share: true
           },
           {
             type: 'buttons',
