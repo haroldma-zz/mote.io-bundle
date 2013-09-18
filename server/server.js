@@ -598,11 +598,12 @@ app.get('/get/login', function(req, res) {
         clog({
           subject: 'user',
           action: 'getgetlogin',
-          success: false
+          success: false,
+          referer: req.headers.referer
         });
 
         return res.jsonp({
-            valid: false
+          valid: false
         });
     }
 

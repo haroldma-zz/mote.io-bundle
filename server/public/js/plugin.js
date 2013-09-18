@@ -1,5 +1,5 @@
-//window.moteio_remote_location = 'https://localhost:3000';
-window.moteio_remote_location  = 'https://mote.io:443';
+window.moteio_remote_location = 'https://localhost:3000';
+//window.moteio_remote_location  = 'https://mote.io:443';
 
 window.MoteioReceiver = function() {
 
@@ -398,7 +398,8 @@ window.MoteioReceiver = function() {
       url: window.moteio_remote_location + '/get/login/',
       dataType: 'jsonp',
       success: function(data) {
-        self.clog('Got login response')
+        self.clog('Got login response');
+        console.log(data)
         if (data.valid) {
 
           self.listen(data.channel_name);
