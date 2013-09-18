@@ -138,7 +138,7 @@ html.not-ie(lang='en').moteio-container
         })();
 
       script(data-cfasync="false", type='text/javascript')
-        window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+        /*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
         f[z]=function(){
         (a.s=a.s||[]).push(arguments)};var a=f[z]._={
         },q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
@@ -154,8 +154,9 @@ html.not-ie(lang='en').moteio-container
         var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
         b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
         loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
-        olark.identify('8642-858-10-6552');
-
+        /* custom configuration goes here (www.olark.com/documentation) */
+        olark.identify('6816-361-10-7266');/*]]>*/</script>
+        
     if typeof user !== "undefined" && user
       script
         olark('api.visitor.updateEmailAddress', {emailAddress: '#{user.username}'});
