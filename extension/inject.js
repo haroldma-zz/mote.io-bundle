@@ -320,6 +320,8 @@ exec(function(){
         api_version: '0.1',
         app_name: 'SoundCloud',
         display_input: true,
+        action: 'listening to',
+        twitter: 'soundcloud',
         init: function() {
           window.jQ('.carousel').eq(0).find('.sc-button-play').click();
         },
@@ -329,12 +331,17 @@ exec(function(){
           } else {
             window.moteioRec.updateButton('play', 'play', null, force);
           }
-          window.moteioRec.notify($('.carousel.active .playing .carouselItem__info-user').text(), $('.carousel.active .playing .carouselItem__info-title').text(), $('.carousel.active .playing .image__full').attr('src'), force);
+          window.moteioRec.notify(
+            $('.carousel.active .playing .carouselItem__info-user').text(), 
+            $('.carousel.active .playing .carouselItem__info-title').text(), 
+            $('.carousel.active .playing .image__full').attr('src'), 
+            window.location.origin + $('.carousel.active .playing .carouselItem__info-title').attr('href'), 
+            force);
         },
         blocks: [
           {
             type: 'notify',
-            share: false
+            share: true
           },
           {
             type: 'search',
@@ -544,18 +551,25 @@ exec(function(){
         api_version: '0.1',
         app_name: 'SoundCloud',
         display_input: true,
+        action: 'listening to',
+        twitter: 'soundcloud',
         update: function(force) {
           if($('.playControl').hasClass('playing')) {
             window.moteioRec.updateButton('play', 'pause', null, force);
           } else {
             window.moteioRec.updateButton('play', 'play', null, force);
           }
-          window.moteioRec.notify($('.soundTitle.playing .soundTitle__username').text(), $('.soundTitle.playing .soundTitle__title').text(), $('.streamContext.playing .image__full').attr('src'), force);
+          window.moteioRec.notify(
+            $('.soundTitle.playing .soundTitle__username').text(), 
+            $('.soundTitle.playing .soundTitle__title').text(), 
+            $('.streamContext.playing .image__full').attr('src'), 
+            window.location.origin + $('.soundTitle.playing .soundTitle__title').attr('href'), 
+            force);
         },
         blocks: [
           {
             type: 'notify',
-            share: false
+            share: true
           },
           {
             type: 'search',
