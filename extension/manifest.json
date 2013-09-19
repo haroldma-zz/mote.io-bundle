@@ -1,8 +1,8 @@
 {
   "name": "Mote.io",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 2,
-  "description": "Control websites with the mote.io mobile app!",
+  "description": "Control the sites you love remotely with Mote.io",
   "permissions": [
     "tabs",
     "<all_urls>"
@@ -21,39 +21,79 @@
     "128": "images/icons/128.png"
   },
   "web_accessible_resources": [
-    "moteio.js",
-    "lib/jquery.js",
-    "lib/jquery.qrcode.min.js",
-    "images/icon.png",
-    "images/carbon_fibre_big.png"
+    "images/icon.png"
   ],
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"],
-      "css": [
-        "lib/moteio.css"
+        "http://*.hypem.com/*",
+        "http://hypem.com/*"
       ],
-      "run_at": "document_start",
-      "all_frames": true
+      "js": [
+        "moteio.js",
+        "remotes/hypem.js"
+      ],
+      "run_at": "document_start"
     },
     {
       "matches": [
-        "http://www.rdio.com/*",
-        "http://*.hypem.com/*",
-        "http://hypem.com/*",
-        "http://www.htmltetris.com/",
-        "http://localhost:3000/start",
         "https://localhost:3000/start",
-        "*://*.vimeo.com/couchmode*",
-        "*://mote.io/start",
-        "http://reedditapp.com/",
-        "http://www.pandora.com/*",
-        "http://grooveshark.com/*",
+        "https://mote.io/",
+        "https://mote.io/start"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/moteio.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://www.rdio.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/rdio.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://www.pandora.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/pandora.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://grooveshark.com/*"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/grooveshark.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
         "*://*.soundcloud.com/*"
       ],
       "js": [
-        "inject.js"
+        "moteio.js",
+        "remotes/soundcloud.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://*.vimeo.com/couchmode*"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/vimeo.js"
       ],
       "run_at": "document_start"
     }
