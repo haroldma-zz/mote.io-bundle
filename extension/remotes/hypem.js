@@ -1,4 +1,4 @@
-window.exec(function(){
+exec(function(){
 
 	function extractUrl(input) {
 	  // remove quotes and wrapping url()

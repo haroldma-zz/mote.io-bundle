@@ -5,18 +5,25 @@ exec(function(){
 	    api_version: '0.1',
 	    app_name: 'Rdio',
 	    display_input: true,
+	    twitter: 'rdio',
+	    action: 'listening to',
 	    update: function(force) {
 	      if($('.play_pause').hasClass('playing')) {
 	        window.moteioRec.updateButton('play', 'pause', null, force);
 	      } else {
 	        window.moteioRec.updateButton('play', 'play', null, force);
 	      }
-	      window.moteioRec.notify($('.text_metadata .artist_title').text(), $('.text_metadata .song_title').text(), $('.art').prop('src'), force);
+	      window.moteioRec.notify(
+	      	$('.text_metadata .artist_title').text(),
+	      	$('.text_metadata .song_title').text(),
+	      	$('.queue_art').prop('src'),
+	      	window.location.origin + $('.text_metadata .artist_title').attr('href'),
+	      	force);
 	    },
 	    blocks: [
 	      {
 	        type: 'notify',
-	        share: false
+	        share: true
 	      },
 	      {
 	        type: 'buttons',

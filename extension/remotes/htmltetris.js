@@ -1,6 +1,5 @@
 exec(function(){
 
-	// actual client code
 	window.moteioConfig = {
 	  api_version: '0.1',
 	  app_name: 'Tetris',
