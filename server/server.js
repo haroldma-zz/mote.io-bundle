@@ -66,8 +66,6 @@ var constructDBURL = function(db) {
 
 var encryptChannel = function(user_id) {
 
-  console.log(user_id)
-
   return crypto.createHash('sha1')
     .update(user_id.toString())
     .update('bed and banks') // a second salt

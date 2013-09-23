@@ -6,7 +6,8 @@ var Account = new Schema({
   beta: Boolean,
   reset: String,
   reset_expires: Date,
-  random: Number
+  random: Number,
+  channel: String
 });
 
 Account.plugin(passportLocalMongoose, {iterations: 250});

@@ -213,8 +213,17 @@ exec(function() {
         } else {
           window.moteioRec.updateButton('play', 'play', null, force);
         }
+        var this_url = window.location.href;
+        if(typeof $('.soundTitle.playing .soundTitle__title').attr('href') !== "undefined") {
+        	window.location.origin + $('.soundTitle.playing .soundTitle__title').attr('href')
+        }
         window.moteioRec.notify(
-        $('.soundTitle.playing .soundTitle__username').text(), $('.soundTitle.playing .soundTitle__title').text(), $('.streamContext.playing .image__full').attr('src'), window.location.origin + $('.soundTitle.playing .soundTitle__title').attr('href'), force);
+          $($('.soundTitle.playing .soundTitle__username')[0]).text().trim(),
+          $($('.soundTitle.playing .soundTitle__title')[0]).text().trim(),
+          $('.streamContext.playing .image__full').attr('src'),
+          this_url,
+          force
+        );
       },
       blocks: [{
         type: 'notify',

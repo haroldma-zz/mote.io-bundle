@@ -39,7 +39,9 @@
       "matches": [
         "https://localhost:3000/start",
         "https://mote.io/",
-        "https://mote.io/start"
+        "https://mote.io/start",
+        "https://moteiostaging-9163.onmodulus.net/",
+        "https://moteiostaging-9163.onmodulus.net/start"
       ],
       "js": [
         "moteio.js",

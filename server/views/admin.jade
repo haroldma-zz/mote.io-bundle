@@ -19,16 +19,12 @@ block content
       thead
         tr
           th #
-          th _id
           th Email
-          th Beta
-          th Action
+          th Channel
       tbody
       each user, i in user_list
         tr
           td=i
           td=user._id
           td=user.username
-          td=user.beta
-          td
-            a(href='/admin/beta?user=' + user._id) Enabe Beta
+          td=user.channel
