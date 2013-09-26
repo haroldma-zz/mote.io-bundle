@@ -1,5 +1,5 @@
-// window.moteio_remote_location = 'https://localhost:3000';
-window.moteio_remote_location = 'https://moteiostaging-9163.onmodulus.net';
+window.moteio_remote_location = 'https://localhost:3000';
+//window.moteio_remote_location = 'https://moteiostaging-9163.onmodulus.net';
 //window.moteio_remote_location  = 'https://mote.io:443';
 
 window.MoteioReceiver = function() {
@@ -404,8 +404,10 @@ window.MoteioReceiver = function() {
       },
       dataType: 'jsonp',
       success: function(data) {
+
         self.clog('Got login response');
         console.log(data)
+
         if (data.valid) {
 
           self.listen(data.channel_name);

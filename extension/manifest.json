@@ -38,9 +38,7 @@
     {
       "matches": [
         "https://localhost:3000/start",
-        "https://mote.io/",
         "https://mote.io/start",
-        "https://moteiostaging-9163.onmodulus.net/",
         "https://moteiostaging-9163.onmodulus.net/start"
       ],
       "js": [
@@ -96,6 +94,16 @@
       "js": [
         "moteio.js",
         "remotes/vimeo.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "http://localhost:8080/"
+      ],
+      "js": [
+        "moteio.js",
+        "remotes/moteio-youtube.js"
       ],
       "run_at": "document_start"
     }
