@@ -4,13 +4,23 @@ var remote_location = "https://localhost:3000";
 
 var extension_url = remote_location + "/js/plugin.js";
 
+window.exec = function(fn) {
+  var script = document.createElement('script');
+  script.setAttribute("type", "application/javascript");
+  script.textContent = '(' + fn + ')();';
+  document.documentElement.appendChild(script);
+  document.documentElement.removeChild(script);
+}
+
 function async_load(){
+
   var s = document.createElement('script');
   s.type = 'text/javascript';
   s.async = true;
   s.src = extension_url;
   var x = document.getElementsByTagName('script')[0];
   x.parentNode.insertBefore(s, x);
+
 }
 
 if (window.attachEvent) {
@@ -19,10 +29,6 @@ if (window.attachEvent) {
   window.addEventListener('load', async_load, false);
 }
 
-window.exec = function(fn) {
-  var script = document.createElement('script');
-  script.setAttribute("type", "application/javascript");
-  script.textContent = '(' + fn + ')();';
-  document.documentElement.appendChild(script);
-  document.documentElement.removeChild(script);
-}
+exec(function(){
+	window.mote = {io: {}};
+});

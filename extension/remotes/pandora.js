@@ -10,7 +10,7 @@ exec(function(){
 	}
 
 	// actual client code
-	window.moteioConfig =
+	mote.io.remote =
 	  {
 	    api_version: '0.1',
 	    app_name: 'Pandora',
@@ -20,25 +20,25 @@ exec(function(){
 	      var thisArtist = $('.playerBarSong').text(),
 	        thisSong = $('.playerBarArtist').text(),
 	        thisImage = $('.playerBarArt').prop('src');
-	        window.moteioRec.notify(thisArtist, thisSong, thisImage, force);
+	        mote.io.notify(thisArtist, thisSong, thisImage, force);
 
 	      // transfer button states
 	      if($('.pauseButton').is(':visible')) {
-	        window.moteioRec.updateButton('play', 'pause', null, force);
+	        mote.io.updateButton('play', 'pause', null, force);
 	      } else {
-	        window.moteioRec.updateButton('play', 'play', null, force);
+	        mote.io.updateButton('play', 'play', null, force);
 	      }
 
 	      if($('.thumbDownButton').hasClass('indicator')){
-	        window.moteioRec.updateButton('down', null, '#f28141', force);
+	        mote.io.updateButton('down', null, '#f28141', force);
 	      } else {
-	        window.moteioRec.updateButton('down', null, '#434345', force);
+	        mote.io.updateButton('down', null, '#434345', force);
 	      }
 
 	      if($('.thumbUpButton').hasClass('indicator')){
-	        window.moteioRec.updateButton('up', null, '#f28141', force);
+	        mote.io.updateButton('up', null, '#f28141', force);
 	      } else {
-	        window.moteioRec.updateButton('up', null, '#434345', force);
+	        mote.io.updateButton('up', null, '#434345', force);
 	      }
 
 	    },

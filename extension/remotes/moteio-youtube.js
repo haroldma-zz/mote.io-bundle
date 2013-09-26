@@ -1,6 +1,6 @@
 exec(function(){
 
-	window.moteioConfig =
+	mote.io.remote =
 	  {
 	    api_version: '0.1',
 	    app_name: 'Youtube',
@@ -10,12 +10,12 @@ exec(function(){
 	    update: function(force) {
 
 	      if(app.player.getPlayerState() == 1) {
-	        window.moteioRec.updateButton('play', 'pause', null, force);
+	        mote.io.updateButton('play', 'pause', null, force);
 	      } else {
-	        window.moteioRec.updateButton('play', 'play', null, force);
+	        mote.io.updateButton('play', 'play', null, force);
 	      }
 
-	      window.moteioRec.notify(
+	      mote.io.notify(
 	        $('#video-category').text() + ' Videos',
 	        $('#video-title').text(),
 	        app.requests[app.activeCategory].results[app.player.getPlaylistIndex()]['media$group']['media$thumbnail'][0].url,

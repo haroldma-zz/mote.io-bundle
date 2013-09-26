@@ -1,6 +1,6 @@
 exec(function(){
 
-	window.moteioConfig =
+	mote.io.remote =
 	  {
 	    api_version: '0.1',
 	    app_name: 'Vimeo',
@@ -10,18 +10,18 @@ exec(function(){
 	    update: function(force) {
 
 	      if($('.play_pause_button').hasClass('playing')) {
-	        window.moteioRec.updateButton('play', 'pause', null, force);
+	        mote.io.updateButton('play', 'pause', null, force);
 	      } else {
-	        window.moteioRec.updateButton('play', 'play', null, force);
+	        mote.io.updateButton('play', 'play', null, force);
 	      }
 
 	      if($('.like').hasClass('on')) {
-	       window.moteioRec.updateButton('heart', null, '#ff0000', force);
+	       mote.io.updateButton('heart', null, '#ff0000', force);
 	      } else {
-	       window.moteioRec.updateButton('heart', null, '#434345', force);
+	       mote.io.updateButton('heart', null, '#434345', force);
 	      }
 
-	      window.moteioRec.notify(
+	      mote.io.notify(
 	        $('.info').find('hgroup h1').text(),
 	        $($('.info').find('hgroup h2 a')[0]).text(),
 	        $('.info').find('img').prop('src'),

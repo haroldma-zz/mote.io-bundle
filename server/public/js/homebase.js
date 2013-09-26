@@ -68,7 +68,7 @@
     }
 
     // actual client code
-    window.moteioConfig =
+    mote.io.remote =
       {
         api_version: '0.1',
         app_name: 'Homebase',

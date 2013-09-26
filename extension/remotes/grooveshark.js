@@ -1,6 +1,6 @@
 exec(function(){
 
-	window.moteioConfig = {
+	mote.io.remote =  {
 	  api_version: '0.1',
 	  app_name: 'Grooveshark',
 	  action: 'listening to',
@@ -35,14 +35,14 @@ exec(function(){
 	      thisImage = $('#now-playing-image').attr('src'),
 	      thisPerma = window.location.origin + $('.now-playing-link.artist').attr('href');
 
-	    window.moteioRec.notify(thisArtist, thisSong, thisImage, thisPerma, force);
+	    mote.io.notify(thisArtist, thisSong, thisImage, thisPerma, force);
 
 	    // transfer button states
 	    if($('#play-pause').hasClass('playing')) {
-	     window.moteioRec.updateButton('play', 'pause', null, force);
+	     mote.io.updateButton('play', 'pause', null, force);
 	    }
 	    if($('#play-pause').hasClass('paused')) {
-	     window.moteioRec.updateButton('play', 'play', null, force);
+	     mote.io.updateButton('play', 'play', null, force);
 	    }
 
 	  },

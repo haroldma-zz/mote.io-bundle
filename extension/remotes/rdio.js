@@ -1,6 +1,6 @@
 exec(function(){
 
-	window.moteioConfig =
+	mote.io.remote =
 	  {
 	    api_version: '0.1',
 	    app_name: 'Rdio',
@@ -9,11 +9,11 @@ exec(function(){
 	    action: 'listening to',
 	    update: function(force) {
 	      if($('.play_pause').hasClass('playing')) {
-	        window.moteioRec.updateButton('play', 'pause', null, force);
+	        mote.io.updateButton('play', 'pause', null, force);
 	      } else {
-	        window.moteioRec.updateButton('play', 'play', null, force);
+	        mote.io.updateButton('play', 'play', null, force);
 	      }
-	      window.moteioRec.notify(
+	      mote.io.notify(
 	      	$('.text_metadata .artist_title').text(),
 	      	$('.text_metadata .song_title').text(),
 	      	$('.queue_art').prop('src'),

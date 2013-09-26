@@ -17,7 +17,7 @@ html.not-ie(lang='en').moteio-container
     script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
     script
-      !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.8.3.min.js"%3E%3C/script%3E'))
+      !jQuery && document.write(unescape('%3Cscript src="js/jquery-1.8.3.min.js"%3E%3C/script%3E'))
 
     meta(property='fb:app_id', content='163150470537618')
     meta(property='og:image', content='https://mote.io/images/144-2x.png')
@@ -115,7 +115,7 @@ html.not-ie(lang='en').moteio-container
         })();
 
       script(data-cfasync="false", type='text/javascript')
-        /*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+        /*<![CDATA[*/olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
         f[z]=function(){
         (a.s=a.s||[]).push(arguments)};var a=f[z]._={
         },q=c.methods.length;while(q--){(function(n){f[z][n]=function(){

@@ -15,14 +15,14 @@ block content
           section
             h2 Getting Started
             hr
-            p Paste the following code on the page. window.moteioConfig is where you will define the layout and actions for your remote.
+            p Paste the following code on the page. moteioConfig is where you will define the layout and actions for your remote.
             p The script sends an update to the phone on every load, so you can test your remote simply by refreshing the page.
             script(src='https://gist.github.com/ianjennings/5322966.js')
 
           section
             h2 Config Variables
             hr
-            p Here we define a variable called window.moteioConfig. This variable is read by the script tag supplied above when it starts.
+            p Here we define a variable called moteioConfig. This variable is read by the script tag supplied above when it starts.
             script(src='https://gist.github.com/ianjennings/5324439.js')
             hr
             h3 API version
@@ -135,11 +135,11 @@ block content
 
       script
 
-        window.scroll_to_id = function(id) {
+        scroll_to_id = function(id) {
           $('html,body').animate({ scrollTop: $("[name='" + id + "']").offset().top}, 200);
         }
 
-        window.moteioConfig = {
+        moteioConfig = {
           api_version: '0.1',
           app_name: 'Dev Doc',
           blocks: [
@@ -175,37 +175,37 @@ block content
                 {
                   text: 'Getting Started',
                   action: function() {
-                    window.scroll_to_id('getting-started');
+                    scroll_to_id('getting-started');
                   }
                 },
                 {
                   text: 'Config Variables',
                   action: function() {
-                    window.scroll_to_id('config-variables');
+                    scroll_to_id('config-variables');
                   }
                 },
                 {
                   text: 'Testing',
                   action: function() {
-                    window.scroll_to_id('testing');
+                    scroll_to_id('testing');
                   }
                 },
                 {
                   text: 'Block Types',
                   action: function() {
-                    window.scroll_to_id('block-types');
+                    scroll_to_id('block-types');
                   }
                 },
                 {
                   text: 'Methods',
                   action: function() {
-                    window.scroll_to_id('methods');
+                    scroll_to_id('methods');
                   }
                 },
                 {
                   text: 'Kitchen Sink',
                   action: function() {
-                    window.scroll_to_id('kitchen-sink');
+                    scroll_to_id('kitchen-sink');
                   }
                 }
               ]

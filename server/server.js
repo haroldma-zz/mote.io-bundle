@@ -123,7 +123,7 @@ app.configure('production', function(){
       collection: 'sessions'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-    port: process.env.PORT,
+  port: process.env.PORT,
     key: null,
     ca: null,
     cert: null,

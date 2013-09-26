@@ -114,7 +114,7 @@ exec(function() {
 
   if (parts[1] == "explore") {
 
-    window.moteioConfig = {
+    mote.io.remote =  {
       api_version: '0.1',
       app_name: 'SoundCloud',
       display_input: true,
@@ -125,11 +125,11 @@ exec(function() {
       },
       update: function(force) {
         if ($('.playControl').hasClass('playing')) {
-          window.moteioRec.updateButton('play', 'pause', null, force);
+          mote.io.updateButton('play', 'pause', null, force);
         } else {
-          window.moteioRec.updateButton('play', 'play', null, force);
+          mote.io.updateButton('play', 'play', null, force);
         }
-        window.moteioRec.notify(
+        mote.io.notify(
         $('.carousel.active .playing .carouselItem__info-user').text(), $('.carousel.active .playing .carouselItem__info-title').text(), $('.carousel.active .playing .image__full').attr('src'), window.location.origin + $('.carousel.active .playing .carouselItem__info-title').attr('href'), force);
       },
       blocks: [{
@@ -201,7 +201,7 @@ exec(function() {
   } else {
 
     // actual client code
-    window.moteioConfig = {
+    mote.io.remote =  {
       api_version: '0.1',
       app_name: 'SoundCloud',
       display_input: true,
@@ -209,15 +209,15 @@ exec(function() {
       twitter: 'soundcloud',
       update: function(force) {
         if ($('.playControl').hasClass('playing')) {
-          window.moteioRec.updateButton('play', 'pause', null, force);
+          mote.io.updateButton('play', 'pause', null, force);
         } else {
-          window.moteioRec.updateButton('play', 'play', null, force);
+          mote.io.updateButton('play', 'play', null, force);
         }
         var this_url = window.location.href;
         if(typeof $('.soundTitle.playing .soundTitle__title').attr('href') !== "undefined") {
         	window.location.origin + $('.soundTitle.playing .soundTitle__title').attr('href')
         }
-        window.moteioRec.notify(
+        mote.io.notify(
           $($('.soundTitle.playing .soundTitle__username')[0]).text().trim(),
           $($('.soundTitle.playing .soundTitle__title')[0]).text().trim(),
           $('.streamContext.playing .image__full').attr('src'),

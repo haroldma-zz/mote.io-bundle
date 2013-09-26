@@ -9,7 +9,7 @@ exec(function(){
 	  }
 	}
 
-	window.moteioConfig = {
+	mote.io.remote =  {
 	  api_version: '0.1',
 	  app_name: 'Hype Machine',
 	  action: 'listening to',
@@ -33,19 +33,19 @@ exec(function(){
 	      thisImage = extractUrl(active.find('.readpost > span').css('background-image')),
 	      thisPerma = window.location.origin + active.find('a.track').attr('href');
 
-	    window.moteioRec.notify(thisArtist, thisSong, thisImage, thisPerma);
+	    mote.io.notify(thisArtist, thisSong, thisImage, thisPerma);
 
 	    // transfer button states
 	    if($('#playerPlay').hasClass('play')) {
-	     window.moteioRec.updateButton('play', 'play', null, force);
+	     mote.io.updateButton('play', 'play', null, force);
 	    }
 	    if($('#playerPlay').hasClass('pause')) {
-	     window.moteioRec.updateButton('play', 'pause', null, force);
+	     mote.io.updateButton('play', 'pause', null, force);
 	    }
 	    if($('#playerFav').hasClass('fav-on')) {
-	     window.moteioRec.updateButton('heart', null, '#ff0000', force);
+	     mote.io.updateButton('heart', null, '#ff0000', force);
 	    } else {
-	     window.moteioRec.updateButton('heart', null, '#434345', force);
+	     mote.io.updateButton('heart', null, '#434345', force);
 	    }
 
 	  },
