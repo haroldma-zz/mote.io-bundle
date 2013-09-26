@@ -1,83 +1,4 @@
 exec(function(){
-var navigation = [{
-      text: 'Trending',
-      action: function() {
-        app.changeCategory(0);
-      }
-    },
-    {
-      text: 'Most Popular',
-      action: function() {
-        app.changeCategory(12);
-      }
-    },
-    {
-      text: 'Music',
-      action: function() {
-        app.changeCategory(1);
-      }
-    },
-    {
-      text: 'Gaming',
-      action: function() {
-        app.changeCategory(2);
-      }
-    },
-    {
-      text: 'Sports',
-      action: function() {
-        app.changeCategory(3);
-      }
-    },
-    {
-      text: 'Film & Animation',
-      action: function() {
-        app.changeCategory(4);
-      }
-    },
-    {
-      text: 'Entertainment',
-      action: function() {
-        app.changeCategory(5);
-      }
-    },
-    {
-      text: 'News & Politics',
-      action: function() {
-        app.changeCategory(6);
-      }
-    },
-    {
-      text: 'People & Blogs',
-      action: function() {
-        app.changeCategory(7);
-      }
-    },
-    {
-      text: 'Science & Technology',
-      action: function() {
-        app.changeCategory(8);
-      }
-    },
-    {
-      text: 'Howto & Style',
-      action: function() {
-        app.changeCategory(9);
-      }
-    },
-    {
-      text: 'Education',
-      action: function() {
-        app.changeCategory(10);
-      }
-    },
-    {
-      text: 'Pets & Animals',
-      action: function() {
-        app.changeCategory(11);
-      }
-    }
-  ];
 
 	window.moteioConfig =
 	  {
@@ -106,6 +27,12 @@ var navigation = [{
 	      {
 	        type: 'notify',
 	        share: true
+	      },
+				{
+	        type: 'search',
+	        action: function(q) {
+	          app.search(q);
+	        }
 	      },
 	      {
 	        type: 'buttons',
@@ -143,7 +70,85 @@ var navigation = [{
 	      },
 	      {
           type: 'select',
-          data: navigation
+          data: [{
+			      text: 'Trending',
+			      action: function() {
+			        app.changeCategory(0);
+			      }
+			    },
+			    {
+			      text: 'Most Popular',
+			      action: function() {
+			        app.changeCategory(12);
+			      }
+			    },
+			    {
+			      text: 'Music',
+			      action: function() {
+			        app.changeCategory(1);
+			      }
+			    },
+			    {
+			      text: 'Gaming',
+			      action: function() {
+			        app.changeCategory(2);
+			      }
+			    },
+			    {
+			      text: 'Sports',
+			      action: function() {
+			        app.changeCategory(3);
+			      }
+			    },
+			    {
+			      text: 'Film & Animation',
+			      action: function() {
+			        app.changeCategory(4);
+			      }
+			    },
+			    {
+			      text: 'Entertainment',
+			      action: function() {
+			        app.changeCategory(5);
+			      }
+			    },
+			    {
+			      text: 'News & Politics',
+			      action: function() {
+			        app.changeCategory(6);
+			      }
+			    },
+			    {
+			      text: 'People & Blogs',
+			      action: function() {
+			        app.changeCategory(7);
+			      }
+			    },
+			    {
+			      text: 'Science & Technology',
+			      action: function() {
+			        app.changeCategory(8);
+			      }
+			    },
+			    {
+			      text: 'Howto & Style',
+			      action: function() {
+			        app.changeCategory(9);
+			      }
+			    },
+			    {
+			      text: 'Education',
+			      action: function() {
+			        app.changeCategory(10);
+			      }
+			    },
+			    {
+			      text: 'Pets & Animals',
+			      action: function() {
+			        app.changeCategory(11);
+			      }
+			    }
+			  ]
         }
 	    ]
 	  }
