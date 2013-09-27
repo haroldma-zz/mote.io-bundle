@@ -221,6 +221,10 @@ app.get('/developers', function(req, res){
     return res.render('developers', {user: req.user, page: 'developers'});
 });
 
+app.get('/google-drive', function(req, res){
+    return res.render('google_drive', {user: req.user, page: 'developers'});
+});
+
 app.get('/admin', function(req, res) {
   if(req.user && req.user.username == "ian@meetjennings.com") {
     Account.find({}, function (err, all_users) {

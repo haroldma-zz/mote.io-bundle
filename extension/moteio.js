@@ -1,5 +1,5 @@
-var remote_location = "https://localhost:3000";
-//var remote_location = 'https://moteiostaging-9163.onmodulus.net';
+//var remote_location = "https://localhost:3000";
+var remote_location = 'https://moteiostaging-9163.onmodulus.net';
 //var remote_location = 'https://mote.io:443';
 
 var date = new Date();
