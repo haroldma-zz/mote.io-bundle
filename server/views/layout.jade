@@ -60,9 +60,9 @@ html.not-ie(lang='en').moteio-container
                       a(href='http://sw1tch.com') Blog
               .span4.ar.action-items.hide-on-mobile
                 if (typeof user !== "undefined" && user)
-                  a.btn.btn-primary(href='/start', style=(page=='start') && "display: none")
+                  a.btn.btn-primary.fire-sync(href='/start', style=(page=='start') && "display: none")
                     .icon-refresh
-                    | &nbsp; Sync with Phone
+                    span &nbsp; Sync with Phone
                   a(href='/logout', alt='Log out').log-out.icon-signout
                 else
                   a(href='/register') Sign Up
@@ -102,8 +102,12 @@ html.not-ie(lang='en').moteio-container
       script(type='text/javascript', src='js/jquery.isotope.min.js')
       script(type='text/javascript', src='js/jquery.touchSwipe.js')
       script(type='text/javascript', src='js/jquery.hotkeys.min.js')
+      script(type='text/javascript', src='js/jquery.sticky.js')
       script(type='text/javascript', src='js/functions.js')
       script
+
+        $("#toc").sticky({topSpacing:20});
+
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-40127738-1']);
         _gaq.push(['_trackPageview']);

@@ -1069,24 +1069,22 @@ body, html {
     background-color: white; }
 
 #homebase {
-  width: 972px;
-  margin: 0px auto;
-  margin-top: 20px; }
+  background-image: url("/images/patterns/square_bg.png"); }
   #homebase ul#apps {
+    width: 96%;
+    margin: 0px auto;
     -moz-padding-start: 0px;
     -webkit-padding-start: 0px;
     list-style-type: none;
-    margin-left: -20px;
-    margin-top: -20px; }
+    margin-left: 3%;
+    margin-top: 2%; }
     #homebase ul#apps li {
-      width: 470px;
-      height: 200px;
-      border-radius: 10px;
-      margin-left: 20px;
-      margin-top: 20px;
+      width: 30%;
+      height: 28%;
+      margin-left: 2%;
+      margin-top: 2%;
       float: left;
       display: block;
-      border: 3px solid white;
       opacity: 0.8;
       position: relative; }
       #homebase ul#apps li.soon {
@@ -1102,29 +1100,16 @@ body, html {
           text-transform: uppercase;
           font-size: 120px;
           display: none; }
-      #homebase ul#apps li.selected {
+      #homebase ul#apps li.selected img {
         border: 3px solid #357b95;
-        box-shadow: 0px 0px 50px #357b95;
-        opacity: 0.9; }
+        box-shadow: 0px 0px 30px #357b95;
+        opacity: 1; }
       #homebase ul#apps li.active {
         opacity: 1; }
       #homebase ul#apps li a {
-        display: block;
-        width: 470px;
-        height: 206px; }
-      #homebase ul#apps li#hypem {
-        background-image: url(/images/sites/hypem.png); }
-      #homebase ul#apps li#grooveshark {
-        background-image: url(/images/sites/grooveshark.png); }
-      #homebase ul#apps li#pandora {
-        background-image: url(/images/sites/pandora.png); }
-      #homebase ul#apps li#rdio {
-        background-image: url(/images/sites/rdio.png); }
-      #homebase ul#apps li#vimeo {
-        background-image: url(/images/sites/vimeo.png); }
-      #homebase ul#apps li#shelby {
-        background-image: url(/images/sites/shelby.png); }
-      #homebase ul#apps li#tetris {
-        background-image: url("/images/sites/tetris.png"); }
-      #homebase ul#apps li#soundcloud {
-        background-image: url("/images/sites/soundcloud.png"); }
+        display: block; }
+        #homebase ul#apps li a img {
+          border: 3px solid transparent;
+          max-width: 100%;
+          border-radius: 10px;
+          max-height: 100%; }

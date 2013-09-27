@@ -1,7 +1,7 @@
 (function($){
 
     var $apps = $('#apps li:not(.soon)'),
-      appsPerRow = 2,
+      appsPerRow = 3,
       currentApp = 0,
       loading = $('#loading');
 

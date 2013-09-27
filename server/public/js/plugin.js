@@ -1,13 +1,15 @@
 moteio_app = function() {
 
+  var self = this;
+
+  self.date = new Date();
+
   mote.io.host = 'https://localhost:3000';
   //mote.io.host = 'https://moteiostaging-9163.onmodulus.net';
   //mote.io.host  = 'https://mote.io:443';
   mote.io.font_url = mote.io.host + "/css/font-awesome/font-awesome.css";
-  mote.io.css_url = mote.io.host + "/css/plugin.css";
+  mote.io.css_url = mote.io.host + "/css/plugin.css?_=" + self.date.getTime();
   mote.io.pubnub_url = "https://cdn.pubnub.com/pubnub-3.5.3.min.js";
-
-  var self = this;
 
   self.init = function() {
 
@@ -361,10 +363,6 @@ moteio_receiver = function() {
 
     // do a check by default
     if ((self.lastNotify.line1 !== line1 || self.lastNotify.line2 !== line2 || self.lastImage !== image) || force) {
-
-      console.log('!!!!!!!!!!!!!!!!!!!notifying!!!!')
-
-      console.log(data)
 
       self.pubnub.publish({
         channel: self.channel_name,

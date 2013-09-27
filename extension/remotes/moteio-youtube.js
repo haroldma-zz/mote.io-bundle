@@ -16,8 +16,8 @@ exec(function(){
 	      }
 
 	      mote.io.notify(
-	        $('#video-category').text() + ' Videos',
-	        $('#video-title').text(),
+	        $('#video-category').text().trim() + ' Videos',
+	        $('#video-title').text().trim(),
 	        app.requests[app.activeCategory].results[app.player.getPlaylistIndex()]['media$group']['media$thumbnail'][0].url,
 	        app.player.getVideoUrl(),
 	        force);

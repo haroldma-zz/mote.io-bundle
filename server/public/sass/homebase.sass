@@ -77,27 +77,25 @@ body, html
     background-color: #fff
 
 #homebase
-  width: 972px
-  margin: 0px auto
-  margin-top: 20px
+  background-image: url('/images/patterns/square_bg.png')
   ul#apps
+    width: 96%
+    margin: 0px auto
     -moz-padding-start: 0px
     -webkit-padding-start: 0px
     -khtml-padding-start 0px
     -o-padding-start 0px
     padding-start 0px
     list-style-type: none
-    margin-left: -20px
-    margin-top: -20px
+    margin-left: 3%
+    margin-top: 2%
     li
-      width: 470px
-      height: 200px
-      border-radius: 10px
-      margin-left: 20px
-      margin-top: 20px
+      width: 30%
+      height: 28%
+      margin-left: 2%
+      margin-top: 2%
       float: left
       display: block
-      border: 3px solid white
       opacity: .8
       position: relative
       &.soon
@@ -114,28 +112,16 @@ body, html
           font-size: 120px
           display: none
       &.selected
-        border: 3px solid $moteio-blue
-        @include box-shadow(0px 0px 50px $moteio-blue)
-        opacity: .9
+        img
+          border: 3px solid $moteio-blue
+          @include box-shadow(0px 0px 30px $moteio-blue)
+          opacity: 1
       &.active
         opacity: 1
       a
         display: block
-        width: 470px
-        height: 206px
-      &#hypem
-        background-image: url(/images/sites/hypem.png)
-      &#grooveshark
-        background-image: url(/images/sites/grooveshark.png)
-      &#pandora
-        background-image: url(/images/sites/pandora.png)
-      &#rdio
-        background-image: url(/images/sites/rdio.png)
-      &#vimeo
-        background-image: url(/images/sites/vimeo.png)
-      &#shelby
-        background-image: url(/images/sites/shelby.png)
-      &#tetris
-        background-image: url('/images/sites/tetris.png')
-      &#soundcloud
-        background-image: url('/images/sites/soundcloud.png')
+        img
+          border: 3px solid transparent
+          max-width: 100%
+          border-radius: 10px
+          max-height: 100%

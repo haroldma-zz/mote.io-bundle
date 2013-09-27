@@ -1549,7 +1549,21 @@ Ian Custom
 .m-search [type=text] {
 	padding: .3em 1em .2em 2.2em !important;
 }
-@media only screen and (max-width: 760px) {
+#toc {
+	width: 220px;
+	max-height: none  !important;
+}
+@media only screen and (max-width: 980px) {
+	#toc {
+		width: 166px;
+	}
+}
+@media only screen and (max-width: 768px) {
+	#toc {
+		display: none;
+	}
+}
+@media only screen and (max-width: 980px) {
   .hide-on-mobile { display: none; }
   .show-on-mobile { display: block; }
   .share .streaming .text {
