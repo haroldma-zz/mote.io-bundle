@@ -5,8 +5,8 @@ moteio_app = function() {
   self.date = new Date();
 
   //mote.io.host = 'https://localhost:3000';
-  mote.io.host = 'https://moteiostaging-9163.onmodulus.net';
-  //mote.io.host  = 'https://mote.io:443';
+  //mote.io.host = 'https://moteiostaging-9163.onmodulus.net';
+  mote.io.host  = 'https://mote.io:443';
   mote.io.font_url = mote.io.host + "/css/font-awesome/font-awesome.css";
   mote.io.css_url = mote.io.host + "/css/plugin.css?_=" + self.date.getTime();
   mote.io.pubnub_url = "https://cdn.pubnub.com/pubnub-3.5.3.min.js";
