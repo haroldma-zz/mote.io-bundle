@@ -392,9 +392,11 @@ moteio_receiver = function() {
   self.updateButton = function(hash, icon, color, force) {
 
     // self.clog(mote.io.remote);
-    $.each(mote.io.remote.blocks, function(i, block) {
+    jQ.each(mote.io.remote.blocks, function(i, block) {
+
       if (mote.io.remote.blocks[i].type == "buttons") {
-        $.each(mote.io.remote.blocks[i].data, function(j, block_data) {
+
+        jQ.each(mote.io.remote.blocks[i].data, function(j, block_data) {
           // self.clog(mote.io.remote.blocks[i].data[j])
           if (mote.io.remote.blocks[i].data[j].hash == hash) {
 
