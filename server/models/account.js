@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
+	date_created: Date,
   beta: Boolean,
   reset: String,
   reset_expires: Date,

@@ -9,11 +9,6 @@ var
   http = require('http'),
   https = require('https'),
   fs = require('fs'),
-
-
-
-
-
   express = require('express'),
   app = express(),
   passport = require('passport'),
@@ -22,11 +17,8 @@ var
   mongoose = require('mongoose'),
   passportLocalMongoose = require('passport-local-mongoose'),
   MongoStore = require('connect-mongo')(express),
-
-
   Schema = mongoose.Schema,
   jade = require('jade'),
-
   config = {},
   Account = require('./models/account'),
   Server = require('./models/server'),
@@ -132,7 +124,7 @@ app.configure('production', function(){
       collection: 'sessions'
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
-  port: process.env.PORT,
+    port: process.env.PORT,
     key: null,
     ca: null,
     cert: null,
@@ -198,8 +190,6 @@ app.configure(function() {
   app.use(express.static(path.join(__dirname, 'public')));
 
 });
-
-var Account = require('./models/account');
 
 passport.use(Account.createStrategy());
 
@@ -440,7 +430,17 @@ app.post('/register', function(req, res) {
         return res.render('register', { user : null, err: err, page: 'start' });
     }
 
-    Account.register(new Account({ username : req.body.username, beta: true, random: Math.floor((Math.random()*100)+1) }), req.body.password, function(err, account) {
+    Account.register(
+      new Account(
+        {
+          username: req.body.username,
+          beta: true,
+          random: Math.floor((Math.random()*100)+1),
+          date_created: new Date().getTime()
+        }
+      ),
+      req.body.password,
+      function(err, account) {
 
         if (err) {
             return res.render('register', { user : null, err: err, page: 'start' });
