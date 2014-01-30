@@ -626,6 +626,12 @@ app.get('/post/login', function(req, res, next) {
 
   passport.authenticate('local', function(err, user, info) {
 
+
+    console.log('someone tried to login')
+    console.log(err)
+    console.log(user)
+    console.log(info)
+
     if (err) {
 
       console.log(err);
@@ -646,7 +652,15 @@ app.get('/post/login', function(req, res, next) {
 
     if (!user) {
 
-      console.log(info)
+      var friendly = info.message;
+
+      if(info.message == 'Incorrect password') {
+        friendly = "Bad password. Please try again or reset it at http://mote.io/reset.";
+      }
+
+      if(info.message == 'Incorrect username') {
+        friendly = "Can not find account with that email address. Visit http://mote.io/start on your computer.";
+      }
 
       clog({
         subject: 'user',
@@ -657,7 +671,7 @@ app.get('/post/login', function(req, res, next) {
 
       return res.jsonp({
         valid: false,
-        reason: info.message
+        reason: friendly
       });
 
     }
