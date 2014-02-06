@@ -8,7 +8,7 @@ block content
       .span8
 
         .heading
-          h1 Syncing with phone...
+          h1 Sync With Phone
 
         .show-on-mobile
           p.text-center.mobile-download
@@ -19,19 +19,6 @@ block content
             a.show-hide-on-mobile click here.
 
         .hide-on-mobile
-          if (typeof user !== "undefined" && user)
-            .alert.alert-success
-              | You are currently logged in as #{user.username}.
-          else
-            .well.well-large
-              h2 Sign in.
-              hr
-              p
-                | You are logged out. &nbsp;
-                a(href='/register') Sign up
-                | &nbsp;or&nbsp;
-                a(href='/login') login
-                |.
 
           .moteio-state-installed
             .alert.alert-success Mote.io Chrome Extension found.
@@ -42,15 +29,31 @@ block content
               p Install the Chrome extension
                 | then&nbsp;
                 a(href='/start') refresh this page.
-                | If that doesn't work, try restarting Chrome.
+                |&nbsp;If that doesn't work, try restarting your browser.
+              hr
               p
                 a.btn(target='_blank', href='https://chrome.google.com/webstore/detail/moteio/okkhbojknlfdoooeghbkplihbjajpecc') Get Mote.io Chrome Extension
 
+          if (typeof user !== "undefined" && user)
+            .alert.alert-success
+              | You are currently logged in as #{user.username}.
+          else
+            .well.well-large
+              h2 Sign in here.
+              hr
+              p
+                | You are logged out. &nbsp;
+                a(href='/register') Sign up
+                | &nbsp;or&nbsp;
+                a(href='/login') login
+                |.
           .moteio-state-signed-in
             .alert.alert-success App found.
           .moteio-state-not-signed-in
             .well.well-large
               h2 Sign into the mobile app.
+              hr
+              p Use the same account as above.
               hr
               p
                 a.btn(target="_blank", href='https://itunes.apple.com/us/app/mote.io/id686305047?mt=8&uo=4') Get Mote.io for iOS

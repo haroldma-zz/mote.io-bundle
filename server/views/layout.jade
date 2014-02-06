@@ -63,15 +63,11 @@ html.not-ie(lang='en').moteio-container
                     li
                       a(href='http://sw1tch.com') Blog
               .span4.ar.action-items.hide-on-mobile
-                if (typeof user !== "undefined" && user)
                   a.btn.btn-primary.fire-sync(href='/start', style=(page=='start') && "display: none")
                     .icon-refresh
                     span &nbsp; Sync with Phone
+                if (typeof user !== "undefined" && user)
                   a(href='/logout', alt='Log out').log-out.icon-signout
-                else
-                  a(href='/register') Sign Up
-                  | &nbsp; or &nbsp;
-                  a(href='/login').btn Log In
 
       block content
       footer
