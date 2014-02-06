@@ -39,6 +39,7 @@ var config = {
       password: "CUTh&5R7B:BVe@i"
     }
   };
+
 var client = loggly.createClient(config);
 
 var SendGrid = require('sendgrid').SendGrid;
