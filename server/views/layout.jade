@@ -66,8 +66,8 @@ html.not-ie(lang='en').moteio-container
                   a.btn.btn-primary.fire-sync(href='/start', style=(page=='start') && "display: none")
                     .icon-refresh
                     span &nbsp; Sync with Phone
-                if (typeof user !== "undefined" && user)
-                  a(href='/logout', alt='Log out').log-out.icon-signout
+                  if (typeof user !== "undefined" && user)
+                    a(href='/logout', alt='Log out').log-out.icon-signout
 
       block content
       footer
