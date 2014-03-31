@@ -8,7 +8,7 @@ block content
       .span8
 
         .heading
-          h1 Sync With Phone
+          h1 Follow the steps below to sync
 
         .show-on-mobile
           p.text-center.mobile-download
@@ -21,10 +21,11 @@ block content
         .hide-on-mobile
 
           .moteio-state-installed
-            .alert.alert-success Mote.io Chrome Extension found.
+            .alert.alert-success
+              strong Step 1 Complete!
           .moteio-state-not-installed
             .well.well-large
-              h2 Install the Chrome Extension.
+              h2 Step 1: Install the Chrome Extension.
               hr
               p Install the Chrome extension
                 | then&nbsp;
@@ -36,10 +37,10 @@ block content
 
           if (typeof user !== "undefined" && user)
             .alert.alert-success
-              | You are currently logged in as #{user.username}.
+              strong Step 2 Complete!
           else
             .well.well-large
-              h2 Sign in here.
+              h2 Step 2: Sign in on the website.
               hr
               p
                 | You are logged out. &nbsp;
@@ -48,12 +49,17 @@ block content
                 a(href='/login') login
                 |.
           .moteio-state-signed-in
-            .alert.alert-success App found.
+            .alert.alert-success
+              strong Step 3 Complete!
+              |&nbsp;App found.
           .moteio-state-not-signed-in
             .well.well-large
-              h2 Sign into the mobile app.
+              h2 Step 3: Sign into the mobile app.
               hr
-              p Use the same account as above.
+              if (typeof user !== "undefined" && user)
+                p Sign in as #{user.username} on the phone app.
+              else
+                p Sign in with the same account you used in Step 2.
               hr
               p
                 a.btn(target="_blank", href='https://itunes.apple.com/us/app/mote.io/id686305047?mt=8&uo=4') Get Mote.io for iOS

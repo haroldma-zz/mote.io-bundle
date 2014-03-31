@@ -16,7 +16,6 @@ var
   sanitizer = require('sanitizer'),
   crypto = require('crypto');
 
-
 var mongo_options = {
   server: {
     socketOptions: { keepAlive: 1 }

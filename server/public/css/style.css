@@ -1549,6 +1549,10 @@ Ian Custom
 .m-search [type=text] {
 	padding: .3em 1em .2em 2.2em !important;
 }
+.works-with img {
+	margin: 10px 0px;
+	border-radius: 3px;
+}
 #toc {
 	width: 220px;
 	max-height: none  !important;
