@@ -49,9 +49,11 @@ var app = express();
 
 var mongo_options = {
   server: {
+    auto_reconnect: true,
     socketOptions: { keepAlive: 1 }
   },
   replset: {
+    auto_reconnect: true,
     socketOptions: { keepAlive: 1 }
   }
 }
@@ -81,7 +83,8 @@ app.configure('development', function(){
     db: {
       db: 'test',
       port: '27017',
-      host: 'localhost'
+      host: 'localhost',
+      auto_reconnect: true
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: 3000,
@@ -122,7 +125,8 @@ app.configure('production', function(){
       port: 27017,
       username: 'moteio',
       password: 'honeywell',
-      collection: 'sessions'
+      collection: 'sessions',
+      auto_reconnect: true
     },
     secret: '076ee61d63aa10a125ea872411e433b9',
     port: process.env.PORT,
