@@ -1,0 +1,53 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Open Sans", sans-serif; }
+
+html, body {
+  overflow: hidden; }
+
+#ytapiplayer {
+  z-index: 1;
+  position: absolute; }
+
+#info-overlay {
+  position: absolute;
+  z-index: 3;
+  opacity: 0.8;
+  width: 80%;
+  top: 3%;
+  left: -80%; }
+
+#video-title, #video-text, #video-category {
+  color: white;
+  background-color: black;
+  padding: 2%;
+  padding-left: 8%;
+  display: inline-block;
+  float: left;
+  clear: both; }
+
+#video-category {
+  text-transform: uppercase;
+  font-size: 25px;
+  margin-bottom: 2%; }
+
+#video-title {
+  text-transform: uppercase;
+  font-size: 50px;
+  margin-bottom: 2%;
+  font-weight: 600;
+  width: 80%; }
+
+#video-text {
+  font-size: 20px;
+  max-width: 100%;
+  color: #aaaaaa; }
+
+#static {
+  background-image: url("/assets/images/static.gif");
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: none; }
