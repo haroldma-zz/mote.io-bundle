@@ -1558,7 +1558,7 @@ Ian Custom
 	max-height: none  !important;
 }
 #habla_window_div {
-	left: 10px;
+	left: 50%;
 }
 @media only screen and (max-width: 980px) {
 	#toc {

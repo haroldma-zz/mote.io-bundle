@@ -108,6 +108,7 @@ moteio_receiver = function() {
   self.inputDisplay = function(icon, color) {
 
     jQ('#moteio-notice').hide();
+    jQ('.moteio-container').remove();
 
     if (typeof mote.io.remote.display_input !== "undefined" && mote.io.remote.display_input) {
 
@@ -124,7 +125,7 @@ moteio_receiver = function() {
       jQ('body').append(popup);
 
       popup.show().delay(800).fadeOut('normal', function() {
-        jQ(this).remove();
+        // jQ(this).remove();
       });
 
     }

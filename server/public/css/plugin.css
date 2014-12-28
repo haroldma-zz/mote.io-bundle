@@ -15,7 +15,7 @@
 }
 .moteio-button-popup .fa {
 	font-size: 100px;
-	line-height: 226px;
+	line-height: 209px;
 	font-family: FontAwesome;
 	color: #111;
 }
@@ -99,7 +99,7 @@
 	font-family: FontAwesome !important;
 	top: 15px;
 	right: 0px;
-	line-height: 1em;
+	line-height: .9em;
 	font-size: 14px;
 	right: 10px;
 	color: #ccc;
