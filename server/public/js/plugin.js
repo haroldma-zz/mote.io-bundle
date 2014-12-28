@@ -113,7 +113,7 @@ moteio_receiver = function() {
 
       var
       color = color || null,
-        popup = jQ('<div class="moteio-container"><div class="moteio-button-popup"><span class="icon-' + icon + '"></span></div></div>');
+        popup = jQ('<div class="moteio-container"><div class="moteio-button-popup"><span class="fa fa-' + icon + '"></span></div></div>');
 
       if (color) {
         popup.css('color', color);
@@ -493,7 +493,7 @@ moteio_receiver = function() {
         <a id="moteio-status-text">\
           <span id="moteio-status-text-message"><img id="moteio-loadio" src="' + mote.io.host + '/images/loading-searching.gif"></span>\
         </a>\
-        <div class="moteio-hide"><span class="icon-remove"></span></div> \
+        <div class="moteio-hide"><span class="fa fa-remove"></span></div> \
       </div>\
     </div>'));
 
