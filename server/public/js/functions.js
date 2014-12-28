@@ -163,7 +163,7 @@ jQuery(document).ready(function($) {
 
 	(function() {
 
-   			$('<i id="back-to-top" class="icon-chevron-up"></i>').appendTo($('body'));
+   			$('<i id="back-to-top" class="fa fa-chevron-up"></i>').appendTo($('body'));
 
 			$(window).scroll(function() {
 

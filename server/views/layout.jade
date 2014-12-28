@@ -10,7 +10,7 @@ html.not-ie(lang='en').moteio-container
     link(rel='icon', type='image/png', href='/images/144.png')
 
     link(href='/css/style.css', rel='stylesheet')
-    link(href='/css/font-awesome/font-awesome.css', rel='stylesheet')
+    link(href='///maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', rel='stylesheet')
 
     link(href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800', rel='stylesheet', type='text/css')
 
@@ -64,10 +64,10 @@ html.not-ie(lang='en').moteio-container
                       a(href='http://sw1tch.com') Blog
               .span4.ar.action-items.hide-on-mobile
                   a.btn.btn-primary.fire-sync(href='/start', style=(page=='start') && "display: none")
-                    .icon-refresh
+                    .fa.fa-refresh
                     span &nbsp; Sync with Phone
                   if (typeof user !== "undefined" && user)
-                    a(href='/logout', alt='Log out').log-out.icon-signout
+                    a(href='/logout', alt='Log out').log-out.fa.fa-psignout
 
       block content
       footer
@@ -89,8 +89,8 @@ html.not-ie(lang='en').moteio-container
             .span3.social-networks
               h3 Shoulders of giants
               p Built by Ian Jennings and the help of the open source community.
-              a.icon-twitter(href='http://twitter.com/sw1tch', title='Follow me on Twitter')
-              a.icon-github(href='https://github.com/ianjennings/mote.io-extension', title='Follow me on Github')
+              a.fa.fa-twitter(href='http://twitter.com/sw1tch', title='Follow me on Twitter')
+              a.fa.fa-github(href='https://github.com/ianjennings/mote.io-extension', title='Follow me on Github')
         #footer-extra
           .container
             .row
@@ -98,7 +98,7 @@ html.not-ie(lang='en').moteio-container
                 | © 2013 Mote.io
               .span5
               .span3
-                i.icon-envelope &nbsp;
+                i.fa.fa-envelope &nbsp;
                 | hello@mote.io
 
       script(type='text/javascript', src='js/bootstrap.min.js')

@@ -13,7 +13,7 @@
 	font-size: 100px;
 	border: 6px solid #111;
 }
-.moteio-button-popup [class^="icon-"], .moteio-button-popup [class*=" icon-"] {
+.moteio-button-popup .fa {
 	font-size: 100px;
 	line-height: 226px;
 	font-family: FontAwesome;
@@ -94,7 +94,7 @@
 #moteio-notice.small #moteio-round-logo {
 	cursor: pointer;
 }
-#moteio-notice #moteio-status [class^="icon-"], #moteio-notice #moteio-status [class*="icon-"]{
+#moteio-notice #moteio-status .fa {
 	position: absolute;
 	font-family: FontAwesome !important;
 	top: 15px;
@@ -104,7 +104,7 @@
 	right: 10px;
 	color: #ccc;
 }
-#moteio-notice #moteio-status [class^="icon-"]:hover, #moteio-notice #moteio-status [class*="icon-"]:hover {
+#moteio-notice #moteio-status .fa {
 	color: #000;
 	cursor: pointer;
 }
